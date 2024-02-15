@@ -1,0 +1,26 @@
+<!--#include file="./includes/metadata.txt"-->
+
+
+        <link href="css/menu.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<!--#include file="./includes/menu.txt"-->
+
+<section>
+<h1>ImmunityBio drug trial date notes:</h1>
+
+<ul>
+    <li>Not included: trials with a status of withdrawn, terminated, unknown, or completed 2+ years ago.</li>
+    <li>Trial date range starts with the primary study completion date ends with the study completion published on clinicaltrials.gov. </li>
+    <li>For the timeline's readability and usability reasons, the smallest increment between the primary and study completion date is 10 days. There are a few cases where those dates are identical on clinicaltrials.gov.</li>
+    <li>IBRX completes and withdraws studies without announcement, so there's no way to know if/when results are forthcoming. They also occasionally release preliminary data prior to study completion.</li>
+    <li>I've only included trials ended after 2022. </li>
+    <li>Reporting requirement for National Cancer Institute-sponsored studies: <a href="https://stkt.co/0TPs9dwQ">Within 12 months of the earlier of estimated/actual primary completion date.</a></li>
+    <li>Drugs may have multiple names. For example: Anktiva = N-803 = Alt-803 = Inbakicept</li>
+</ul>
+
+</section>
+
+<!--#include file="./includes/footer.txt"-->

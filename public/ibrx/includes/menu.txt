@@ -1,0 +1,10 @@
+    <nav id='menu'>
+        <span id="title">ImmunityBio Watch</span>
+        <input type='checkbox' id='responsive-menu' onclick='updatemenu()'>
+        <ul>
+            <li><a href='timeline.shtml'>Timeline</a></li>
+            <li><a href='rawdata.shtml'>Pipeline data</a></li>
+            <li><a href='platform.shtml'>Platform data</a></li>
+            <li><a href='notes.shtml'>Notes</a></li>
+        </ul>     
+    </nav>

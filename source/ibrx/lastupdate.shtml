@@ -1,0 +1,78 @@
+<!--#include file="./includes/metadata.txt"-->
+
+<link rel="stylesheet" href="../js/table/two.min.css" />
+<link rel="stylesheet" href="../css/table/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="../css/menu.css" />
+<script src="../js/table/one.js"></script>
+
+<style>
+    td,
+    th {
+        color: black;
+        padding: 1px;
+        font-size: 9pt;
+    }
+
+    .dt-table>tbody>tr>td,
+    .dt-table>tbody>tr>th,
+    .dt-table>tfoot>tr>td,
+    .dt-table>tfoot>tr>th,
+    .dt-table>thead>tr>td,
+    .dt-table>thead>tr>th {
+        vertical-align: top;
+        padding: 4px 10px;
+        white-space: break-spaces;
+        word-break: keep-all;
+    }
+
+    .dt-wrapper {
+        margin: 2em;
+    }
+
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+        color: rgb(33, 21, 209);
+        text-decoration: none;
+    }
+</style>
+</head>
+
+<body>
+    <!--#include file="./includes/menu.txt"-->
+    <section>
+        <table id="ibrxdata" class="table table-bordered table-striped"></table>
+        <script>
+            var table = document.getElementById('ibrxdata');
+            var thead = document.createElement('thead');
+            var tbody = document.createElement('tbody');
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            fetch('https://tradingtimeline.com/get-clinicialgovdata.php?name=updates').then(response => response.json()).then(data => {
+                data.values.forEach(function (item, index) {
+                    var row = document.createElement('tr');
+                    if (index == 0) {
+                        for (var i = 0; i < item.length; i++) {
+                            var cell = document.createElement('th');
+                            cell.textContent = item[i];
+                            row.appendChild(cell);
+                        }
+                        thead.appendChild(row);
+                    } else {
+                        for (var i = 0; i < item.length; i++) {
+                            var cell = document.createElement('td');
+                            cell.textContent = item[i];
+                            row.appendChild(cell);
+                        }
+                        tbody.appendChild(row);
+                    }
+                });
+                new JSTable('#ibrxdata', {
+                    perPage: 1000
+                });
+            });           
+        </script>
+    </section>
+
+    <!--#include file="./includes/footer.txt"-->

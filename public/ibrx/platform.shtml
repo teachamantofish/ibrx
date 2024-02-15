@@ -1,0 +1,166 @@
+<!--#include file="./includes/metadata.txt"-->
+
+
+<link href="css/menu.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+    <!--#include file="./includes/menu.txt"-->
+
+    <section>
+        <h1>Mapping Platforms to Trials to Patents</h1>
+
+        <p>Huggenberg from Stocktwits has provided all the data here and gets credit for this remarkable due diligence.
+            An amazing amount of effort must have gone into mapping platorms to products to trials to results, and
+            finally, patents. </p>
+
+        <p>(<strong>teachamantofish</strong>) am looking at options for how to create an interactive tool for this
+            complex data.</p>
+
+        <img src="img/huggenberg.png" /><br /><br />
+        <p>This data is in progress (huggenberg continues to work), but I wanted to get this information out there so
+            investors can position themselves pre-PDUFA with as much information as possible. </p>
+
+        <h1>CAR-NK platform</h1>
+
+
+        We talked about CAR-T’s safety problems. Another drawback of CAR-T is its application in solid tumors, where
+        CAR-T application remains challenging. Current CAR-T cell types remain incapable of treating solid tumors.
+        And again, CAR-NK therapies from $IBRX are at the forefront. CAR-NK has several advantages and has the potential
+        to close the therapy gap left by CAR-T cells in solid tumors.
+
+        Last month, the first full report of a CAR-NK cell-based intervention in a solid tumor indication was published
+        (HER2 t-haNK in Glioblastoma). Glioblastoma is the most common and aggressive primary brain tumor in adults.
+        The conclusion is that CAR-NK in solid tumors is feasible and safe!
+
+        IMO, CAR-NK will be the next big thing with the money inflow from the BP deal after Anktiva’s approval. There
+        are exciting perspectives in CAR-NK, but there is still a long way to go.
+
+        And yet another point to mention: CAR-NK can easily be combined with Anktiva or other cancer treatments.
+        Compared with CAR-T cells, CAR-NK cells exhibit a greater variety of strategies to attack tumor cells.
+
+        from: Link: https://jhoonline.biomedcentral.com/articles/10.1186/s13045-023-01492-8
+
+        <img src="img/cartvscarnk.png" style="max-width:99%" /><br /><br />
+
+
+        <img src="img/car-nkplatform.png" style="max-width:99%" /><br /><br />
+
+
+        <h1>Future additions to the CAR-NK platform</h1>
+
+        <iframe
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS86IHtsTUpfbPY42u91KLgHpYuJLI-Xhy8ZqelP1v86IF56_PKYszhBV8x-HUePm4xEcE1hUaAnADX/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"
+            width="90%" height="600px"></iframe>
+
+
+
+
+        <h1>Immunocytokine platform</h1>
+
+        What are ImmunityBio's future plans with Anktiva after approval?
+        There are certainly efforts to approve Anktiva for other types of cancer, as many studies are already underway.
+
+
+        The second way will be to expand the effect of Anktiva. A promising way is to add a second or third cytokine to
+        Anktiva alongside IL-15. This would give us a bi- or tri-specific immunocytokine, which would multiply the range
+        of applications of Anktiva in one fell swoop.
+
+        <p>Note that ImmunityBio is evolving N-803 into other drugs by combining it with cytokines with proven
+            anti-cancer properties. For example: </p>
+        <ul>
+            <li>N-809 = N-803 combined with Anti-PD-L1</li>
+            <li>N-809 = N-803 combined with CD20</li>
+            <li>N-8xxx: N-803 is being tested in combination with IL21 (oHSV-21), IL-12, IL-18, and other cytokines.
+            </li>
+        </ul>
+
+        <img src="img/Immunocytokine.png" style="max-width:99%" /><br /><br />
+
+        What is the value of this platform? In mid-2022, Roche acquired Good Therapeutics for $250M for a bispecific
+        immunocytokine with the two cytokines PD1/IL2v. This application is not based on an approved base like Anktiva
+        and has a long way to go.
+        Immunitybio's platform can safely be estimated to be several times higher.
+        https://medcitynews.com/2022/09/roche-shells-out-250m-to-acquire-good-therapeutics-and-its-preclinical-oncology-program/
+
+
+        The big point, IMO, is the BP collaboration to distribute Anktiva outside the USA.
+        In addition to Anktiva, these new variants of Anktiva are certainly of great interest for BP, especially since
+        one of these bispecific immunocytokines could improve the efficiency of one or more of their blockbusters
+        (checkpoint inhibitors and/or monoclonal antibodies) and could also enable the route to solid tumors.
+
+        Correction 01.26.2024:
+
+        (N-8??: IL-15/IL21) deleted from the Excel sheet; drugs were not tested in the combo. IL21 is an external drug
+        C021(an oncolytic viral herpes simplex virus).
+
+        Preclinical study of Anktiva in Neuroblastoma, which most commonly affects children aged five or younger.
+        „Conclusion: Our data demonstrated IL15 or IL21 based novel cytokine therapy (N-803 or C021) significantly
+        enhanced the anti-tumor efficacy of ROR1 CAR NK targeting NB in vitro and in vivo.“
+        Anktiva and C021(an oncolytic viral herpes simplex virus) were tested separately.
+
+        https://tandem.confex.com/tandem/2024/meetingapp.cgi/Paper/23519
+
+
+
+
+
+        <h1>Viral vector vaccine platform</h1>
+
+        <p>Details from the HPV trials from the $IBRX pipeline are now disclosed in clinical trials. The first step is
+            the P1 trial, which examines the safety of IBRX-042. The second step will be combining IBRX-042 and Anktiva
+            in a P2 trial. </p>
+        <p>
+            HPV is the most common sexually transmitted infection. The Human Papillomavirus is known to cause
+            approximately 95% of cervical and 30-60% of oropharyngeal carcinoma and many other cases. According to the
+            Centers for Disease Control and Prevention, every year about 19,400 women and 12,100 men experience cancers
+            caused by the human papillomavirus (HPV), which is the most common sexually transmitted infection in the
+            U.S. Nearly all sexually active men and women are transmitted with HPV at some point in their lives. In most
+            cases, HPV goes away on its own and does not cause any health problems. Some HPV infections, however, can
+            persist for many years. Persistent infections with high-risk HPV types can lead to cell changes that may
+            progress to cancer.</p>
+
+        <p>There are some prophylactic vaccines like Gardasil, but they are only effective if taken before exposure to
+            the virus. But if you don’t get that vaccine, you still will have a minor chance of getting cancer.
+            Researchers believe that it can take between 10 and 30 years from the time of an initial HPV infection until
+            a tumor forms. There is no HPV-specific antiviral treatment for the infection. Until now, HPV-associated
+            tumors are treated with surgery, radiotherapy, and chemotherapy or not HPV-related cancer and immunotherapy
+            treatments.</p>
+
+        <p>But the two major oncotarget antigens E6 and E7 in IBRX-042 could change this. E6 and E7 are important
+            components related to the Hallmark of cancer. E6 and E7 are major oncoproteins involved in cellular
+            proliferation, invasion and metastasis, cell cycle arrest, angiogenesis, resisting cell death,
+            tumor-promoting inflammation, genomic instability, evading growth suppressors, deregulation of cellular
+            energetics, avoiding immune destruction and enabling replicative immortality.</p>
+
+        <p>
+            IBRX-042 is the first oncolytic virus vaccine with E6 and E7 expression specifically related to HPV and will
+            be a milestone if successful, as the E6 and E7 oncoproteins play a major role in many cancer pathways. Here
+            is my overview of the IBRX oncolytic platform to show you the long way to IBRX-042. </p>
+
+        https://www.mdpi.com/2076-0817/12/4/564
+        <img src="img/cancerhallmarks.png" width="95%" />
+
+        <p> After Anktiva's approval, combining the oncolytic platform and Anktiva could be the next game-changer in
+            cancer treatment, and the E6 / E7 oncolytic antigens could be used in a broader range of future
+            applications. <a href="https://stkt.co/PR8lPa5P">Further research</a></p>
+
+
+        <img src="img/viralvector_vaccine_platform.png" style="max-width:99%" /><br /><br />
+
+        <h1>Covid notes</h1>
+        <p>Covid may not be still pursued, but the technology behind sa-mRNA and SASA is superior to the vaccines from
+            Pfizer and Moderna (see appendix).
+
+            PSS developed this with the Advanced Health Institute AAHI, formerly IDRI, and PSS saved the institute from
+            bankruptcy with $20 million and is now chairman of the board.
+
+            https://www.aahi.org
+
+            The technology can be used for future waves of infections and endemics and in IBRX future cancer vaccines.
+        </p>
+
+    </section>
+
+    <!--#include file="./includes/footer.txt"-->
