@@ -1,8 +1,6 @@
 <!--#include file="./includes/metadata.txt"-->
 
     <link href="../css/time/visegrad.min.css" rel="stylesheet" type="text/css" />
-    <link href="../css/bencustom.css" rel="stylesheet" type="text/css" />
-    <link href="../css/menu.css" rel="stylesheet" type="text/css" />
     <link href="../css/radiobuttons.css" rel="stylesheet" type="text/css" />
     <link href="../css/buttons.css" rel="stylesheet" type="text/css" />
 </head>

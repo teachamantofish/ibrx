@@ -1,9 +1,5 @@
 <!--#include file="./includes/metadata.txt"-->
-
-
-        <link href="css/menu.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
 
 <!--#include file="./includes/menu.txt"-->

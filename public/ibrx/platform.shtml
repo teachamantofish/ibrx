@@ -1,12 +1,9 @@
 <!--#include file="./includes/metadata.txt"-->
 
-
-<link href="css/menu.css" rel="stylesheet" type="text/css" />
 </head>
-
 <body>
 
-    <!--#include file="./includes/menu.txt"-->
+<!--#include file="./includes/menu.txt"-->
 
     <section>
         <h1>Mapping Platforms to Trials to Patents</h1>

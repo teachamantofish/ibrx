@@ -2,7 +2,6 @@
 
 <link rel="stylesheet" href="../js/table/two.min.css" />
 <link rel="stylesheet" href="../css/table/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="../css/menu.css" />
 <script src="../js/table/one.js"></script>
 
 <style>
@@ -24,11 +23,6 @@
         white-space: break-spaces;
         word-break: keep-all;
     }
-
-    .dt-wrapper {
-        margin: 2em;
-    }
-
     a:link,
     a:visited,
     a:hover,

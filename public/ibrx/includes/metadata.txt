@@ -13,6 +13,8 @@
     <meta name="language" content="English">
     <meta author="Ben Rogers">
     <link rel="canonical" href="https://www.tradingtimeline.com"/>
+    <link href="../css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bencustom.css" rel="stylesheet" type="text/css" />
 
 
 

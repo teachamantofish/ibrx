@@ -5,6 +5,7 @@
             <li><a href='timeline.shtml'>Timeline</a></li>
             <li><a href='rawdata.shtml'>Pipeline data</a></li>
             <li><a href='platform.shtml'>Platform data</a></li>
+            <li><a href='lastupdate.shtml'>Recent ClinicalTrial.gov updates</a></li>
             <li><a href='notes.shtml'>Notes</a></li>
         </ul>     
     </nav>
