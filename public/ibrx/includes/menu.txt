@@ -1,11 +1,11 @@
-    <nav id='menu'>
-        <span id="title">ImmunityBio Watch</span>
+<img src="img/ibrx.png" style="position:absolute; left:0; top:0"/>
+    <nav id='menu'>     
         <input type='checkbox' id='responsive-menu' onclick='updatemenu()'>
         <ul>
-            <li><a href='timeline.shtml'>Timeline</a></li>
+            <li><a href='timeline.shtml'>Trading Timeline</a></li>
             <li><a href='rawdata.shtml'>Pipeline data</a></li>
             <li><a href='platform.shtml'>Platform data</a></li>
-            <li><a href='lastupdate.shtml'>Recent ClinicalTrial.gov updates</a></li>
+            <li><a href='lastupdate.shtml'>ClinicalTrial.gov updates</a></li>
             <li><a href='notes.shtml'>Notes</a></li>
         </ul>     
     </nav>

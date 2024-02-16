@@ -36,6 +36,13 @@
 <body>
     <!--#include file="./includes/menu.txt"-->
     <section>
+
+        <p>About this page:</p>
+        <ul>
+            <li>An API call to clinicaltrials.gov automatically refreshes this data every night.</li>
+            <li>This list contains records that have been udpated in the last 14 days.</li>
+            <li>Search parameters: <code>ImmunityBio+OR+N-803+OR+Alt-803+OR+Anktiva+OR+NK-92+OR+IBRX-042+OR+CD19.t-haNK+OR+Tri-Ad5+OR+inbakicept+OR+Aldoxorubicin+OR+CAR-t-haNK+OR+N-809+OR+N-820+OR+N-812+OR+N-830+OR+ETBX-21</code></li>
+        </ul>
         <table id="ibrxdata" class="table table-bordered table-striped"></table>
 
         <script>
