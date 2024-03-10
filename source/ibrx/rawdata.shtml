@@ -52,7 +52,7 @@
             var tbody = document.createElement('tbody');
             table.appendChild(thead);
             table.appendChild(tbody);
-            fetch('https://tradingtimeline.com/get-data.php?name=Trials').then(response => response.json()).then(data => {
+            fetch('get-data.php?name=Trials').then(response => response.json()).then(data => {
                 data.values.forEach(function (item, index) {
                     var row = document.createElement('tr');
                     if (index == 0) {

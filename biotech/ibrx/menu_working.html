@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  /*https://colordesigner.io */
+  body {
+    font-family: "Lato", sans-serif; margin: 0;
+    background: #e5ebda;
+    height:1000px;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color:#e0e0e0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2); /* Add shadow to top bar */
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    margin: left;
+    color: #2b2b2b;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.sidenav {
+    height: 400px;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 60px;
+    left: 0;
+    background: linear-gradient(to right, #e3e3e3, #fafbf8);
+    overflow-x: hidden;
+    transition: 0.5s;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2); /* Add shadow to top bar */
+}
+
+.sidenav a {
+    padding: 12px;
+    text-decoration: none;
+    font-size: 16px;
+    color:#2b2b2b;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: black; background-color: #e5ebda;
+}
+
+.widget {
+  margin: 6em 1em 6em 1em;
+  height:600px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="javascript:void(0);" class="icon" onmouseover="openNav()" onmouseout="closeNav()">&#9776;</a>
+</div>
+
+<div id="mySidenav" class="sidenav" onmouseover="openNav()" onmouseout="closeNav()">
+    <a href="#">Home</a>
+    <a href="#">Pipeline Viewer</a>
+    <a href="#">Partner Viewer</a>
+    <a href="#">Squeeze Alert</a>
+    <a href="#">Research</a>
+    <a href="#">Stocktwits</a>
+    <a href="#">Seeking Alpha</a>
+    <a href="https://discord.com/channels/1213480287271653406/1213481128770666576">Discord</a>
+</div>
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "150px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+<section class="widget">
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+  {
+  "autosize": true,
+  "symbol": "IBRX",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "dark",
+  "style": "1",
+  "locale": "en",
+  "enable_publishing": false,
+  "withdateranges": true,
+  "range": "1D",
+  "hide_side_toolbar": false,
+  "allow_symbol_change": true,
+  "watchlist": [
+    "CME_MINI:NQ1!",
+    "AMEX:XBI",
+    "AMEX:LABU",
+    "CME_MINI:RTY1!"
+  ],
+  "calendar": false,
+  "show_popup_button": true,
+  "popup_width": "1000",
+  "popup_height": "650",
+  "support_host": "https://www.tradingview.com"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+</section>
+
+
+<section class="widget">
+blank
+  
+</section>
+
+</body>
+</html> 

@@ -40,8 +40,9 @@
 </head>
 
 <body>
+   test me. 
     <!--#include file="./includes/menu.txt"-->
-    <section>
+    <section class="widget">
         <table id="ibrxdata" class="table table-bordered table-striped"></table>
         <script>
             var table = document.getElementById('ibrxdata');
@@ -49,7 +50,7 @@
             var tbody = document.createElement('tbody');
             table.appendChild(thead);
             table.appendChild(tbody);
-            fetch('https://tradingtimeline.com/get-clinicialgovdata.php?name=updates').then(response => response.json()).then(data => {
+            fetch('test.php?').then(response => response.json()).then(data => {
                 data.values.forEach(function (item, index) {
                     var row = document.createElement('tr');
                     if (index == 0) {

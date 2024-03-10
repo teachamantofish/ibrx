@@ -12,7 +12,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
     <meta author="Ben Rogers">
-    <link rel="canonical" href="https://www.tradingtimeline.com"/>
+    <link rel="canonical" href="https://www.optionicity.com"/>
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
     <link href="../css/menu.css" rel="stylesheet" type="text/css" />
     <link href="../css/bencustom.css" rel="stylesheet" type="text/css" />
 
