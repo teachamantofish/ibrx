@@ -1,0 +1,182 @@
+<!--#include file="./includes/metadata.txt"-->
+
+<head>
+    <style>
+        .section {
+            display: flex;
+            flex-direction: row;
+            height: 500px;
+            width: 100vw;
+
+        }
+        #child1{ flex: 1; height:400px; padding:3em;}
+        #child2{ flex: 1; height:400px; }
+
+        /* Responsive layout - makes a one column layout instead of a two-column layout */
+@media (max-width: 800px) {
+  .section {
+    flex-direction: column;
+  }
+}
+
+        
+    </style>
+</head>
+
+<body>
+
+    <!--#include file="./includes/menu.txt"-->
+
+    <section class="section">
+    <!-- Resources -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Spirited.js"></script>
+    <!-- Chart code -->
+    <script>
+        am5.ready(function () {
+
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new("child2");
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root),
+                am5themes_Spirited.new(root)
+            ]);
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+            // start and end angle must be set both for chart and series
+            var chart = root.container.children.push(am5percent.PieChart.new(root, {
+                layout: root.verticalLayout,
+                radius: am5.percent(100),
+            }));
+
+            // Create series
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+            // start and end angle must be set both for chart and series
+            var series0 = chart.series.push(am5percent.PieSeries.new(root, {
+                valueField: "shares",
+                categoryField: "owner",
+                alignLabels: false,
+                radius: am5.percent(80),
+                innerRadius: am5.percent(25),
+                startAngle: -145, // Set the start angle here
+                endAngle: 215 // And the end angle here
+            }));
+
+            var bgColor = root.interfaceColors.get("background");
+
+            series0.ticks.template.setAll({ forceHidden: true });
+
+            series0.labels.template.setAll({
+                radius: -10,
+                text: "{category}",
+                textType: "radial",
+                centerX: am5.percent(100)
+            });
+
+            series0.slices.template.setAll({
+                stroke: bgColor,
+                strokeWidth: 2,
+                fill: am5.color(0xcccccc),
+                shadowColor: am5.color(0x666666),
+                shadowBlur: 6,
+                shadowOffsetX: 3,
+                shadowOffsetY: 3,
+                tooltipText:
+                    "{category}: {valuePercentTotal.formatNumber('0.00')}%"
+            });
+            series0.slices.template.states.create("hover", { scale: 0.95 });
+
+            var series1 = chart.series.push(am5percent.PieSeries.new(root, {
+                valueField: "shares",
+                categoryField: "owner",
+                alignLabels: true,
+                innerRadius: am5.percent(80),
+                radius: am5.percent(100),
+                startAngle: -145, // Set the start angle here
+                endAngle: 215 // And the end angle here
+            }));
+
+            series1.slices.template.setAll({
+                stroke: bgColor,
+                strokeWidth: 2,
+                templateField: "settings",
+                shadowColor: am5.color(0x666666),
+                shadowBlur: 6,
+                shadowOffsetX: 3,
+                shadowOffsetY: 3,
+            });
+
+            series1.labels.template.setAll({
+                text: "{category}"
+            });
+
+            var data = {
+                "Insider\n536,571,756": [
+                    { owner: "Insider Shares", shares: 536571756, settings: {} },
+                ],
+                "Total Float\n131,138,244": [
+                    { owner: "Institutional Float\n60,944,668", shares: 60944668, settings: {} },
+                    { owner: "Short Float\n51,547,481", shares: 51547481, settings: {} },
+                    { owner: "Unshorted Retail Float\n18,646,095", shares: 18646095, settings: {} }
+                ]
+            };
+
+            // Generate series data
+            var innerData = [];
+            var outerData = [];
+            am5.object.each(data, function (owner, category) {
+                var shares = 0;
+                am5.array.each(category, function (owner) {
+                    shares += owner.shares;
+                    outerData.push(owner);
+                });
+                innerData.push({
+                    owner: owner,
+                    shares: shares
+                });
+            });
+
+
+            // Set data
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+            series0.data.setAll(innerData);
+            series1.data.setAll(outerData);
+
+            // Play initial series animation
+            // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+            series0.appear(1000, 100);
+            series1.appear(1000, 100);
+
+        }); // end am5.ready()
+    </script>
+
+    <!-- HTML -->
+    <div id="child1">Note the following: 
+<ul>
+    <li>273 institutional owners and shareholders that have filed 13D/G or 13F forms with the SEC. </li>
+    <li>Shorted shares may be retail or institutional.</li>
+    <li>Shorted shares may not be bets that the stock price declines: it could be part of a hedging strategy with the goal of remaining delta neutral.</li>
+    <li>Large holders my have shorted "against the box", meaning they have shorted their own shares and are not paying borrowing costs.</li>
+    <li>The current short ratio is 39%.</li>
+    <li>If all shorted shares were against the non-institutional float, the short ratio is 73%. </li>
+    <li>IBRX is the 10th most shorted in the overall market.</li>
+    <li>IBRX is the 5th most shorted stock in the NASDAQ market.</li>
+
+</ul>
+
+    </div>
+    <div id="child2"></div>
+    </section>
+
+    <section>
+
+        <iframe width="600" height="600" src="https://lookerstudio.google.com/embed/reporting/49939654-1a8d-4bb8-b097-939693c6c80e/page/p_6fufzgdzed" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+    </section>
+    <!--#include file="./includes/footer.txt"-->

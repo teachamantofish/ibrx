@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #chartdiv {
+            width: 80%;
+            height: 900px;
+        }
+    </style>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+</head>
+
+<body>
+    <script>
+
+        async function fetchCsvAndConvertToJson(csvUrl) {
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const csvText = await response.text();
+                const jsonData = csvToJson(csvText);
+                const nestedData = createNestedJson(jsonData);
+                return nestedData;
+            } catch (error) {
+                console.error("Error fetching or converting CSV", error);
+                throw error;
+            }
+        }
+
+        function csvToJson(csv) {
+            const lines = csv.split("\n").map(line => line.trim()).filter(line => line);
+            const headers = lines.shift().split(",");
+            return lines.map(line => {
+                const data = line.split(",");
+                return headers.reduce((obj, nextKey, index) => {
+                    obj[nextKey] = data[index];
+                    return obj;
+                }, {});
+            });
+        }
+
+        function createNestedJson(data) {
+            const root = { name: "Root", children: [] };
+            const cellLineMap = new Map();
+
+            data.forEach(item => {
+                const cellLine = item['Cell Line'];
+                const associatedMalignancy = item['Associated Malignancy'];
+                const drug = item['Combination Antibody Drug'];
+
+                if (!cellLineMap.has(cellLine)) {
+                    const cellLineObj = { name: cellLine, children: [] };
+                    cellLineMap.set(cellLine, cellLineObj);
+                    root.children.push(cellLineObj);
+                }
+
+                const cellLineObj = cellLineMap.get(cellLine);
+                let maligObj = cellLineObj.children.find(m => m.name === associatedMalignancy);
+
+                if (!maligObj) {
+                    maligObj = { name: associatedMalignancy, children: [] };
+                    cellLineObj.children.push(maligObj);
+                }
+
+                if (drug && drug.trim()) {
+                    maligObj.children.push({ name: drug, value: 1 });
+                } else if (maligObj.children.length === 0) {
+                    maligObj.value = 1;
+                }
+            });
+
+            return root;
+        }
+
+        const csvUrl = 'carnknew.csv';
+        fetchCsvAndConvertToJson(csvUrl)
+            .then(nestedData => {
+                am5.ready(function () {
+                    var root = am5.Root.new("chartdiv");
+
+                    root.setThemes([
+                        am5themes_Animated.new(root)
+                    ]);
+
+                    var container = root.container.children.push(am5.Container.new(root, {
+                        width: am5.percent(100),
+                        height: am5.percent(100),
+                        layout: root.verticalLayout
+                    }));
+
+                    var series = container.children.push(am5hierarchy.Partition.new(root, {
+                        singleBranchOnly: false,
+                        orientation: "horizontal",
+                        downDepth: 4,
+                        initialDepth: 4,
+                        valueField: "value",
+                        categoryField: "name",
+                        childDataField: "children",
+                        skipNull: true
+                    }));
+
+                    series.data.setAll([nestedData]);
+
+                    series.appear(1000, 100);
+
+                    series.nodes.template.setAll({
+                        tooltipText: "{name}"
+                    });
+
+                });
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    </script>
+
+    <div id="chartdiv"></div>
+
+</body>
+
+</html>

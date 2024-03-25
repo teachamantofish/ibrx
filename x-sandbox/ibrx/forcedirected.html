@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 1200px;
+        }
+        #legenddiv {
+            float:right; 
+            width:12em; 
+            height: 50%; 
+            position: absolute; 
+            right: 2em; top: 5em; 
+            background-color: transparent;
+        }
+        body{background-color: #eceaea;}
+        
+/* See https://codepen.io/agoodwin/pen/NMJoER */
+@keyframes move-background {
+  from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to { 
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
+}
+@-webkit-keyframes move-background {
+  from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to { 
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
+}
+
+@-moz-keyframes move-background {    
+	from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to { 
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
+}
+
+    @-webkit-keyframes move-background {
+	from {
+		-webkit-transform: translate3d(0px, 0px, 0px);
+	}
+	to { 
+		-webkit-transform: translate3d(1000px, 0px, 0px);
+	}
+}
+
+.background-container{
+	position: fixed;
+	top: 0;
+	left:0;
+	bottom: 0;
+	right: 0;
+}
+
+.stars {
+ background: black url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat;
+ position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: block;
+  	z-index: 0;
+}
+
+.twinkling{
+	width:10000px;
+	height: 100%;
+	background: transparent url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png") repeat;
+	background-size: 1000px 1000px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    
+    -moz-animation:move-background 70s linear infinite;
+  -ms-animation:move-background 70s linear infinite;
+  -o-animation:move-background 70s linear infinite;
+  -webkit-animation:move-background 70s linear infinite;
+  animation:move-background 70s linear infinite;
+	
+}
+
+.clouds{
+	width:10000px;
+	height: 100%;
+	background: transparent url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/clouds_repeat.png") repeat;
+	background-size: 1000px 1000px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 3;
+
+   -moz-animation:move-background 150s linear infinite;
+  -ms-animation:move-background 150s linear infinite;
+  -o-animation:move-background 150s linear infinite;
+  -webkit-animation:move-background 150s linear infinite;
+  animation:move-background 150s linear infinite;
+}
+#moon{
+  position: absolute;
+  z-index: 3;
+  right: 20px;
+  width:100px; 
+  height:100px;
+  padding-top:1em;
+}
+#title{
+    color:white; z-index:999999 !important; position: absolute; 
+    left:1em; top: 1em;
+    font-size: 30px;
+}
+
+    </style>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+</head>
+
+<body>
+
+    <div class="background-container" style="max-height: 130px;"><div id="title">This is my title</div>
+        <img src="../img/moon2.png" id="moon">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+        <div class="clouds"></div>
+    </div> <!--end background container -->
+  
+    <script>
+        // todo: 
+        // clean up csv2jsonJS, 
+        // add collapse/expand all
+        // add custom tooltips
+        // add hyperlink leaf nodes
+        // change color of leaf node based on regex
+        // Node text should have a line break if it's longer than 15 chars and there is whitespace after 10 chars
+
+        async function fetchCsvAndConvertToJson(csvUrl) {
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const csvText = await response.text();
+                const jsonData = csvToJson(csvText);
+                const nestedData = createNestedJson(jsonData);
+                return nestedData;
+            } catch (error) {
+                console.error("Error fetching or converting CSV", error);
+                throw error;
+            }
+        }
+
+        function csvToJson(csv) {
+            const lines = csv.split("\n").map(line => line.trim()).filter(line => line);
+            const headers = lines.shift().split(",");
+            return lines.map(line => {
+                const data = line.split(",");
+                return headers.reduce((obj, nextKey, index) => {
+                    obj[nextKey] = data[index];
+                    return obj;
+                }, {});
+            });
+        }
+
+        function createNestedJson(data) {
+            const root = { name: "CAR-NK Cell Line", children: [] };
+            const cellLineMap = new Map();
+
+            data.forEach(item => {
+                const cellLine = item['Cell Line'];
+                const associatedMalignancy = item['Associated Malignancy'];
+                const drug = item['Combination Antibody Drug'];
+
+                if (!cellLineMap.has(cellLine)) {
+                    const cellLineObj = { name: cellLine, children: [] };
+                    cellLineMap.set(cellLine, cellLineObj);
+                    root.children.push(cellLineObj);
+                }
+
+                const cellLineObj = cellLineMap.get(cellLine);
+                let maligObj = cellLineObj.children.find(m => m.name === associatedMalignancy);
+
+                if (!maligObj) {
+                    maligObj = { name: associatedMalignancy, children: [] };
+                    cellLineObj.children.push(maligObj);
+                }
+
+                if (drug && drug.trim()) {
+                    maligObj.children.push({ name: drug, value: 1 });
+                } else if (maligObj.children.length === 0) {
+                    maligObj.value = 1;
+                }
+            });
+
+            return root;
+        }
+
+        const csvUrl = 'carnknew.csv';
+        fetchCsvAndConvertToJson(csvUrl)
+            .then(nestedData => {
+                am5.ready(function () {
+                    var root = am5.Root.new("chartdiv");
+
+                    root.setThemes([
+                        am5themes_Animated.new(root),
+                    ]);
+
+                    // Wrapping container is "chart"
+                    var chart = root.container.children.push(am5.ZoomableContainer.new(root, {
+                        width: am5.percent(100),
+                        height: am5.percent(100),
+                        layout: root.horizontalLayout,
+                        wheelable: true,
+                        pinchZoom: true
+                    }));
+
+                    var zoomTools = chart.children.push(am5.ZoomTools.new(root, {
+                            target: chart
+                    }));    
+                    
+                    // Could use title here but using html instead.
+
+                    var series = chart.contents.children.push(am5hierarchy.ForceDirected.new(root, {
+                        singleBranchOnly: true,
+                        downDepth: 1,
+                        initialDepth: 0,
+                        valueField: "value",
+                        categoryField: "name",
+                        childDataField: "children",
+                        minRadius: 50,
+                        skipNull: true,
+                        nodePadding: 20,
+                    }));
+
+                    series.outerCircles.template.states.create("disabled", {
+                        fillOpacity: 0.5,
+                        strokeOpacity: 0,
+                        strokeDasharray: 0
+                    });
+
+                    series.outerCircles.template.states.create("hoverDisabled", {
+                        fillOpacity: 0.5,
+                        strokeOpacity: 0,
+                        strokeDasharray: 0
+                    });
+
+                    series.get("colors").set("colors", [
+                        am5.color(0xD1A67F),
+                        am5.color(0xE4A97C),
+                        am5.color(0xDA7327),
+                        am5.color(0xB4773C),
+                        am5.color(0x7C7C5B), 
+                        am5.color(0x4D8174),
+                        am5.color(0x168A99),
+                        am5.color(0x969D87),
+                        am5.color(0x479192),
+                        am5.color(0x78998B),
+                        ]);
+
+                    series.data.setAll([nestedData]);
+
+                    var legendRoot = am5.Root.new("legenddiv");
+                    var legend = legendRoot.container.children.push(am5.Legend.new(legendRoot, {
+                        layout: root.verticalLayout,
+                        y: 60
+                    }));
+
+                    // To position the legend, set margins in pixels
+                    //legend.set("marginTop", 200);   // 200 pixels from the top
+
+                    legend.data.setAll(series.dataItems[0].get("children"));
+
+                    // create breadcrumbs    
+                    var nav = legendRoot.container.children.unshift(am5hierarchy.BreadcrumbBar.new(legendRoot, {
+                        series: series,
+                        y: 400,
+                        fontSize: 8,
+                        layout: root.verticalLayout
+                    })
+                    );
+
+                    // Breadcrumb normal links
+                    nav.labels.template.setAll({
+                    fill: am5.color(0x000000)
+                    });
+
+                    // Breacrumb hover links
+                    nav.labels.template.states.create("hover", {
+                    fill: am5.color(0x0070E0)
+                    });
+        
+
+                    series.appear(1000, 100);
+    
+                    /* window.open(dataItem.get("https://www.google.com"), '_blank');
+                    // See https://stackoverflow.com/questions/68037180/add-hyperlink-to-nodes-in-amcharts-force-directed-tree
+                    // none of this code works: should make a leaf node a hyperlink. 
+                    var nodeTemplate = series.nodes.template;
+                    nodeTemplate.setEvent("hit", function(ev) {
+                    var dataItem = ev.target.dataItem;
+                    if (!dataItem.get("children")) { // Check if the node is a leaf node
+                        window.open('https://your-url.com', '_blank');
+                    }
+                    });
+                    */
+
+                    series.nodes.template.setAll({
+                        tooltipHTML: "",                    // todo: figure out how to use HTML to format tip. 
+                        tooltipText: "{name}"
+                    });
+
+
+                });
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    </script>
+
+    <div id="chartdiv"></div>
+    <div id="legenddiv"></div>
+
+
+   
+</body>
+
+</html>

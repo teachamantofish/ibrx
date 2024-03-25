@@ -15,8 +15,8 @@
             <input class="myButton" type="button" id="zoomOut" value="Zoom out" />
             <input class="myButton" type="button" id="fit" value="Fit all">
             <input class="myButton" type="button" id="swing" value="Fit 90 day trade window">
-            <input class="myButton" type="checkbox" id="hide-funding" checked="checked" /> Hide Funding
-            <input class="myButton" type="checkbox" id="hide-event" checked="checked" /> Hide Event
+            <input class="myButton" type="checkbox" id="hide-funding" checked="unchecked" /> Hide Funding
+            <input class="myButton" type="checkbox" id="hide-event" checked="unchecked" /> Hide Event
         </div>
         <div class="control-group">
             <label class="radio"><input type="radio" name="radio" value="0"/>Primary completion date</label>

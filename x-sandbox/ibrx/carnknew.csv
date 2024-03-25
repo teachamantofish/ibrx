@@ -1,0 +1,30 @@
+Cell Line,Associated Malignancy,Combination Antibody Drug
+BCMA.CAR-t-haNK,Multiple myeloma (MM),Belantamab
+BCMA.CAR-t-haNK,Multiple myeloma (MM),Teclistamab
+CD20.CAR-t-haNK,Multiple Sclerosis,Ublituximab
+CD20.CAR-t-haNK,Multiple Sclerosis,Ocrelizumab
+CD20.CAR-t-haNK,Non-Hodgkin's lymphoma (NHL),Rituximab
+CD20.CAR-t-haNK,Chronic Lymphocytic Leukemia (CLL),Rituximab
+CD20.CAR-t-haNK,Chronic Lymphocytic Leukemia (CLL),Ofatumumab
+CD30.CAR-t-haNK,Non-Hodgkin's lymphoma (NHL) ,Brentuximab
+CD33.CAR-t-haNK,Acute Myeloid Leukemia (AML) ,Gemtuzumab
+CD123.CAR-t-haNK,Acute Myeloid Leukemia (AML) ,Talacotuzumab
+B7-H4.CAR-t-haNK,Ovarian,AZD8205
+B7-H4.CAR-t-haNK,Breast,XMT-1660
+B7-H4.CAR-t-haNK,Lung,
+B7-H4.CAR-t-haNK,Endometrial,
+B7-H4.CAR-t-haNK,Gastric,
+B7-H4.CAR-t-haNK,Renal cell,
+B7-H4.CAR-t-haNK,Melanoma,
+B7-H4.CAR-t-haNK,Colorectal,
+B7-H4.CAR-t-haNK,Pancreatic,
+B7-H4.CAR-t-haNK,Prostate cancer,
+CSPG4.CAR-t-haNK,Soft Tissue Sarcomas (STS),225.28
+CSPG4.CAR-t-haNK,Melamona,SK2014-093
+FAP.CAR-t-haNK,Carcinoma,RO7122290
+FAP.CAR-t-haNK,Breast Cancer,RO7122290
+FAP.CAR-t-haNK,Solid tumors,RO7122290
+gp120.CAR-t-haNK,HIV,
+IGF1R.CAR-t-haNK,Non-small cell lung Cancer,
+IGF1R.CAR-t-haNK,Breast cancer,
+IGF1R.CAR-t-haNK,Prostate cancer,

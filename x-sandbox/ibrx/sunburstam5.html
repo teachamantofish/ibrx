@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <style>
+                #chartdiv {
+                    width: 100%;
+                    height: 900px;
+                }
+                </style>
+        <!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+</head>
+<body>
+
+
+<!-- Chart code 
+    Add this: https://www.amcharts.com/docs/v5/tutorials/toggling-multi-level-sunburst-nodes-with-legend/
+    set the font color
+    align words to middle of node
+    don't draw/fill blank leaf nodes.
+    break words at white space 
+-->
+<script>
+                am5.ready(function() {
+                
+                // Create root element
+                var root = am5.Root.new("chartdiv");
+
+                // Set themes
+                root.setThemes([
+                        am5themes_Animated.new(root)
+                ]);
+                
+                var container = root.container.children.push(
+                        am5.ZoomableContainer.new(root, {
+                                width: am5.p100,
+                                height: am5.p100,
+                                wheelable: true,
+                                pinchZoom: true
+                        })
+                );
+                
+                var zoomTools = container.children.push(am5.ZoomTools.new(root, {
+                        target: container
+                }));
+                
+                // Add title
+                var title = container.contents.children.push(am5.Label.new(root, {
+                        text: "CAR-NK \nPlatform\n(future)[/]",
+                        textAlign: "center",
+                        x: am5.p50,
+                        y: am5.p50,
+                        centerX: am5.p50,
+                        centerY: am5.p50,
+                        fontSize: 16,
+                        fontWeight: "500",
+                        fill: am5.color(0x385d63)
+                }));
+                
+                // Create series
+                var series = container.contents.children.push(am5hierarchy.Sunburst.new(root, {
+                        singleBranchOnly: true,
+                        downDepth: 2,
+                        initialDepth: 2,
+                        topDepth: 1,
+                        innerRadius:100,
+                        valueField: "value",
+                        categoryField: "name",
+                        childDataField: "children",
+  
+                }));
+                
+                series.nodes.template.setAll({
+                        tooltipText: "{category}"
+                });
+                
+                series.slices.template.setAll({
+                        templateField: "nodeSettings"
+                });
+                
+                series.labels.template.setAll({
+                        paddingLeft: 10,
+                        paddingRight: 5,
+                        paddingTop: 5,
+                        paddingBottom: 5,
+                        baseRadius: am5.p100,
+                        centerX: am5.p100,
+                        textAlign: "start",
+                        fontSize:14,
+                        fill: am5.color(0x000000),
+                });
+
+                // Function to transform data
+                function transformData(data) {
+                const root = { name: "root", children: [] };
+                const cellLines = {};
+
+                data.forEach(row => {
+                    if (!cellLines[row['Cell Line']]) {
+                    cellLines[row['Cell Line']] = { name: row['Cell Line'], children: [] };
+                    root.children.push(cellLines[row['Cell Line']]);
+                    }
+
+                    const cellLine = cellLines[row['Cell Line']];
+
+
+                    cellLine.children.push({
+                    name: row['Associated Malignancy'],
+                    children: [{ name: row['Combination Antibody Drug'], value: 1 }]
+                    });
+
+                    
+                });
+
+                return [root];
+                }
+
+                // Load data
+                am5.net.load("./carnknew.csv").then(function(result) {
+                                // This gets executed when data finishes loading
+                                var parsedData = am5.CSVParser.parse(result.response, {
+                                                delimiter: ",",
+                                                reverse: false,
+                                                skipEmpty: true,
+                                                useColumnNames: true
+                                });
+                                var transformedData = transformData(parsedData);
+                                series.data.setAll(transformedData);
+                }).catch(function(result) {
+                                // This gets executed if there was an error loading URL
+                                console.log("Error loading " + result.xhr.responseURL);
+                });
+
+                // Make stuff animate on load
+                series.appear(1000, 100);
+                
+                }); // end am5.ready()
+</script>
+        
+        <!-- HTML -->
+        <div id="chartdiv"></div>
+
+</body>
+</html>

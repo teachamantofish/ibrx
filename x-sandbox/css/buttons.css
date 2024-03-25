@@ -1,0 +1,28 @@
+/* https://www.bestcssbuttongenerator.com/#/22 */
+
+.myButton {
+	box-shadow: 2px 2px 4px 0px #979696;
+	background: #3965CC;
+	background-color:#3965CC;
+	border-radius:6px;
+	border:1px solid #29668f;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:12px;
+	padding: 2px 4px 2px 4px;
+	margin: 0 5px 0 0;
+	text-decoration:none;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	background-color:#408c99;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+.control input:checked ~ .control_indicator {
+    background: #2aa1c0;
+}
