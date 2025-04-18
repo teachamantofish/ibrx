@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+    <style>
+
+    html {
+        background: linear-gradient(135deg, #2B7594 0%, #655900 100%);
+        fixed;
+        overflow: hidden;
+        font-family: 'Orbitron', sans-serif;
+      }
+      
+      li {
+          list-style-type: none;
+      }
+      
+      .slider-box {
+        float: right;
+        margin: 10px 20px;
+        position: relative;
+        z-index: 1000;
+      }
+      
+      #range {
+        margin-top: 5px;
+        color: #eee;
+        font-size: 10pt;
+        margin-left: 10px;
+        position: relative;
+      }
+      
+      #specks {
+        position: absolute;
+        z-index: 999;
+        height: 100vh;
+        width: 100vw;
+      }
+      
+      .speck {
+        opacity: 0;
+        height: 4px;
+        width: 4px;
+        background: url('./dust/speck_zpsu9xym9zl.png');
+        background-size: cover;
+        position: absolute;
+        border-radius: 10px;
+        z-index: 99;
+      }
+      
+      .img {
+        position: absolute;
+        height: 100000px;
+        width: 100000px;
+        top: -8500px;
+        left: -8000px;
+        animation-timing-function: cubic-bezier(0.250, 0.250, 0.750, 0.750);
+        animation-name: float;
+        animation-iteration-count: infinite;
+      }
+      
+      #img-1 {
+        opacity: 0.25;
+        background: url('./dust/dust1.jpg');
+        background-repeat: repeat;
+        animation-duration: 600s;
+      }
+      
+      #img-2 {
+        opacity: 0.2;
+        background: url('./dust/dust2.jpg');
+        background-repeat: repeat;
+        animation-duration: 450s;
+      }
+      
+      #img-3 {
+        opacity: 0.15;
+        background: url('./dust/dust3.jpg');
+        background-repeat: repeat;
+        animation-duration: 350s;
+      }
+      /*ANIMATIONS*/
+      
+      @keyframes twinkle {
+        0% {
+          transform: translate(0px, 0px);
+        }
+        30% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.75;
+        }
+        70% {
+          opacity: 0;
+        }
+        100% {
+          transform: translate(175px, 100px);
+        }
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translate(0px, 0px);
+        }
+        100% {
+            transform:translate(8000px, 4000px);
+        }
+      }
+      </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <script>
+//SLIDER
+var speed = 400;
+
+$(document).ready(function(){
+  var imgCount = $('.img').length
+  $("#slider").on("change", function() {
+    for (var i = 1; i <= imgCount; i++) {
+      speed = 201 - this.value;
+      $('#range').text(`1000px / ${speed/10}s`)
+      speed = speed * (i / 1.25)
+      $('#img-' + i).css({
+        'animation-duration': speed + 's',
+        'animation-name': 'float'
+      });
+    }
+  });
+});
+                  
+var parallax = $('#scene').parallax();
+
+for (var i = 1; i < 6; i++) {
+  twinkleLoop(i);
+};
+
+function twinkleLoop(i) {
+  var duration = ((Math.random() * 5) + 3)
+
+  duration = duration - ((495 - speed)/100)
+  twinkle(i, duration)
+
+  setTimeout(function() {
+    twinkleLoop(i)
+  }, duration * 1000);
+}
+
+function twinkle(id, duration) {
+  var top = (Math.floor(Math.random() * 85) + 0) + '%';
+  var left = (Math.floor(Math.random() * 85) + 0) + '%';
+
+  $('#speck' + id).remove();
+  $('#specks').append("<div class='speck' id='speck" + id + "'></div>")
+  $('#speck' + id).css({
+    'top': top,
+    'left': left,
+    'animation-duration': duration + 's',
+    'animation-timing-function': 'cubic-bezier(0.250, 0.250, 0.750, 0.750)',
+    'animation-name': 'twinkle',
+  })
+}
+    </script>
+
+
+    <div class="slider-box">
+        <input id="slider" type="range" min="1" max="199" step="1"/>
+        <div id="range">1000px / 10.0s</div>
+      </div>
+      <ul id="scene" data-friction-x="0.03"
+        data-friction-y="0.05">
+        <li class="layer" id="specks" data-depth="0.1"></li>
+        <li class="layer" id="layer-1" data-depth="0.15">
+          <div class="img" id="img-1"></div>
+        </li>
+        <li class="layer" id="layer-2" data-depth="0.25">
+          <div class="img" id="img-2"></div>
+        </li>
+        <li class="layer" id="layer-3" data-depth="0.45">
+          <div class="img" id="img-3"></div>
+        </li>
+      </ul>
+      
+</body>
+</html>

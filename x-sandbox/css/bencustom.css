@@ -1,12 +1,97 @@
 
-body, html, input {
+body {
     font-family: "Lato", sans-serif; margin: 0;
-    background: #ccd8b5 !important;
     height:100%;
     font-size: 10pt;
     color: black;
 }
+/********************* start dust ***************************/
+html {
+  background: linear-gradient(135deg, #2B7594 0%, #655900 100%);
+}
 
+li {
+    list-style-type: none;
+}
+
+#specks {
+  position: absolute;
+  z-index: -1;
+  height: 100vh;
+  width: 100vw;
+}
+
+.speck {
+  opacity: 0;
+  height: 4px;
+  width: 4px;
+  background: url('../dust/speck_zpsu9xym9zl.png');
+  background-size: cover;
+  position: absolute;
+  border-radius: 10px;
+  z-index: -2;
+}
+
+.img {
+  position: absolute;
+  height: 100000px;
+  width: 100000px;
+  top: -8500px;
+  left: -8000px;
+  animation-timing-function: cubic-bezier(0.250, 0.250, 0.750, 0.750);
+  animation-name: float;
+  animation-iteration-count: infinite;
+}
+
+#img-1 {
+  opacity: 0.25;
+  background: url('../dust/dust1.jpg');
+  background-repeat: repeat;
+  animation-duration: 600s;
+}
+
+#img-2 {
+  opacity: 0.2;
+  background: url('../dust/dust2.jpg');
+  background-repeat: repeat;
+  animation-duration: 450s;
+}
+
+#img-3 {
+  opacity: 0.15;
+  background: url('../dust/dust3.jpg');
+  background-repeat: repeat;
+  animation-duration: 350s;
+}
+/*ANIMATIONS*/
+
+@keyframes twinkle {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  30% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    transform: translate(175px, 100px);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+      transform:translate(8000px, 4000px);
+  }
+}
+/********************* end dust ***************************/
 /********************* navbar and sidenav ***************************/
   /*https://colordesigner.io */
 .navbar {
@@ -17,6 +102,7 @@ body, html, input {
     width: 100%;
     box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2); /* Add shadow to top bar */
     z-index: 9999;
+    height:50px;
 }
 
 .navbar a {
@@ -34,7 +120,7 @@ body, html, input {
     height: 400px;
     width: 0;
     position: fixed;
-    z-index: 1;
+    z-index: 999;
     top: 60px;
     left: 0;
     background: linear-gradient(to right, #e3e3e3, #fafbf8);
@@ -76,10 +162,11 @@ body, html, input {
     font-size: 0px;
     margin-right: 4px; /* Add margin to the right of each item */
     padding: 2px; /* Add some padding to make it look like a button */
-    background-color: white; /* Change the background color to light blue */
+    background-color: white; /* 
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Add a shadow */
     transition: background-color 0.3s ease; /* Add a transition for hover effect */
     border-radius: 4px;
+    z-index: 899;
   }
   
   .mini-menu a:hover {
@@ -134,9 +221,9 @@ box-shadow: 3px 3px 10px 0px rgba(122,117,122,0.94);
 
 /********************* widget ***************************/
 .widgetcontainer {
-    background: transparent;
-    margin: 8em 1em 6em 1em;
- 
+    background: none;
+    margin: 8em 2em 6em 2em;
+
   }
 
 .widget {
@@ -144,12 +231,20 @@ box-shadow: 3px 3px 10px 0px rgba(122,117,122,0.94);
     border-radius: 10px;
     padding:.5em;
     -webkit-box-shadow: 3px 3px 10px 0px rgba(122,117,122,0.94);
-  -moz-box-shadow: 3px 3px 10px 0px rgba(122,117,122,0.94);
-  box-shadow: 3px 3px 10px 0px rgba(122,117,122,0.94);
-
-  
-
+    -moz-box-shadow: 3px 3px 10px 0px rgba(122,117,122,0.94);
+    box-shadow: 3px 3px 10px 0px rgba(122,117,122,0.94);
+    height:600px;
+    background-color:whitesmoke;
+    
 }
+
+#piediv {
+  background-color:white !important; 
+  padding-bottom:4em; 
+  height: 300px;
+}
+
+canvas {background-color: transparent;}
 /********************* end widget ***************************/
 
 /********************* start modal ***************************/

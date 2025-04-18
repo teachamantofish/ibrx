@@ -1,0 +1,109 @@
+An institution can short shares they own without borrowing shares through a strategy known as "short selling against the box." This technique involves short selling shares that the investor already owns. Historically, this was used as a way to hedge against the downside risk of a long position in the same stock; the investor holds a long position while taking an equivalent short position in the same shares, effectively neutralizing their position's market exposure.
+
+
+Most statements here re "shorts" are off the mark. These ideas that may add depth to your market knowledge: 
+
+51M shares are not shorted by retail. 
+51M shares are not shorted by a handful of institutions (there are many): Even Citadel (king of shorting) was only short 364,000 shares in March. 
+There is rarely a "they" engaged in a planned/concerted effort to manipulate the price. 
+A short may want the price to go up. 
+Shorting stock is a way to hedge a long position and stay delta neutral (likely scenario). 
+Smart money can "short against the box"; that is, short stock they own. Zero borrowing cost. 
+Shorting is cheaper than buying puts. 
+
+================= 803
+
+@WantedToRetireEarly We already know it works for existing cancers of many kinds but need to wait for more PII/III trail data. Why wouldn't it work to prevent cancers or stop non-mature cancers in people whose immune systems are not already compromised by chemo, other drugs, and a well-developed cancer already growing? All signs point to it at least providing a significant benefit in a population that is significantly more healthy than those in past and current trials. 
+
+We'll be 5+ years finding out, but if the data supports that these,  IBRX could evolve into big pharma. It will certainly blow past the 100/share mark. 
+
+
+reasons to short stock
+
+Hedging
+Institutions might short a stock as a hedge against a long position in the same stock to protect against downside risk. For instance, if an institution owns shares in a company but believes the stock may face short-term downward pressure due to market conditions or upcoming negative news, it might short the stock to offset potential losses in its long position. This strategy is known as a "paired trade" or "long/short" strategy and is common in hedge funds and other investment vehicles that seek to mitigate risk and capitalize on market inefficiencies.
+
+Speculation
+An institution might also engage in speculative strategies where it shorts a stock it owns, betting on specific outcomes that could lead to a profit from the short position, even as it maintains a long-term investment in the company. This could be part of a complex strategy based on the institution's analysis of the market or specific events that might affect the stock's price.
+
+Arbitrage
+Another reason could be to exploit arbitrage opportunities. If there are price discrepancies between different markets or related financial instruments, an institution might buy (long) the stock in one market while short selling the same stock in another market or its derivative to profit from the price difference.
+
+======= mm ============
+
+market makers can buy/sell 50k more than 
+
+Inventory Management: Market makers can and do buy and sell shares for their own accounts as part of their inventory management. Because they commit to providing liquidity, they need to manage their inventory of securities efficiently to minimize risk. This might mean buying or selling shares to adjust their positions, which could be beyond immediate market requests but is still in line with their role to maintain a smooth market.
+
+https://centerpointsecurities.com/market-makers/
+Market makers are allowed to make agency trades and principle trades so if they short an additional 50,000 shares knowing they can drive down the price to cover, it’s doable and not illegal.
+
+https://seekingalpha.com/article/4517979-what-are-market-makers
+
+Nowadays, most exchanges operate digitally and allow a variety of individuals and institutions to make markets in a given stock. This fosters competition, with a large number of market makers all posting bids and asks on a given security. This creates significant liquidity and market depth, which benefits retail traders and institutions alike.
+
+In return for providing this service, market makers earn a profit in two ways.
+
+    From harvesting the spread between the bid and ask: While this spread is typically just pennies per share, this profit can add up on a stock trading hundreds of thousands or even millions of shares a day.
+    From buying or selling when there are significant market imbalances and then selling off that inventory later when conditions settle down
+
+
+============
+
+
+
+https://sheets.googleapis.com/v4/spreadsheets/1ZhgPgVwcgnBc5cN3lYEupwDCFNSHpcI6-RUwQdWKN60/values/Trials!A1:D?key=YOUR_API_KEY
+
+
+I trade options and don't see a point to looking beyond available LEAPs. I do think there are lots of catalysts in 2024 that are not HIV-dependent: 
+
+* Big name NIMBC partner
+* Good news on any of 12 trials
+* Real progress on Dunkirk
+* Additional N-803 fast track/breakthrough designation for other indications since it already has it for NIMBC
+* Revenue trajectory becoming clear by the fall (when and how much)
+* Any indication of off-label use in the news
+* etc. 
+
+You might consider not selling your stock on a price surge but rather selling calls. Example: price goes to 8, so sell 7.50 calls for 1.00. You net 8.50 if the price keeps going up and keep the buck if it goes down. You can roll the call for more credit and prevent assignment. 
+
+GL
+
+
+You don't have to let them exercise. 
+
+* Roll them out and/or up
+* Close them at a profit as theta eats away values/Trials
+* Buy a wrapping 5/7.5 spread so the 5.5 is offset by the 5 (you can do that for .85 which is .15 less than the current price. 
+* Sell a 7.5/5.5 put spread for 1.45 in which case the price has fall to 4.05 before you lose money
+
+And there are other choices. 
+
+
+==========
+
+
+I don't think you can do the math that way. 
+
+First, MM use the delta of the OI to determine the number of shares they need to buy/sell to stay delta neutral (not calls -puts). 
+
+Second, we don't know 1) their inventory 2) if they are weighting near term vs far out expiry's the same (probably not, but that's a black box for us) 3) if they're holding options as a hedge against this explosive binary event (I think probably)
+
+Third, it is not possible to know how many shorted shares are hedges against long positions. Could be most of them for all we know. 
+
+Fourth, you'd have to dive deep into every filed 13f to get data  on short positions, but that wouldn't include small tutes and it may be that shorting shares you already own does not have to be reported.
+
+So, IMO, there's no way to make an educated guess as to un-hedged short interest. 
+
+I prefer to be wrong since that information would be very valuable, so please continue with your view here. 
+
+They don't have to do anything. Smart money that's shorted their own shares could simply take profits with the shares the own and then close the shorts as the price sells off and make money in both directions. Or they could hang on to their shares until the inevitable post news price decline. Or they could buy calls as a hedge against their shorts and do something else. Or they could just be stupid and defy your logica, or <insert many options here>. . . . 
+
+The simplistic market views offered on ST seem logical, but the market is complex and sometimes irrational. Look at last year. After the CRL and the price collapse, the logical thing for shorts to do would be to take the profit and close positions. And yet the 30M short positions only dropped by 8M. Is that logical?
+
+So if you are not a trader, ignore the theories and just hold.
+
+If you are a trader, ignore the theories and watch the price every day. 
+
+=========
+https://patents.justia.com/patent/20240132844
