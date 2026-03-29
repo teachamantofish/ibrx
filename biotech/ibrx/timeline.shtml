@@ -23,7 +23,7 @@
             <label class="radio"><input type="radio" name="radio" value="1" checked="checked"/>Phase</label>
             <label class="radio"><input type="radio" name="radio" value="2"/>IBRX drug</label>
             <label class="radio"><input type="radio" name="radio" value="3"/>Study sponsor</label>
-            <label class="radio"><input type="radio" name="radio" value="5"/>FDA designation</label>
+            <label class="radio"><input type="radio" name="radio" value="5"/>FDA events</label>
         </div>
 
         <p style="text-align: right; margin: 0;"><strong>Note: Click on the chart and scroll for continuous zoom</strong></p>

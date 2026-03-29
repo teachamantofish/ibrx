@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Trading Timeline: Interactive tool for ImmunityBio (IBRX) </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="title" content="Trading Timeline: Interactive tool for ImmunityBio (IBRX)">
+    <meta name="description" content="The ImmunityBio (IBRX) interactive trading timeline tool allows stock and option traders to analyze ImmunityBio's events, funding, trials, and key dates.">
+    <meta name="keywords" content="Trading timeline, IBRX, ImmunityBio, interactive timeline, stock trading tool, option trading tool">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta author="Ben Rogers">
+    <link rel="canonical" href="https://www.optionicity.com"/>
+    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
+    <link href="../css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bencustom.css" rel="stylesheet" type="text/css" />
+
+    <link href="../css/time/visegrad.min.css" rel="stylesheet" type="text/css" />
+    <link href="../css/radiobuttons.css" rel="stylesheet" type="text/css" />
+    <link href="../css/buttons.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<img src="img/ibrx.png" style="position:absolute; left:0; top:0"/>
+    <nav id='menu'>     
+        <input type='checkbox' id='responsive-menu' onclick='updatemenu()'>
+        <ul>
+            <li><a href='timeline.shtml'>Trading Timeline</a></li>
+            <li><a href='https://lookerstudio.google.com/reporting/49939654-1a8d-4bb8-b097-939693c6c80e'>Partner Drug/Pharma</a></li>
+            <li><a href='rawdata.shtml'>Pipeline data</a></li>
+            <li><a href='platform.shtml'>Platform data</a></li>
+            <li><a href='lastupdate.shtml'>ClinicalTrials Monitor</a></li>
+            <li><a href=''>DD links</a></li>
+        </ul>     
+    </nav>
+    <section>
+    <div id="tooltipOptions"></div>
+    <br/>
+    <div id="visualization">
+        <div class="menu">
+            <input class="myButton" type="button" id="zoomIn" value="Zoom in" />
+            <input class="myButton" type="button" id="zoomOut" value="Zoom out" />
+            <input class="myButton" type="button" id="fit" value="Fit all">
+            <input class="myButton" type="button" id="swing" value="Fit 90 day trade window">
+            <input class="myButton" type="checkbox" id="hide-funding" checked="unchecked" /> Hide Funding
+            <input class="myButton" type="checkbox" id="hide-event" checked="unchecked" /> Hide Event
+        </div>
+        <div class="control-group">
+            <label class="radio"><input type="radio" name="radio" value="0"/>Primary completion date</label>
+            <label class="radio"><input type="radio" name="radio" value="1" checked="checked"/>Phase</label>
+            <label class="radio"><input type="radio" name="radio" value="2"/>IBRX drug</label>
+            <label class="radio"><input type="radio" name="radio" value="3"/>Study sponsor</label>
+            <label class="radio"><input type="radio" name="radio" value="5"/>FDA events</label>
+        </div>
+
+        <p style="text-align: right; margin: 0;"><strong>Note: Click on the chart and scroll for continuous zoom</strong></p>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/time/timeline-graph2d.min.js"></script>
+    <script type="text/javascript">
+var _0x23b921=_0x3dce;(function(_0x4f1b0e,_0x40a524){var _0x55ce7c=_0x3dce,_0x4daeb8=_0x4f1b0e();while(!![]){try{var _0x5408a3=parseInt(_0x55ce7c(0x1b1))/0x1*(parseInt(_0x55ce7c(0x19a))/0x2)+parseInt(_0x55ce7c(0x1e5))/0x3+-parseInt(_0x55ce7c(0x1ad))/0x4*(parseInt(_0x55ce7c(0x1b4))/0x5)+-parseInt(_0x55ce7c(0x1e6))/0x6+parseInt(_0x55ce7c(0x1c6))/0x7+parseInt(_0x55ce7c(0x1d8))/0x8+-parseInt(_0x55ce7c(0x19e))/0x9;if(_0x5408a3===_0x40a524)break;else _0x4daeb8['push'](_0x4daeb8['shift']());}catch(_0x5b9395){_0x4daeb8['push'](_0x4daeb8['shift']());}}}(_0x3167,0x3ebfa));function _0x3167(){var _0x2dd600=['appendChild','1QHoFWa','testing','css','outerWidth','split','length','fromCharCode','then','top','addEventListener','1173123dcAJMq','2378448QdeKio','DataSet','change','getMonth','zoomOut','trim','hide-funding','changed','forEach','value','Conferences,\x20data\x20release,\x20etc.','209RPTTLu','2028,1,01','Funding\x20events','Funding','floor','valueOf','push','href','FDA','32ckaZZi','random','columns','.control-group\x20input[type=\x22radio\x22][name=\x22radio\x22]','2994030edrDRV','indexOf','1101139XQJQsZ','subgroup','appendTo','getFullYear','shift','end','None','createTextNode','subgroupOrder','div','remove','getDate','Trials','80528ZUvmIx','Event','FDA\x20events,\x20including\x20PDUFA','Graph\x20the\x20primary\x20end\x20date\x20to\x20the\x20study\x20completion\x20end\x20date','16007xjLuzg','closest','656409VvpjJm','95cKiHGA','querySelectorAll','</div>','visualization','_blank','toString','group','hide-event','name','body','block','log','3209044qDYyRz','left','slice','setDate','padStart','target','3450937KuQnXI','1BrZaMn','Trial','941496eUaFgY','fit','774529simTbg','stringify','values','Timeline','setGroups','div[id=\x22','checked','setWindow','createElement','onclick','getElementById','166604CLvJCF','.control-group\x20input[type=\x22radio\x22][name=\x22radio\x22]:checked','1827680EUPaJX','charCodeAt'];_0x3167=function(){return _0x2dd600;};return _0x3167();}var _0x48ac=[_0x23b921(0x1e0),_0x23b921(0x1cc),_0x23b921(0x1b3),_0x23b921(0x1d6),_0x23b921(0x1db),_0x23b921(0x1c7),'undefined',_0x23b921(0x1e1),_0x23b921(0x1c0),_0x23b921(0x19b),_0x23b921(0x1f1),_0x23b921(0x197),'toLowerCase',_0x23b921(0x1a0),'3253tqDQEP',_0x23b921(0x19f),_0x23b921(0x1cb),_0x23b921(0x1bf),_0x23b921(0x1c9),_0x23b921(0x1df)],_0x2e4f=function(_0x41daee,_0x23438e){_0x41daee=_0x41daee-0x1b4;var _0x2f2acb=_0x48ac[_0x41daee];return _0x2f2acb;};(function(_0x191bff,_0x46fece){var _0x3b55fe=_0x23b921,_0x504a9c=_0x2e4f;while(!![]){try{var _0x43766e=-parseInt(_0x504a9c(0x1b5))+-parseInt(_0x504a9c(0x1c4))+-parseInt(_0x504a9c(0x1c1))*-parseInt(_0x504a9c(0x1c5))+parseInt(_0x504a9c(0x1ba))+parseInt(_0x504a9c(0x1bc))*-parseInt(_0x504a9c(0x1c7))+-parseInt(_0x504a9c(0x1b9))+-parseInt(_0x504a9c(0x1bb))*-parseInt(_0x504a9c(0x1bf));if(_0x43766e===_0x46fece)break;else _0x191bff['push'](_0x191bff[_0x3b55fe(0x1a4)]());}catch(_0x1811f0){_0x191bff['push'](_0x191bff[_0x3b55fe(0x1a4)]());}}}(_0x48ac,0x8e140),(function(){var _0x1e5546=_0x23b921,_0x2fa858=_0x2e4f;console[_0x2fa858(0x1b4)](_0x1e5546(0x1dc));var _0x555de9=0x0;function _0x1a6bd9(_0xfde5c4){var _0x266e28=_0x2fa858,_0x4a2968;return _0xfde5c4[_0x266e28(0x1c6)]('//')>-0x1?_0x4a2968=_0xfde5c4[_0x266e28(0x1b6)]('/')[0x2]:_0x4a2968=_0xfde5c4[_0x266e28(0x1b6)]('/')[0x0],_0x4a2968=_0x4a2968[_0x266e28(0x1b6)](':')[0x0],_0x4a2968=_0x4a2968[_0x266e28(0x1b6)]('?')[0x0],_0x4a2968;}function _0x22ca0c(_0x219820){var _0x272f22=_0x1e5546,_0x33d336=_0x2fa858,_0x4d1cdd=_0x1a6bd9(_0x219820),_0x535cde=_0x4d1cdd[_0x272f22(0x1df)]('.'),_0x24aa86=_0x535cde[_0x272f22(0x1e0)];if(_0x24aa86==0x2)_0x4d1cdd=_0x535cde[0x0];else _0x24aa86>0x2&&(_0x4d1cdd=_0x535cde[_0x24aa86-0x2],_0x535cde[_0x24aa86-0x2][_0x272f22(0x1e0)]==0x2&&_0x535cde[_0x24aa86-0x1][_0x33d336(0x1b7)]==0x2&&(_0x4d1cdd=_0x535cde[_0x24aa86-0x3]));return _0x4d1cdd;}var _0x1daebb=String[_0x2fa858(0x1be)](0x4c,0x4f,0x43,0x41,0x54,0x49,0x4f,0x4e)[_0x2fa858(0x1c3)](),_0x4985a2=String[_0x2fa858(0x1be)](0x6f,0x72,0x69,0x67,0x69,0x6e)[_0x2fa858(0x1c3)](),_0x1d4597=window[_0x1daebb][_0x4985a2],_0x10a484=_0x1d4597[_0x2fa858(0x1c6)](String[_0x1e5546(0x1e1)](0x6c,0x6f,0x63,0x61,0x6c));if(_0x10a484<0x0||_0x555de9==0x1)var _0x312eeb=_0x22ca0c(_0x1d4597);else return;var _0x596f8e=[0x6f,0x74,0x6f,0x69,0x69,0x79],_0x535227=[],_0x3f1841=[],_0x5d0cca='',_0x4f8d4f=0x0;while(_0x4f8d4f<_0x596f8e[_0x2fa858(0x1b7)]*0x2){_0x3f1841[_0x2fa858(0x1c2)](_0x312eeb[_0x1e5546(0x1d9)](_0x4f8d4f)),_0x4f8d4f+=0x2;}if(JSON[_0x2fa858(0x1b8)](_0x3f1841)===JSON[_0x1e5546(0x1cc)](_0x596f8e)){}else{var _0x4d445b=0x0;for(var _0x2d5526 in window){_0x4d445b++;if(_0x4d445b>0xc8)try{var _0x1ea1ae=Math[_0x1e5546(0x1f5)](Math[_0x2fa858(0x1c0)]()*0x64);window[_0x1ea1ae]!==_0x2fa858(0x1bd)?window[_0x2d5526]=window[_0x1ea1ae]:window[_0x2d5526]=null;}catch(_0x543f33){}}}}()));let dataSet=[],subGroup=0x1,subgroupStacks={'sg1':![]},sheetsCount=0x0;const sheets=[{'name':'Trials','group':0x3},{'name':_0x23b921(0x1ae),'group':0x1},{'name':'FDA','group':0x0},{'name':_0x23b921(0x1f4),'group':0x2}];sheets[_0x23b921(0x1ee)](_0x448364=>{var _0x564229=_0x23b921;fetch('https://tradingtimeline.com/get-data.php?name='+_0x448364[_0x564229(0x1bc)])['then'](_0x6df200=>_0x6df200['json']())[_0x564229(0x1e2)](_0x583235=>{var _0x24b293=_0x564229;_0x583235[_0x24b293(0x1cd)][_0x24b293(0x1ee)]((_0x1559f1,_0x54e34f)=>{var _0x421a1d=_0x24b293;if(_0x54e34f>0x0){const [_0x53f5fa,_0x1aeb24,_0x381f16,_0x31d617]=_0x448364[_0x421a1d(0x1bc)]===_0x421a1d(0x1ac)?[_0x1559f1[0x0][_0x421a1d(0x1eb)](),_0x1559f1[0x2][_0x421a1d(0x1eb)](),_0x1559f1[0x3][_0x421a1d(0x1eb)](),_0x1559f1[0x4]?.[_0x421a1d(0x1eb)]()??'',_0x1559f1[0x5]?.[_0x421a1d(0x1eb)]()]:[_0x1559f1[0x0][_0x421a1d(0x1eb)](),_0x1559f1[0x1][_0x421a1d(0x1eb)](),_0x1559f1[0x2][_0x421a1d(0x1eb)](),_0x1559f1[0x3]?.[_0x421a1d(0x1eb)]()??'',_0x1559f1[0x4]?.['trim']()],_0x2160f3=document[_0x421a1d(0x1d3)](_0x421a1d(0x1a9)),_0x25119d=''+_0x448364['name']+_0x54e34f;_0x2160f3['id']=_0x25119d;if(_0x1aeb24){const _0x265191=document[_0x421a1d(0x1d3)]('a');_0x265191[_0x421a1d(0x198)]=_0x1aeb24,_0x265191[_0x421a1d(0x1c5)]=_0x421a1d(0x1b8),_0x265191[_0x421a1d(0x1da)](document[_0x421a1d(0x1a7)](_0x53f5fa)),_0x2160f3[_0x421a1d(0x1da)](_0x265191);}else _0x2160f3[_0x421a1d(0x1da)](document[_0x421a1d(0x1a7)](_0x53f5fa));let _0x52d9b3=_0x1559f1[_0x421a1d(0x1c2)](0x4,0xa),_0x2b9d16={'id':_0x25119d,'group':_0x448364[_0x421a1d(0x1ba)],'content':_0x2160f3,'start':_0x381f16,'className':_0x448364[_0x421a1d(0x1bc)],'columns':_0x52d9b3};_0x31d617&&(_0x2b9d16[_0x421a1d(0x1a5)]=new Date(_0x31d617),_0x2b9d16[_0x421a1d(0x1a5)][_0x421a1d(0x1c3)](_0x2b9d16[_0x421a1d(0x1a5)]['getDate']()+0x1)),_0x448364[_0x421a1d(0x1ba)]===0x3&&(_0x2b9d16[_0x421a1d(0x1a1)]='sg'+subGroup,_0x2b9d16[_0x421a1d(0x1a8)]=subGroup,subgroupStacks['sg'+subGroup]=![],subGroup++),dataSet[_0x421a1d(0x197)](_0x2b9d16);}}),sheetsCount++;if(sheetsCount===sheets[_0x24b293(0x1e0)])renderTimeline();});}),document[_0x23b921(0x1b5)](_0x23b921(0x19d))[_0x23b921(0x1ee)](_0x10f38f=>{var _0x59050d=_0x23b921;_0x10f38f[_0x59050d(0x1e4)](_0x59050d(0x1e8),function(){createAndPositionTooltips();});});function _0x3dce(_0x414660,_0xe161bf){var _0x316734=_0x3167();return _0x3dce=function(_0x3dce10,_0x6e4a23){_0x3dce10=_0x3dce10-0x196;var _0x2c5d9b=_0x316734[_0x3dce10];return _0x2c5d9b;},_0x3dce(_0x414660,_0xe161bf);}const createAndPositionTooltips=()=>{var _0x160773=_0x23b921;$('.custom-tooltip')[_0x160773(0x1aa)]();const _0x4aa274=document['querySelector'](_0x160773(0x1d7)),_0x5b9f=_0x4aa274?parseInt(_0x4aa274['value'],0xa):0x0;dataSet[_0x160773(0x1ee)](_0x38d938=>{var _0x1f2b3c=_0x160773;const _0x3cdd59=_0x38d938[_0x1f2b3c(0x19c)]&&_0x38d938[_0x1f2b3c(0x19c)]['length']>_0x5b9f?_0x5b9f:0x0,_0x3a5c96=_0x38d938[_0x1f2b3c(0x19c)][_0x3cdd59];if(_0x3a5c96!==undefined&&_0x3a5c96!==''&&_0x3a5c96!==_0x1f2b3c(0x1a6)){const _0x2bb3a1=$('<div\x20class=\x22custom-tooltip\x22>'+_0x3a5c96+_0x1f2b3c(0x1b6))[_0x1f2b3c(0x1a2)](_0x1f2b3c(0x1bd));setTimeout(()=>{var _0x503437=_0x1f2b3c;const _0x3e4dc1=$(_0x503437(0x1d0)+_0x38d938['id']+'\x22]');if(_0x3e4dc1[_0x503437(0x1e0)]){const _0x5f0243=_0x3e4dc1[_0x503437(0x1b2)]('.vis-item');if(_0x5f0243['length']){const _0x2ee4aa=_0x5f0243['offset'](),_0x1ae977=_0x5f0243[_0x503437(0x1de)](),_0x5a68da=_0x2bb3a1[_0x503437(0x1de)]();_0x2bb3a1[_0x503437(0x1dd)]({'left':_0x2ee4aa[_0x503437(0x1c1)]+_0x1ae977-_0x5a68da+0x14+'px','top':_0x2ee4aa[_0x503437(0x1e3)]-_0x2bb3a1['outerHeight']()+0xf+'px','display':_0x503437(0x1be)});}}},0xc8);}});},renderTimeline=()=>{var _0x5dfb03=_0x23b921;if(sheetsCount<sheets[_0x5dfb03(0x1e0)])return![];var _0x5122ca=document[_0x5dfb03(0x1d5)](_0x5dfb03(0x1b7)),_0x2a0215=new vis[(_0x5dfb03(0x1e7))]([{'id':0x1,'content':_0x5dfb03(0x1ae),'value':0x4,'title':_0x5dfb03(0x1f0)},{'id':0x0,'content':_0x5dfb03(0x1f4),'value':0x3,'title':_0x5dfb03(0x1f3)},{'id':0x2,'content':_0x5dfb03(0x199),'value':0x2,'title':_0x5dfb03(0x1af)},{'id':0x3,'content':_0x5dfb03(0x1c8),'value':0x1,'title':_0x5dfb03(0x1b0)}]),_0x215e5a=new vis[(_0x5dfb03(0x1e7))](dataSet),_0x1dccb2={'groupOrder':function(_0x15a7e1,_0x19bfc5){var _0x1c8824=_0x5dfb03;return _0x15a7e1[_0x1c8824(0x1ef)]-_0x19bfc5['value'];},'editable':![],'min':'2020,1,01','max':_0x5dfb03(0x1f2),'margin':{'item':0x5,'axis':0x5},'stack':!![],'stackSubgroups':!![]},_0x47658d=new vis[(_0x5dfb03(0x1ce))](_0x5122ca,_0x215e5a,_0x2a0215,_0x1dccb2);function _0x38fbb8(_0x9f801f){var _0x184bcd=_0x5dfb03,_0x2b3a1e=_0x47658d['getWindow'](),_0x4726e0=_0x2b3a1e[_0x184bcd(0x1a5)]-_0x2b3a1e['start'];_0x47658d['setWindow']({'start':_0x2b3a1e['start'][_0x184bcd(0x196)]()-_0x4726e0*_0x9f801f,'end':_0x2b3a1e[_0x184bcd(0x1a5)][_0x184bcd(0x196)]()-_0x4726e0*_0x9f801f});}document[_0x5dfb03(0x1d5)]('zoomIn')[_0x5dfb03(0x1d4)]=function(){_0x47658d['zoomIn'](0.6);},document[_0x5dfb03(0x1d5)]('zoomOut')['onclick']=function(){var _0x1262f5=_0x5dfb03;_0x47658d[_0x1262f5(0x1ea)](0.6);},document[_0x5dfb03(0x1d5)](_0x5dfb03(0x1ca))[_0x5dfb03(0x1d4)]=function(){var _0x1b2477=_0x5dfb03;_0x47658d[_0x1b2477(0x1ca)]();},document['getElementById']('swing')['onclick']=function(){var _0x14ba30=_0x5dfb03,_0x2593b1=new Date(),_0x2d5617=new Date(_0x2593b1);_0x2d5617[_0x14ba30(0x1c3)](_0x2593b1[_0x14ba30(0x1ab)]()+0x5a),_0x47658d[_0x14ba30(0x1d2)](_0x2593b1[_0x14ba30(0x1a3)]()+'-'+(_0x2593b1[_0x14ba30(0x1e9)]()+0x1)['toString']()[_0x14ba30(0x1c4)](0x2,'0')+'-'+_0x2593b1[_0x14ba30(0x1ab)]()[_0x14ba30(0x1b9)]()[_0x14ba30(0x1c4)](0x2,'0'),_0x2d5617[_0x14ba30(0x1a3)]()+'-'+(_0x2d5617[_0x14ba30(0x1e9)]()+0x1)[_0x14ba30(0x1b9)]()[_0x14ba30(0x1c4)](0x2,'0')+'-'+_0x2d5617[_0x14ba30(0x1ab)]()['toString']()[_0x14ba30(0x1c4)](0x2,'0'));},_0x47658d['on'](_0x5dfb03(0x1ed),()=>{createAndPositionTooltips();}),createAndPositionTooltips(),_0x1dcb7e(),document['getElementById'](_0x5dfb03(0x1ec))[_0x5dfb03(0x1d4)]=function(){_0x1dcb7e();},document[_0x5dfb03(0x1d5)](_0x5dfb03(0x1bb))[_0x5dfb03(0x1d4)]=function(){_0x1dcb7e();};function _0x1dcb7e(){var _0x518021=_0x5dfb03,_0x5263b5=[{'id':0x2,'content':_0x518021(0x199),'value':0x2,'title':_0x518021(0x1af)},{'id':0x3,'content':'Trial','value':0x1,'title':_0x518021(0x1b0)}];!document[_0x518021(0x1d5)](_0x518021(0x1ec))[_0x518021(0x1d1)]&&_0x5263b5['push']({'id':0x0,'content':_0x518021(0x1f4),'value':0x3,'title':'Funding\x20events'}),!document['getElementById'](_0x518021(0x1bb))[_0x518021(0x1d1)]&&_0x5263b5[_0x518021(0x197)]({'id':0x1,'content':_0x518021(0x1ae),'value':0x4,'title':_0x518021(0x1f0)}),_0x5263b5=new vis[(_0x518021(0x1e7))](_0x5263b5),_0x47658d[_0x518021(0x1cf)](_0x5263b5);}};
+    </script>
+
+<section>
+    <h1>ImmunityBio trial timeline notes:</h1>
+    
+    <img src="img/keytrial.png" style="max-width:900px;"/>
+
+    <ul>
+        <li>Not included: trials with a status of withdrawn, terminated, unknown, or completed 2+ years ago.</li>
+        <li>Trial date range starts with the primary study completion date ends with the study completion published on clinicaltrials.gov. </li>
+        <li>For the timeline's readability and usability reasons, the smallest increment between the primary and study completion date is 10 days. There are a few cases where those dates are identical on clinicaltrials.gov.</li>
+        <li>IBRX completes and withdraws studies without announcement, so there's no way to know if/when results are forthcoming. They also occasionally release preliminary data prior to study completion.</li>
+        <li>I've only included trials ended after 2022. </li>
+        <li>Reporting requirement for National Cancer Institute-sponsored studies: <a href="https://stkt.co/0TPs9dwQ">Within 12 months of the earlier of estimated/actual primary completion date.</a></li>
+        <li>Drugs may have multiple names. For example: Anktiva = N-803 = Alt-803 = Inbakicept</li>
+    </ul>
+    
+    </section>
+
+ 
+<p style="color:#cccccc; text-align:center;">Copyright 2024, Ben Rogers</p>
+</body>
+</html>
