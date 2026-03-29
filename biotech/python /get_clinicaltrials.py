@@ -80,7 +80,7 @@ IBRX_DRUG_EXACT_MAP = {
 }
 
 
-# Exact partner drug mappings (no case conversion).
+# Exact partner drug mappings (lowercase keys normalize source values before output).
 PARTNER_DRUG_EXACT_MAP = {
 	"suspension for infusion": "",
 	"bcg": "BCG",
@@ -88,7 +88,74 @@ PARTNER_DRUG_EXACT_MAP = {
 	"10-1074": "10-1074",
 	"etbx-071": "ETBX-071",
 	"pembrolizumab": "Pembrolizumab/Keytruda",
+	"pembrolizumab/keytruda": "Pembrolizumab/Keytruda",
 	"rituximab": "Rituximab",
+}
+
+
+PARTNER_PHARMA_EXACT_MAP = {
+	"M7824": "Merck KGaA / GSK et al.",
+	"TriAd vaccine": "Bavarian Nordic / NCI et al.",
+	"Bintrafusp alfa": "Merck KGaA / GSK et al.",
+	"BN-Brachyury": "Bavarian Nordic / NCI et al.",
+	"Pembrolizumab/Keytruda": "Merck & Co. (MSD)",
+	"Cyclophosphamide": "generic (multiple manufacturers)",
+	"Fludarabine": "generic (multiple manufacturers)",
+	"Rituximab": "Genentech / Biogen et al.",
+	"Retifanlimab": "Incyte / MacroGenics et al.",
+	"Therapeutic CEA": "NCI (investigational)",
+	"Brachyury": "NCI / Bavarian Nordic et al.",
+	"MUC1 TriAdeno Vaccine Platform": "NCI / Bavarian Nordic et al.",
+	"SX-682": "Syntrix Biosystems",
+	"Nab-paclitaxel": "Abraxis BioScience (now Celgene/BMS)",
+	"Gemcitabine": "generic (multiple manufacturers)",
+	"5-Fluorouracil": "generic (multiple manufacturers)",
+	"Leucovorin": "generic (multiple manufacturers)",
+	"Irinotecan liposome": "Ipsen (Onivyde)",
+	"BCG": "Merck / Sanofi et al.",
+	"Enfortumab Vedotin": "Astellas / Pfizer (Seagen) et al.",
+	"Avelumab": "EMD Serono / Merck KGaA et al.",
+	"Ramucirumab": "Eli Lilly (Cyramza)",
+	"Atezolizumab": "Genentech / Roche",
+	"Cetuximab": "Eli Lilly / Bristol-Myers Squibb et al.",
+	"HCW9218": "HCW Biologics",
+	"Temozolomide": "generic (multiple manufacturers)",
+	"Irinotecan": "generic (multiple manufacturers)",
+	"hu14.18K322A": "St. Jude Children's Research Hospital / Renaissance Pharma et al.",
+	"Sargramostim": "Partner Therapeutics (Leukine; originally Immunex)",
+	"Bevacizumab": "Genentech / Roche (Avastin)",
+	"Tumor Treating Fields": "Novocure",
+	"Montanide ISA-51 VG Adjuvant": "Seppic",
+	"ETBX-071": "Etubics / ImmunityBio et al.",
+	"Tislelizumab": "BeiGene",
+	"Docetaxel": "generic (multiple manufacturers)",
+	"Sacituzumab Govitecan-Hziy": "Gilead Sciences (formerly Immunomedics)",
+	"Cobalamin": "generic (supplement/drug)",
+	"Dexamethasone": "generic (multiple manufacturers)",
+	"Folic Acid": "generic (supplement/drug)",
+	"Pemetrexed": "Eli Lilly (Alimta)",
+	"VRC07-523LS": "NIAID / NIH",
+	"PGDM1400LS": "IAVI / NIH et al.",
+	"Ad26.Mos4.HIV": "Janssen (Johnson & Johnson)",
+	"MVA-BN-HIV": "Bavarian Nordic / NCI et al.",
+	"A244d11 gp120": "Walter Reed Army Institute of Research / Duke University et al.",
+	"ALFQ": "Walter Reed Army Institute of Research (WRAIR)",
+	"Intravesical Recombinant Mycobacterium": "ImmunityBio",
+	"Adenovirus 5 CEA/MUC1/Brachyury Vaccine Tri-Ad5": "NCI / Etubics et al.",
+	"3BNC117-LS": "Rockefeller University / Gilead et al.",
+	"10-1074-LS": "Rockefeller University / Gilead et al.",
+	"AdHER2DC vaccine": "NCI (proprietary agent)",
+	"Lenvatinib": "Eisai / Merck et al.",
+	"Sotevtamab": "Alethia BioTherapeutics",
+	"Zabadinostat": "Ingenox Therapeutics (formerly Celleron / AstraZeneca)",
+	"Nab paclitaxel / gemcitabine": "generic combination",
+	"10-1074": "Rockefeller University / Gilead et al.",
+	"CV301": "Bavarian Nordic / NCI et al.",
+	"MSB0011359C": "EMD Serono / Merck KGaA et al.",
+	"NHS-IL12": "EMD Serono / NCI et al.",
+	"Ipilimumab": "Bristol-Myers Squibb (Yervoy)",
+	"Nivolumab": "Bristol-Myers Squibb (Opdivo)",
+	"CIML NK cell Infusion": "Dana-Farber Cancer Institute / NCI et al.",
 }
 
 
@@ -162,7 +229,7 @@ def canonicalize_partner_drugs(value: str) -> str:
 		if not candidate:
 			continue
 
-		mapped = PARTNER_DRUG_EXACT_MAP.get(candidate)
+		mapped = PARTNER_DRUG_EXACT_MAP.get(candidate.lower())
 		if mapped is not None:
 			if mapped:
 				parts.append(mapped)
@@ -171,6 +238,28 @@ def canonicalize_partner_drugs(value: str) -> str:
 
 	parts = unique_preserve_order(parts)
 	return "; ".join(parts) if parts else "None"
+
+
+def populate_pharma_partners(co_treatments: str, existing_partners: str) -> str:
+	partners: list[str] = []
+
+	if existing_partners and existing_partners != "None":
+		for part in existing_partners.split(";"):
+			candidate = normalize_text(part)
+			if candidate:
+				partners.append(candidate)
+
+	if co_treatments and co_treatments != "None":
+		for part in co_treatments.split(";"):
+			candidate = normalize_text(part)
+			if not candidate:
+				continue
+			mapped = PARTNER_PHARMA_EXACT_MAP.get(candidate)
+			if mapped:
+				partners.append(mapped)
+
+	partners = unique_preserve_order(partners)
+	return "; ".join(partners) if partners else "None"
 
 
 def canonicalize_org_name(value: str) -> str:
@@ -476,6 +565,8 @@ def map_study_to_row(study: dict[str, Any]) -> dict[str, str]:
 	partner_pharma = "; ".join(
 		canonicalize_org_name(str(c.get("name", ""))) for c in collaborators if str(c.get("name", "")).strip()
 	)
+	partner_drugs = canonicalize_partner_drugs(partner_drugs)
+	partner_pharma = populate_pharma_partners(partner_drugs, partner_pharma)
 
 	row = {
 		"Indication": canonicalize_indication(indication),
@@ -487,7 +578,7 @@ def map_study_to_row(study: dict[str, Any]) -> dict[str, str]:
 		),
 		"Phase": phase,
 		"IBRX drug": canonicalize_ibrx_drug(ibrx_drug),
-		"Co-treatments": canonicalize_partner_drugs(partner_drugs),
+		"Co-treatments": partner_drugs,
 		"Sponsor": canonicalize_org_name(str(sponsors_mod.get("leadSponsor", {}).get("name", ""))),
 		"Platform": PLATFORM_VALUE,
 		"Partnered pharma": partner_pharma,
