@@ -60,6 +60,38 @@ CSV_HEADERS = [
 ]
 
 
+# Exact IBRX drug mappings (lowercase keys remove both upper and lower values)
+IBRX_DRUG_EXACT_MAP = {
+	"n-803": "Anktiva",
+	"n803": "Anktiva",
+	"interleukin-15 superagonist": "Anktiva",
+	"nogapendekin alfa inbakicept": "Anktiva",
+	"nogapendekin alfa-inbakicept": "Anktiva",
+	"nogapendekin alfa": "Anktiva",
+	"cd19 t-hank": "CD19 T-haNK",
+	"cd19 t-hank- iv administration": "CD19 T-haNK",
+	"cd19t-hank suspension": "CD19 T-haNK",
+	"agent-797": "iNKT/AgenT-797",
+	"inkt": "iNKT/AgenT-797",
+	"allogeneic invariant natural killer t cells": "iNKT/AgenT-797",
+	"m-cenk": "M-CENK",
+	"suspension for infusion": "",
+	"cryopreserved": "",
+}
+
+
+# Exact partner drug mappings (no case conversion).
+PARTNER_DRUG_EXACT_MAP = {
+	"suspension for infusion": "",
+	"bcg": "BCG",
+	"bacillus calmette-guerin": "BCG",
+	"10-1074": "10-1074",
+	"etbx-071": "ETBX-071",
+	"pembrolizumab": "Pembrolizumab/Keytruda",
+	"rituximab": "Rituximab",
+}
+
+
 def normalize_text(value: str) -> str:
 	cleaned = value.replace("™", "")
 	cleaned = re.sub(r"\s+", " ", cleaned.strip())
@@ -100,54 +132,20 @@ def canonicalize_ibrx_drug(value: str) -> str:
 	cleaned_parts: list[str] = []
 
 	for part in parts:
-		if re.search(r"\bm-cenk\b", part, flags=re.IGNORECASE):
-			part = "M-CENK"
-		elif re.fullmatch(r"suspension for infusion", part, flags=re.IGNORECASE):
+		candidate = strip_parenthetical_text(part)
+		if not candidate:
 			continue
-		part = re.sub(r"\s*\([^)]*\)", "", part).strip()
-		part = re.sub(
-			r"allogeneic invariant natural killer t cells|agent-797|inkt",
-			"iNKT/AgenT-797",
-			part,
-			flags=re.IGNORECASE,
-		)
-		part = re.sub(r"\bNogapendekin\s+alfa[-\s]+inbakicept\b", "Anktiva", part, flags=re.IGNORECASE)
-		part = re.sub(r"\bN-803\b", "Anktiva", part, flags=re.IGNORECASE)
-		part = re.sub(r"\bN803\b", "Anktiva", part, flags=re.IGNORECASE)
-		part = normalize_text(part)
-		if part:
-			cleaned_parts.append(part)
+
+		lower = candidate.lower()
+		mapped = IBRX_DRUG_EXACT_MAP.get(lower)
+		if mapped is not None:
+			if mapped:
+				cleaned_parts.append(mapped)
+		else:
+			cleaned_parts.append(candidate)
 
 	cleaned_parts = unique_preserve_order(cleaned_parts)
 	return "; ".join(cleaned_parts) if cleaned_parts else "None"
-
-
-def canonicalize_partner_drug(part: str) -> str:
-	value = normalize_text(part)
-	if not value:
-		return ""
-	# Co-treatments should not include parenthetical qualifiers.
-	value = strip_parenthetical_text(value)
-	if not value:
-		return ""
-
-	lower = value.lower()
-	if "m-cenk" in lower:
-		return ""
-	if lower == "suspension for infusion":
-		return ""
-	if "bcg" in lower or "bacillus calmette-guerin" in lower:
-		return "BCG"
-	if lower == "10-1074":
-		return "10-1074"
-	if lower.startswith("etbx-071"):
-		return "ETBX-071"
-	if lower == "pembrolizumab":
-		return "Pembrolizumab/Keytruda"
-	if lower == "rituximab":
-		return "Rituximab"
-
-	return value
 
 
 def canonicalize_partner_drugs(value: str) -> str:
@@ -158,8 +156,19 @@ def canonicalize_partner_drugs(value: str) -> str:
 	if not text:
 		return "None"
 
-	parts = [canonicalize_partner_drug(part) for part in text.split(";")]
-	parts = [part for part in parts if part and part != "None"]
+	parts = []
+	for part in text.split(";"):
+		candidate = normalize_text(part)
+		if not candidate:
+			continue
+
+		mapped = PARTNER_DRUG_EXACT_MAP.get(candidate)
+		if mapped is not None:
+			if mapped:
+				parts.append(mapped)
+		else:
+			parts.append(candidate)
+
 	parts = unique_preserve_order(parts)
 	return "; ".join(parts) if parts else "None"
 
@@ -205,11 +214,11 @@ def canonicalize_indication(value: str) -> str:
 	):
 		return "HIV/AIDS"
 
-	if "non hodgkin's lymphoma refractory/relapsed" in lower:
-		return "Non Hodgkin's Lymphoma"
+	if "non hodgkin's lymphoma refractory/relapsed" in lower or "non hodgkin lymphoma" in lower:
+		return "Non-Hodgkin's Lymphoma"
 
 	if "non-hodgkin lymphoma" in lower or "non hodgkin lymphoma" in lower:
-		return "Non Hodgkin Lymphoma"
+		return "Non-Hodgkin's Lymphoma"
 
 	if (
 		"metastatic urothelial carcinoma" in lower
@@ -221,9 +230,24 @@ def canonicalize_indication(value: str) -> str:
 
 	parts = [normalize_text(p) for p in text.split(";") if normalize_text(p)]
 	mapped_parts: list[str] = []
+	part_replacements = {
+		"castration resistant prostate cancer": "Prostate Cancer",
+		"high-risk prostate cancer": "Prostate Cancer",
+		"platinum-resistant ovarian cancer": "Ovarian Cancer",
+		"community-acquired pneumonia": "Pneumonia",
+		"severe community-acquired pneum": "Pneumonia",
+		"cancer of endometrium": "Endometrial Cancer",
+		"carcinoma of endometrium": "Endometrial Cancer",
+		"endometrial carcinoma": "Endometrial Cancer",
+		"advanced pancreatic carcinoma": "Pancreatic Cancer",
+		"acute respiratory distress syndrome": "ARDS",
+	}
 
 	for part in parts:
 		candidate = part
+		replacement = part_replacements.get(candidate.lower())
+		if replacement:
+			candidate = replacement
 		if re.match(r"^Pancreatic Cancer Resectable$", candidate, flags=re.IGNORECASE):
 			candidate = "Pancreatic Cancer"
 		if re.match(r"^NMIBC$", candidate, flags=re.IGNORECASE):

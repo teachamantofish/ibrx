@@ -164,88 +164,6 @@ function parseCsv(text) {
     });
 }
 
-function stripTrademark(value) {
-    return String(value || '').replace(/™/g, '').trim();
-}
-
-function cleanupIbrxDrug(value) {
-    let cleaned = stripTrademark(value)
-        .replace(/\s*\([^)]*\)/g, '')
-        .trim();
-
-    cleaned = cleaned
-        .replace(/\bNogapendekin\s+alfa\s+inbakicept\b/gi, 'Anktiva')
-        .replace(/\bN-803\b/gi, 'Anktiva')
-        .replace(/\bN803\b/gi, 'Anktiva')
-        .replace(/\s{2,}/g, ' ')
-        .trim();
-
-    return cleaned;
-}
-
-function normalizeForLookup(value) {
-    return String(value || '')
-        .replace(/™/g, '')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .toLowerCase();
-}
-
-function cleanupIndication(value) {
-    const base = stripTrademark(value);
-    const normalized = normalizeForLookup(base);
-
-    const exactMap = {
-        'head and neck cancer': 'Head and neck cancer',
-        'head and neck squamous cell carcinoma': 'Head and neck cancer',
-        'metastatic head and neck cancer': 'Head and neck cancer',
-        'recurrent head and neck cancer': 'Head and neck cancer',
-        'metastatic head-and-neck squamous-cell carcinoma': 'Head and neck cancer',
-        'recurrent head and neck squamous cell carcinoma': 'Head and neck cancer',
-        'b-cell non hodgkin lymphoma': 'Non Hodgkin Lymphoma',
-        'non-small cell lung cancer stage iv': 'Non-small Cell Lung Cancer',
-        'non-small cell lung cancer recurrent': 'Non-small Cell Lung Cancer',
-        'non-small cell carcinoma; nsclc': 'Non-small Cell Lung Cancer',
-        'non small cell lung cancer': 'Non-small Cell Lung Cancer',
-        'non-hodgkin lymphoma refractory/ relapsed': 'Non Hodgkin Lymphoma',
-        'long covid; long covid syndrome; long covid 19': 'Long Covid',
-        'nsclc stage iv': 'Non-small Cell Lung Cancer',
-        'nmibc': 'Non Muscle Invasive Bladder Cancer',
-        'hiv; hiv infections; aids': 'HIV/AIDS',
-        'metastatic urothelial carcinoma': 'Urothelial Carcinoma',
-        'urothelial carcinoma': 'Urothelial Carcinoma',
-        'locally advanced urothelial carcinoma': 'Urothelial Carcinoma',
-        'urothelial cancer': 'Urothelial Carcinoma',
-        'advanced pancreatic cancer': 'Pancreatic Cancer',
-        'community-acquired bacterial pneumonia': 'Pneumonia',
-        'Community-Acquired Pneumonia': 'Pneumonia',
-        'human immunodeficiency virus': 'HIV/AIDS'
-    };
-
-    if (exactMap[normalized]) {
-        return exactMap[normalized];
-    }
-
-    return base
-        .replace(/Pancreatic Cancer Resectable;\s*/gi, 'Pancreatic Cancer ')
-        .replace(/Non-small Cell Lung Cancer Stage IV;\s*Non-small Cell Lung Cancer Recurrent/gi, 'Non-small Cell Lung Cancer')
-        .replace(/\s{2,}/g, ' ')
-        .trim();
-}
-
-function sanitizeRecord(record) {
-    const cleaned = {};
-
-    Object.keys(record).forEach(function (key) {
-        cleaned[key] = stripTrademark(record[key]);
-    });
-
-    cleaned['ibrx drug'] = cleanupIbrxDrug(cleaned['ibrx drug']);
-    cleaned['indication'] = cleanupIndication(cleaned['indication']);
-
-    return cleaned;
-}
-
 function parseDate(value) {
     const raw = String(value || '').trim();
 
@@ -316,33 +234,42 @@ function buildTitle(item) {
     ].join('<br>');
 }
 
-// Tailwind 400-level palette
+// Tailwind palette from CSS vars in ../css/bencustom.css
+function twColor(tokenName) {
+    const rootStyle = getComputedStyle(document.documentElement);
+    return rootStyle.getPropertyValue(tokenName).trim();
+}
+
 const TW = {
-    amber300:   '#fcd34d',
-    amber400:   '#fbbf24',
-    orange400:  '#fb923c',
-    red400:     '#f87171',
-    emerald400: '#34d399',
-    violet400:  '#a78bfa',
-    rose300:    '#fda4af',
+    anktiva:    twColor('--tw-amber-200'),
+    p1:         twColor('--tw-emerald-100'),
+    p2:         twColor('--tw-emerald-300'),
+    p3:         twColor('--tw-emerald-400'),
+    ibrx:       twColor('--tw-blue-300'),
+    notibrx:    twColor('--tw-violet-200'),
+    notAnktiva: twColor('--tw-rose-200'),
+    enddate:    twColor('--tw-zinc-300'),
 };
 
 function badgeBgColor(tooltipKey, value) {
     const v = value.toLowerCase();
+    if (tooltipKey === 'primaryCompletion') {
+        return TW.enddate;
+    }
     if (tooltipKey === 'phase') {
-        if (v.includes('p3')) return TW.red400;
-        if (v.includes('p2')) return TW.orange400;
-        if (v.includes('p1') || v.includes('early')) return TW.amber400;
+        if (v.includes('p3')) return TW.p3;
+        if (v.includes('p2')) return TW.p2;
+        if (v.includes('p1') || v.includes('early')) return TW.p1;
     }
     if (tooltipKey === 'ibrxDrug') {
-        if (v.includes('anktiva')) return TW.amber300;  // Anktiva: amber-300
-        return TW.rose300;                               // other IBRX drugs: rose-300
+        if (v.includes('anktiva')) return TW.anktiva;  // Anktiva: amber-200
+        return TW.notAnktiva;                               // other IBRX drugs: rose-300
     }
     if (tooltipKey === 'sponsor') {
-        if (v.includes('immunitybio') || v.includes('ibrx')) return TW.emerald400;
-        return TW.violet400;
+        if (v.includes('immunitybio') || v.includes('ibrx')) return TW.ibrx;
+        return TW.notibrx;
     }
-    return TW.amber300; // fallback
+    return TW.enddate;
 }
 
 function buildContent(item) {
