@@ -189,3 +189,59 @@ a:active {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
+/* ibrx/ibrxcsvtimeline.html controls and dialog styling */
+.ibrx-csv-timeline .timeline-logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.ibrx-csv-timeline .notes-trigger {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 1000;
+    font-weight: 700;
+}
+
+.ibrx-csv-timeline .notes-trigger::part(base) {
+    background: #ffffff;
+    color: #1d4ed8;
+    border: 1px solid #1d4ed8;
+}
+
+.ibrx-csv-timeline .notes-trigger::part(base):hover,
+.ibrx-csv-timeline .notes-trigger::part(base):focus-visible {
+    background: #eff6ff;
+    color: #1e40af;
+    border-color: #1e40af;
+}
+
+.ibrx-csv-timeline .timeline-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.ibrx-csv-timeline .control-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin: 8px 0;
+}
+
+.ibrx-csv-timeline .control-group sl-checkbox {
+    --size: 16px;
+}
+
+.ibrx-csv-timeline .timeline-note-img {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+}
+
+.ibrx-csv-timeline #timelineNotesDialog {
+    --width: min(96vw, 64rem);
+}
+

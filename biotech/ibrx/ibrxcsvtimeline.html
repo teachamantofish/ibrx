@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Trading Timeline: Interactive tool for ImmunityBio (IBRX) </title>
+    <title>Trading Timeline: ImmunityBio (IBRX) Analysis </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -18,39 +18,46 @@
     <link href="../css/bencustom.css" rel="stylesheet" type="text/css" />
 
     <link href="../css/time/visegrad.min.css" rel="stylesheet" type="text/css" />
-    <link href="../css/radiobuttons.css" rel="stylesheet" type="text/css" />
-    <link href="../css/buttons.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
+    <script type="module">
+        import { setBasePath } from 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/utilities/base-path.js';
+        setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/');
+    </script>
 </head>
-<body>
-<img src="img/ibrx.png" style="position:absolute; left:0; top:0"/>
-    <nav id='menu'>     
-        <input type='checkbox' id='responsive-menu' onclick='updatemenu()'>
-        <ul>
-            <li><a href='timeline.shtml'>Trading Timeline</a></li>
-            <li><a href='https://lookerstudio.google.com/reporting/49939654-1a8d-4bb8-b097-939693c6c80e'>Partner Drug/Pharma</a></li>
-            <li><a href='rawdata.shtml'>Pipeline data</a></li>
-            <li><a href='platform.shtml'>Platform data</a></li>
-            <li><a href='lastupdate.shtml'>ClinicalTrials Monitor</a></li>
-            <li><a href=''>DD links</a></li>
-        </ul>     
-    </nav>
+<body class="ibrx-csv-timeline">
+    <sl-button
+        id="openTimelineNotes"
+        class="notes-trigger"
+        variant="primary"
+        size="small"
+        circle
+    >?</sl-button>
+<nav id="menu">
+    <input type="checkbox" id="responsive-menu" onclick="updatemenu()">
+    <ul>
+        <li><a href="ibrxcsvtimeline.html">Trading Timeline</a></li>
+        <li><a href="cotreatment.html">Partner Drug/Pharma</a></li>
+    </ul>
+</nav>
     <section>
     <div id="tooltipOptions"></div>
     <br/>
     <div id="visualization">
-        <div class="menu">
-            <input class="myButton" type="button" id="zoomIn" value="Zoom in" />
-            <input class="myButton" type="button" id="zoomOut" value="Zoom out" />
-            <input class="myButton" type="button" id="fit" value="Fit all">
-            <input class="myButton" type="button" id="swing" value="Fit 90 day trade window">
-            <input class="myButton" type="button" id="fitRevenueLeaps" value="Fit Revenue and LEAPs window">
+        <div class="menu timeline-actions">
+            <sl-button id="zoomIn" variant="primary" size="small">Zoom in</sl-button>
+            <sl-button id="zoomOut" variant="primary" size="small">Zoom out</sl-button>
+            <sl-button id="fit" variant="neutral" size="small">Fit all</sl-button>
+            <sl-button id="swing" variant="neutral" size="small">Fit 90 day trade window</sl-button>
+            <sl-button id="fitRevenueLeaps" variant="success" size="small">Fit Revenue and LEAPs window</sl-button>
         </div>
         <div class="control-group">
-            <label class="radio"><input type="checkbox" name="radio" value="4" data-tooltip-key="none" checked="checked"/>Clear Tooltips</label>
-            <label class="radio"><input type="checkbox" name="radio" value="0" data-tooltip-key="primaryCompletion"/>Primary completion date</label>
-            <label class="radio"><input type="checkbox" name="radio" value="1" data-tooltip-key="phase"/>Phase</label>
-            <label class="radio"><input type="checkbox" name="radio" value="2" data-tooltip-key="ibrxDrug"/>IBRX drug</label>
-            <label class="radio"><input type="checkbox" name="radio" value="3" data-tooltip-key="sponsor"/>Study sponsor</label>
+            <sl-checkbox name="radio" value="4" data-tooltip-key="none" checked>Clear Tooltips</sl-checkbox>
+            <sl-checkbox name="radio" value="0" data-tooltip-key="primaryCompletion">Primary completion date</sl-checkbox>
+            <sl-checkbox name="radio" value="1" data-tooltip-key="phase">Phase</sl-checkbox>
+            <sl-checkbox name="radio" value="2" data-tooltip-key="ibrxDrug">IBRX drug</sl-checkbox>
+            <sl-checkbox name="radio" value="3" data-tooltip-key="sponsor">Study sponsor</sl-checkbox>
+            <sl-checkbox id="showRevenueLineGraph">Show line graph</sl-checkbox>
         </div>
 
         <p style="text-align: right; margin: 0;"><strong>Note: Click on the chart and scroll for continuous zoom</strong></p>
@@ -197,8 +204,10 @@ function buildTooltipValues(record) {
 
 function selectedTooltipKeys() {
     const checkedInputs = Array.from(
-        document.querySelectorAll('.control-group input[type="checkbox"][name="radio"]:checked')
-    );
+        document.querySelectorAll('.control-group sl-checkbox[name="radio"]')
+    ).filter(function (input) {
+        return input.checked;
+    });
 
     const keys = checkedInputs.map(function (input) {
         return input.getAttribute('data-tooltip-key') || 'none';
@@ -209,6 +218,86 @@ function selectedTooltipKeys() {
     }
 
     return keys;
+}
+
+function allTooltipCheckboxes() {
+    return Array.from(document.querySelectorAll('.control-group sl-checkbox[name="radio"]'));
+}
+
+function findTooltipCheckboxByKey(key) {
+    return allTooltipCheckboxes().find(function (input) {
+        return (input.getAttribute('data-tooltip-key') || 'none') === key;
+    }) || null;
+}
+
+function lineGraphCheckbox() {
+    return document.getElementById('showRevenueLineGraph');
+}
+
+function syncLineGraphVisibility() {
+    if (!revenueOverlay) {
+        return;
+    }
+
+    const input = lineGraphCheckbox();
+    if (input && input.checked) {
+        revenueOverlay.show();
+        return;
+    }
+
+    revenueOverlay.hide();
+}
+
+function clearLineGraphSelection() {
+    const input = lineGraphCheckbox();
+    if (!input) {
+        return;
+    }
+
+    input.checked = false;
+    syncLineGraphVisibility();
+}
+
+function setupTooltipToggleBehavior() {
+    allTooltipCheckboxes().forEach(function (input) {
+        input.addEventListener('sl-change', function () {
+            const key = input.getAttribute('data-tooltip-key') || 'none';
+            const allInputs = allTooltipCheckboxes();
+
+            if (key === 'none' && input.checked) {
+                allInputs.forEach(function (candidate) {
+                    if (candidate !== input) {
+                        candidate.checked = false;
+                    }
+                });
+
+                clearLineGraphSelection();
+            }
+
+            if (key !== 'none' && input.checked) {
+                const clearInput = findTooltipCheckboxByKey('none');
+                if (clearInput) {
+                    clearInput.checked = false;
+                }
+            }
+
+            updateTooltips();
+        });
+    });
+}
+
+function applyClearTooltipDefault() {
+    const allInputs = allTooltipCheckboxes();
+    const anyChecked = allInputs.some(function (input) {
+        return input.checked;
+    });
+
+    if (!anyChecked) {
+        const clearInput = findTooltipCheckboxByKey('none');
+        if (clearInput) {
+            clearInput.checked = true;
+        }
+    }
 }
 
 function buildTitle(item) {
@@ -464,9 +553,9 @@ function applyTooltipSelectionFromQuery() {
         return;
     }
 
-    const input = document.querySelector('.control-group input[type="checkbox"][name="radio"][data-tooltip-key="' + tooltipKey + '"]');
+    const input = findTooltipCheckboxByKey(tooltipKey);
     if (input) {
-        const clearInput = document.querySelector('.control-group input[type="checkbox"][name="radio"][data-tooltip-key="none"]');
+        const clearInput = findTooltipCheckboxByKey('none');
         if (tooltipKey !== 'none' && clearInput) {
             clearInput.checked = false;
         }
@@ -494,13 +583,24 @@ function setRevenueAndLeapsWindow() {
         timeline.fit();
     }
 
-    if (revenueOverlay) {
-        revenueOverlay.show();
+    const input = lineGraphCheckbox();
+    if (input) {
+        input.checked = true;
     }
+
+    syncLineGraphVisibility();
 }
 
 function bindControls() {
+    setupTooltipToggleBehavior();
     applyTooltipSelectionFromQuery();
+    applyClearTooltipDefault();
+
+    const timelineNotesDialog = document.getElementById('timelineNotesDialog');
+
+    document.getElementById('openTimelineNotes').addEventListener('click', function () {
+        timelineNotesDialog.show();
+    });
 
     document.getElementById('zoomIn').onclick = function () {
         timeline.zoomIn(0.6);
@@ -522,32 +622,15 @@ function bindControls() {
         setRevenueAndLeapsWindow();
     };
 
-    document.querySelectorAll('.control-group input[type="checkbox"][name="radio"]').forEach(function (input) {
-        input.addEventListener('change', function () {
-            const key = input.getAttribute('data-tooltip-key') || 'none';
-            const allInputs = Array.from(document.querySelectorAll('.control-group input[type="checkbox"][name="radio"]'));
-
-            if (key === 'none' && input.checked) {
-                allInputs.forEach(function (candidate) {
-                    if (candidate !== input) {
-                        candidate.checked = false;
-                    }
-                });
-            }
-
-            if (key !== 'none' && input.checked) {
-                const clearInput = allInputs.find(function (candidate) {
-                    return (candidate.getAttribute('data-tooltip-key') || 'none') === 'none';
-                });
-
-                if (clearInput) {
-                    clearInput.checked = false;
-                }
-            }
-
-            updateTooltips();
+    const showRevenueLineGraph = lineGraphCheckbox();
+    if (showRevenueLineGraph) {
+        showRevenueLineGraph.addEventListener('sl-change', function () {
+            syncLineGraphVisibility();
         });
-    });
+    }
+
+    syncLineGraphVisibility();
+
 }
 
 function showLoadError(message) {
@@ -577,21 +660,32 @@ function loadTimelineFromCsv() {
 document.addEventListener('DOMContentLoaded', loadTimelineFromCsv);
     </script>
 
-<section>
-    <h1>ImmunityBio trial timeline notes:</h1>
-    
-    <img src="img/keytrial.png" style="max-width:900px;"/>
+<sl-dialog label="ImmunityBio trial timeline notes" id="timelineNotesDialog">
+    <img src="img/keytrial.png" class="timeline-note-img" alt="Timeline key" />
 
     <ul>
         <li>Not included: trials with a status of withdrawn, terminated, unknown, or started prior to 2020.</li>
-        <li>Trial date range starts with the primary study completion date ends with the study completion published on clinicaltrials.gov. </li>
+        <li>Trial date range starts with the primary study completion date ends with the study completion published on clinicaltrials.gov.</li>
         <li>For the timeline's readability and usability reasons, the smallest increment between the primary and study completion date is 10 days. There are a few cases where those dates are identical on clinicaltrials.gov.</li>
         <li>IBRX completes and withdraws studies without announcement, so there's no way to know if/when results are forthcoming. They also occasionally release preliminary data prior to study completion.</li>
         <li>Reporting requirement for National Cancer Institute-sponsored studies: <a href="https://stkt.co/0TPs9dwQ">Within 12 months of the earlier of estimated/actual primary completion date.</a></li>
         <li>Drugs may have multiple names. For example: Anktiva = N-803 = Alt-803 = Inbakicept</li>
     </ul>
-    
-    </section>
+
+    <sl-button slot="footer" variant="primary" id="closeTimelineNotes">Close</sl-button>
+</sl-dialog>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dialog = document.getElementById('timelineNotesDialog');
+    const closeButton = document.getElementById('closeTimelineNotes');
+    if (dialog && closeButton) {
+        closeButton.addEventListener('click', function () {
+            dialog.hide();
+        });
+    }
+});
+</script>
 
  
 <p style="color:#cccccc; text-align:center;">Copyright 2026, Ben Rogers</p>

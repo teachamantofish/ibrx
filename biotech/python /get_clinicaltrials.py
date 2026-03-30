@@ -29,6 +29,16 @@ DEFAULT_QUERY_TERM = (
 	"OR AREA[BasicSearch]N803 OR AREA[BasicSearch]N-803 OR AREA[BasicSearch]Anktiva"
 )
 DEFAULT_STUDY_START_AFTER = "2020-01-01"
+STUDY_STATUS_TO_INCLUDE = {
+    "ACTIVE_NOT_RECRUITING",
+    "COMPLETED",
+    "ENROLLING_BY_INVITATION",
+    "NOT_YET_RECRUITING",
+    "RECRUITING",
+    "AVAILABLE",
+    "TEMPORARILY_NOT_AVAILABLE",
+    "APPROVED_FOR_MARKETING",
+}
 
 
 # IBRX entries as a simple CSV list.
@@ -56,7 +66,7 @@ CSV_HEADERS = [
 	"Co-treatments",
 	"Sponsor",
 	"Platform",
-	"Partnered pharma",
+	"Co-treatment 3rd Parties",
 ]
 
 
@@ -380,6 +390,14 @@ IBRX_KEYS = build_ibrx_key_set()
 
 def derive_category(indication_text: str) -> str:
 	text = indication_text.lower()
+	if (
+		"ards" in text
+		or "pneumonia" in text
+		or "sepsis" in text
+		or "lymphopenia" in text
+		or "immunoparalysis" in text
+	):
+		return "Immunodeficiency"
 	if "hiv" in text or "covid" in text:
 		return "Virus"
 	return "Cancer"
@@ -406,6 +424,16 @@ def filter_studies_by_start_after(studies: list[dict[str, Any]], cutoff: dt.date
 		start_raw = str(status_mod.get("startDateStruct", {}).get("date", ""))
 		start_date = parse_iso_date(start_raw)
 		if start_date and start_date > cutoff:
+			filtered.append(study)
+	return filtered
+
+
+def filter_studies_by_status(studies: list[dict[str, Any]], allowed_statuses: set[str]) -> list[dict[str, Any]]:
+	filtered: list[dict[str, Any]] = []
+	for study in studies:
+		status_mod = study.get("protocolSection", {}).get("statusModule", {})
+		overall_status = normalize_text(str(status_mod.get("overallStatus", "")))
+		if overall_status in allowed_statuses:
 			filtered.append(study)
 	return filtered
 
@@ -581,7 +609,7 @@ def map_study_to_row(study: dict[str, Any]) -> dict[str, str]:
 		"Co-treatments": partner_drugs,
 		"Sponsor": canonicalize_org_name(str(sponsors_mod.get("leadSponsor", {}).get("name", ""))),
 		"Platform": PLATFORM_VALUE,
-		"Partnered pharma": partner_pharma,
+		"Co-treatment 3rd Parties": partner_pharma,
 	}
 
 	return {key: csv_value(val) for key, val in row.items()}
@@ -642,6 +670,12 @@ def main() -> int:
 		print(f"fatal: failed to fetch studies: {exc}", file=sys.stderr)
 		return 2
 
+	total_fetched_api = len(studies)
+	studies = filter_studies_by_status(studies, STUDY_STATUS_TO_INCLUDE)
+
+	# Keep a copy of status-filtered API payload for debugging/auditing.
+	fetched_studies = list(studies)
+
 	try:
 		cutoff = dt.date.fromisoformat(args.study_start_after)
 	except ValueError:
@@ -655,7 +689,7 @@ def main() -> int:
 	# 3. With the current default, only studies starting after 2020-01-01 are written.
 	# 4. After this date filter, the script maps each remaining study into one CSV row using
 	#    conditions, phases, interventions, sponsor/collaborator data, and the normalization rules
-	#    defined above for indication, IBRX drug, co-treatments, sponsor, and partnered pharma.
+	#    defined above for indication, IBRX drug, co-treatments, sponsor, and co-treatment 3rd parties.
 	studies = filter_studies_by_start_after(studies, cutoff)
 
 	rows = [map_study_to_row(s) for s in studies]
@@ -664,12 +698,24 @@ def main() -> int:
 		print(f"note: ignoring --out-dir and writing to {DEFAULT_OUT_DIR}")
 	out_path = write_csv(rows, out_dir, args.query)
 
-	if args.raw_json:
-		os.makedirs(out_dir, exist_ok=True)
-		raw_path = os.path.join(out_dir, f"raw_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
-		with open(raw_path, "w", encoding="utf-8") as f:
-			json.dump({"studies": studies}, f, indent=2)
-		print(f"raw_json={raw_path}")
+	os.makedirs(out_dir, exist_ok=True)
+	raw_path = os.path.join(out_dir, f"raw_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
+	with open(raw_path, "w", encoding="utf-8") as f:
+		json.dump(
+			{
+				"fetched_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+				"query": args.query if args.query else DEFAULT_QUERY_TERM,
+				"nct_ids": nct_ids or [],
+				"allowed_overall_statuses": sorted(STUDY_STATUS_TO_INCLUDE),
+				"total_fetched_api": total_fetched_api,
+				"total_after_status_filter": len(fetched_studies),
+				"total_after_start_filter": len(studies),
+				"studies": fetched_studies,
+			},
+			f,
+			indent=2,
+		)
+	print(f"raw_json={raw_path}")
 
 	print(f"wrote_rows={len(rows)}")
 	print(f"csv={out_path}")
