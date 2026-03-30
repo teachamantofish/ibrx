@@ -1,5 +1,0 @@
-
-<p style="color:#cccccc; text-align:center;">Copyright 2024, Ben Rogers</p>
-</section>
-</body>
-</html>
