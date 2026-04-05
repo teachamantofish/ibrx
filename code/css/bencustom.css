@@ -165,6 +165,17 @@ input {
 
 }
 
+.vis-item.vis-dot.FDA,
+.vis-item.vis-dot.Event {
+    border-width: 8px !important;
+    border-radius: 8px !important;
+}
+
+.vis-item.vis-point.FDA .vis-item-content,
+.vis-item.vis-point.Event .vis-item-content {
+    margin-left: 12px !important;
+}
+
 .vis-item.Funding {
     background-color: var(--timeline-funding-bg);
 

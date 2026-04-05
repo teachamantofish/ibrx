@@ -58,6 +58,8 @@
             <sl-checkbox name="radio" value="2" data-tooltip-key="ibrxDrug">IBRX drug</sl-checkbox>
             <sl-checkbox name="radio" value="3" data-tooltip-key="sponsor">Study sponsor</sl-checkbox>
             <sl-checkbox id="showRevenueLineGraph">Show revenue</sl-checkbox>
+            <sl-checkbox id="showFdaDesignations">Anktiva FDA designations</sl-checkbox>
+            <sl-checkbox id="showEvents">Events</sl-checkbox>
         </div>
 
         <p style="text-align: right; margin: 0;"><strong>Note: Click on the chart and scroll for continuous zoom</strong></p>
@@ -79,9 +81,25 @@ const GROUPS = [
 
 let timeline = null;
 let itemsDataSet = null;
+let groupsDataSet = null;
 let allItems = [];
 let defaultTimelineWindow = null;
 let revenueOverlay = null;
+let lastOverlayWindowStart = null;
+
+const FDA_OVERLAY = {
+    id: 4, groupLabel: 'FDA', groupValue: 0,
+    groupTitle: 'Anktiva FDA designations and milestones',
+    className: 'FDA', csvPath: 'csv/fdadesignations.csv', idPrefix: 'fda-',
+    data: [], loaded: false
+};
+
+const EVENTS_OVERLAY = {
+    id: 5, groupLabel: 'Events', groupValue: 2,
+    groupTitle: 'IBRX events and milestones',
+    className: 'Event', csvPath: 'csv/events.csv', idPrefix: 'ev-',
+    data: [], loaded: false
+};
 
 function normalizeHeader(value) {
     return String(value || '')
@@ -191,6 +209,118 @@ function escapeHtml(text) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+}
+
+function parseItemDate(raw) {
+    raw = String(raw || '').trim();
+    if (!raw) return null;
+    // Year range: "2019–2020"
+    const yearRangeMatch = raw.match(/^(\d{4})[–\-]/);
+    if (yearRangeMatch) return new Date(parseInt(yearRangeMatch[1]), 0, 1);
+    // Year only: "2018"
+    if (/^\d{4}$/.test(raw)) return new Date(parseInt(raw), 0, 1);
+    // "Month Day1-Day2 YYYY": "March 22-24 2026"
+    const dayRangeMatch = raw.match(/^([A-Za-z]+)\s+(\d+)-\d+\s+(\d{4})$/);
+    if (dayRangeMatch) {
+        const d = new Date(dayRangeMatch[1] + ' ' + dayRangeMatch[2] + ', ' + dayRangeMatch[3]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    // "Month1-Month2 YYYY": "March-April 2026"
+    const monthRangeMatch = raw.match(/^([A-Za-z]+)-[A-Za-z]+\s+(\d{4})$/);
+    if (monthRangeMatch) {
+        const d = new Date(monthRangeMatch[1] + ' 1, ' + monthRangeMatch[2]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    // "Month1 Day1-Month2 Day2 YYYY": "Sept 15-Nov 15 2026"
+    const crossMonthMatch = raw.match(/^([A-Za-z]+)\s+(\d+)-[A-Za-z]+\s+\d+\s+(\d{4})$/);
+    if (crossMonthMatch) {
+        const d = new Date(crossMonthMatch[1] + ' ' + crossMonthMatch[2] + ', ' + crossMonthMatch[3]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    // "Month YYYY": "Dec 2019"
+    const monthYearMatch = raw.match(/^([A-Za-z]+)\s+(\d{4})$/);
+    if (monthYearMatch) {
+        const d = new Date(monthYearMatch[1] + ' 1, ' + monthYearMatch[2]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    const d = new Date(raw);
+    return isNaN(d.getTime()) ? null : d;
+}
+
+function buildItemTitle(date, event, details) {
+    return '<strong>' + escapeHtml(date) + '</strong><br>' +
+           '<em>' + escapeHtml(event) + '</em><br>' +
+           escapeHtml(details);
+}
+
+function updateAllOverlayPositions() {
+    if (!itemsDataSet) return;
+    const win = timeline.getWindow();
+    if (lastOverlayWindowStart && lastOverlayWindowStart.getTime() === win.start.getTime()) return;
+    lastOverlayWindowStart = win.start;
+    const updates = [];
+    [FDA_OVERLAY, EVENTS_OVERLAY].forEach(function (overlay) {
+        overlay.data.forEach(function (item) {
+            const start = item.originalDate < win.start ? new Date(win.start.getTime() + 1) : item.originalDate;
+            updates.push({ id: item.id, start: start });
+        });
+    });
+    if (updates.length) itemsDataSet.update(updates);
+}
+
+function addOverlayToTimeline(overlay) {
+    if (!itemsDataSet || !groupsDataSet) return;
+    const winStart = timeline.getWindow().start;
+    groupsDataSet.add({ id: overlay.id, content: overlay.groupLabel, value: overlay.groupValue, title: overlay.groupTitle });
+    const items = overlay.data.map(function (item) {
+        return {
+            id: item.id,
+            group: overlay.id,
+            type: 'point',
+            start: item.originalDate < winStart ? new Date(winStart.getTime() + 1) : item.originalDate,
+            content: '<span>' + escapeHtml(item.event) + '</span>',
+            title: buildItemTitle(item.date, item.event, item.details),
+            className: overlay.className
+        };
+    });
+    itemsDataSet.add(items);
+}
+
+function removeOverlayFromTimeline(overlay) {
+    if (!itemsDataSet || !groupsDataSet) return;
+    itemsDataSet.remove(overlay.data.map(function (item) { return item.id; }));
+    if (groupsDataSet.get(overlay.id)) groupsDataSet.remove(overlay.id);
+}
+
+function toggleOverlay(overlay, checked) {
+    if (!overlay.loaded) {
+        fetch(overlay.csvPath, { cache: 'no-store' })
+            .then(function (r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.text();
+            })
+            .then(function (text) {
+                const records = parseCsv(text);
+                overlay.data = records.reduce(function (acc, record, i) {
+                    const date = (record['date'] || '').trim();
+                    const event = (record['event'] || '').trim();
+                    const details = (record['details'] || '').trim();
+                    const originalDate = parseItemDate(date);
+                    if (!originalDate || !event) return acc;
+                    acc.push({ id: overlay.idPrefix + i, originalDate: originalDate, date: date, event: event, details: details });
+                    return acc;
+                }, []);
+                overlay.loaded = true;
+                if (checked) addOverlayToTimeline(overlay);
+            })
+            .catch(function (err) {
+                console.error('Failed to load ' + overlay.csvPath, err);
+            });
+    } else if (checked) {
+        addOverlayToTimeline(overlay);
+    } else {
+        removeOverlayFromTimeline(overlay);
+    }
 }
 
 function buildTooltipValues(record) {
@@ -534,7 +664,8 @@ function renderTimeline(records) {
     }
 
     itemsDataSet = new vis.DataSet(allItems);
-    timeline = new vis.Timeline(container, itemsDataSet, new vis.DataSet(GROUPS), options);
+    groupsDataSet = new vis.DataSet(GROUPS);
+    timeline = new vis.Timeline(container, itemsDataSet, groupsDataSet, options);
 
     if (window.createRevenueOverlay) {
         revenueOverlay = window.createRevenueOverlay(timeline, container);
@@ -543,6 +674,7 @@ function renderTimeline(records) {
     enforceInitialWindow(0);
 
     timeline.on('changed', updateTooltips);
+    timeline.on('rangechange', updateAllOverlayPositions);
     updateTooltips();
 }
 
@@ -630,6 +762,20 @@ function bindControls() {
     }
 
     syncLineGraphVisibility();
+
+    const fdaCheckbox = document.getElementById('showFdaDesignations');
+    if (fdaCheckbox) {
+        fdaCheckbox.addEventListener('sl-change', function () {
+            toggleOverlay(FDA_OVERLAY, fdaCheckbox.checked);
+        });
+    }
+
+    const eventsCheckbox = document.getElementById('showEvents');
+    if (eventsCheckbox) {
+        eventsCheckbox.addEventListener('sl-change', function () {
+            toggleOverlay(EVENTS_OVERLAY, eventsCheckbox.checked);
+        });
+    }
 
 }
 
