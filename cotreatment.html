@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="ImmunityBio (IBRX) co-treatment and partner pharma analysis with interactive drill-down charts.">
-    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
-    <link href="../css/menu.css" rel="stylesheet" type="text/css">
-    <link href="../css/bencustom.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/menu.css" rel="stylesheet" type="text/css">
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
@@ -161,7 +161,7 @@
 <nav id="menu">
     <input type="checkbox" id="responsive-menu" onclick="updatemenu()">
     <ul>
-        <li><a href="ibrxcsvtimeline.html">Trading Timeline</a></li>
+        <li><a href="index.html">Trading Timeline</a></li>
         <li><a href="cotreatment.html">Partner Drug/Pharma</a></li>
     </ul>
 </nav>
@@ -544,7 +544,7 @@ document.querySelectorAll('#dataTable thead th[data-col]').forEach(th => {
 });
 
 // ─── Boot ─────────────────────────────────────────────────────────────────────
-fetch('../csv/ibrx.csv')
+fetch('csv/ibrx.csv')
     .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.text();

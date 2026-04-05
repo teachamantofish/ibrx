@@ -13,11 +13,11 @@
     <meta name="language" content="English">
     <meta author="Ben Rogers">
     <link rel="canonical" href="https://www.optionicity.com"/>
-    <link rel="icon" type="image/x-icon" href="../img/favicon.ico">
-    <link href="../css/menu.css" rel="stylesheet" type="text/css" />
-    <link href="../css/bencustom.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css" />
 
-    <link href="../css/time/visegrad.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/time/visegrad.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css" />
     <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
     <script type="module">
@@ -36,7 +36,7 @@
 <nav id="menu">
     <input type="checkbox" id="responsive-menu" onclick="updatemenu()">
     <ul>
-        <li><a href="ibrxcsvtimeline.html">Trading Timeline</a></li>
+        <li><a href="index.html">Trading Timeline</a></li>
         <li><a href="cotreatment.html">Partner Drug/Pharma</a></li>
     </ul>
 </nav>
@@ -63,9 +63,9 @@
         <p style="text-align: right; margin: 0;"><strong>Note: Click on the chart and scroll for continuous zoom</strong></p>
     </div>
 
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/time/timeline-graph2d.min.js"></script>
-    <script src="../js/time/revenue-overlay.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/time/timeline-graph2d.min.js"></script>
+    <script src="js/time/revenue-overlay.js"></script>
     <script type="text/javascript">
 
 const GROUPS = [
@@ -313,7 +313,7 @@ function buildTitle(item) {
     ].join('<br>');
 }
 
-// Tailwind palette from CSS vars in ../css/bencustom.css
+// Tailwind palette from CSS vars in css/bencustom.css
 function twColor(tokenName) {
     const rootStyle = getComputedStyle(document.documentElement);
     return rootStyle.getPropertyValue(tokenName).trim();
@@ -638,7 +638,7 @@ function showLoadError(message) {
 }
 
 function loadTimelineFromCsv() {
-    fetch('/csv/ibrx.csv', { cache: 'no-store' })
+    fetch('csv/ibrx.csv', { cache: 'no-store' })
         .then(function (response) {
             if (!response.ok) {
                 throw new Error('HTTP ' + response.status);
@@ -652,8 +652,8 @@ function loadTimelineFromCsv() {
             bindControls();
         })
         .catch(function (error) {
-            console.error('Failed to load /csv/ibrx.csv', error);
-            showLoadError('Failed to load /csv/ibrx.csv');
+            console.error('Failed to load csv/ibrx.csv', error);
+            showLoadError('Failed to load csv/ibrx.csv');
         });
 }
 
