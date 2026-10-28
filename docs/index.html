@@ -1,0 +1,988 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Optionicity: ImmunityBio (IBRX) Analysis </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="title" content="Trading Timeline: Interactive tool for ImmunityBio (IBRX)">
+    <meta name="description" content="The ImmunityBio (IBRX) interactive trading timeline tool allows stock and option traders to analyze ImmunityBio's events, funding, trials, and key dates.">
+    <meta name="keywords" content="Trading timeline, IBRX, ImmunityBio, interactive timeline, stock trading tool, option trading tool">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta author="Ben Rogers">
+    <link rel="canonical" href="https://www.optionicity.com"/>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/sidenav.css" rel="stylesheet" type="text/css" />
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css" />
+
+    <link href="css/time/visegrad.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"></script>
+    <script type="module">
+        import { setBasePath } from 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/utilities/base-path.js';
+        setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/');
+    </script>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WJY24VJ39L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WJY24VJ39L');
+</script>
+<body class="ibrx-csv-timeline">
+<header class="hero">
+    <canvas aria-hidden="true"></canvas>
+    <div class="hero-text">
+        <div class="hero-meta">
+            <div class="hero-kicker">ImmunityBio · IBRX</div>
+            <div class="hero-subtitle">Trials · FDA designations · Events · Revenue</div>
+        </div>
+    </div>
+</header>
+    <section>
+    <div id="tooltipOptions"></div>
+    <br/>
+    <div id="visualization">
+        <div class="menu timeline-actions">
+            <sl-button id="zoomIn" variant="primary" size="small">Zoom in</sl-button>
+            <sl-button id="zoomOut" variant="primary" size="small">Zoom out</sl-button>
+            <sl-button id="fit" variant="neutral" size="small">Fit all</sl-button>
+            <sl-button id="swing" variant="neutral" size="small">Fit 90 day trade window</sl-button>
+            <sl-button id="fitRevenueLeaps" variant="success" size="small">Fit Revenue and LEAPs window</sl-button>
+            <div class="timeline-tools">
+                <sl-icon-button id="openTimelineNotes" name="question-circle" label="Timeline notes"></sl-icon-button>
+                <sl-icon-button id="openSettings" name="gear" label="Settings"></sl-icon-button>
+            </div>
+        </div>
+
+        <p style="text-align: right; margin: 0;"><strong>Note: Click on the chart and scroll for continuous zoom</strong></p>
+    </div>
+
+    <script src="js/sidenav.js"></script>
+    <script src="js/header-helix.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/time/timeline-graph2d.min.js"></script>
+    <script src="js/time/revenue-overlay.js"></script>
+    <script type="text/javascript">
+
+const GROUPS = [
+    {
+        id: 3,
+        content: 'Trial',
+        value: 1,
+        title: 'Timeline from study start to primary completion'
+    }
+];
+
+let timeline = null;
+let itemsDataSet = null;
+let groupsDataSet = null;
+let allItems = [];
+let itemsView = null;
+// {start, end} while "Fit 90 day trade window" is filtering items; null shows everything.
+let tradeWindowFilter = null;
+// Opening view: 6 weeks back to 10 weeks ahead of today.
+let defaultTimelineWindow = null;
+// "Fit Revenue and LEAPs window": 30 months either side of the trial date nearest today.
+let revenueLeapsWindow = null;
+let revenueOverlay = null;
+let lastOverlayWindowStart = null;
+
+const FDA_OVERLAY = {
+    id: 4, groupLabel: 'FDA', groupValue: 0,
+    groupTitle: 'Anktiva FDA designations and milestones',
+    className: 'FDA', csvPath: 'data/fdadesignations.csv', idPrefix: 'fda-',
+    data: [], loaded: false
+};
+
+const EVENTS_OVERLAY = {
+    id: 5, groupLabel: 'Events', groupValue: 2,
+    groupTitle: 'IBRX events and milestones',
+    className: 'Event', csvPath: 'data/events.csv', idPrefix: 'ev-',
+    monthBars: true,
+    data: [], loaded: false
+};
+
+function normalizeHeader(value) {
+    return String(value || '')
+        .replace(/^\uFEFF/, '')
+        .trim()
+        .toLowerCase();
+}
+
+function csvToRows(text) {
+    const rows = [];
+    let currentRow = [];
+    let currentValue = '';
+    let inQuotes = false;
+
+    for (let index = 0; index < text.length; index++) {
+        const char = text[index];
+        const nextChar = text[index + 1];
+
+        if (char === '"') {
+            if (inQuotes && nextChar === '"') {
+                currentValue += '"';
+                index++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+            continue;
+        }
+
+        if (char === ',' && !inQuotes) {
+            currentRow.push(currentValue);
+            currentValue = '';
+            continue;
+        }
+
+        if ((char === '\n' || char === '\r') && !inQuotes) {
+            if (char === '\r' && nextChar === '\n') {
+                index++;
+            }
+
+            currentRow.push(currentValue);
+            if (currentRow.some(function (cell) { return String(cell).trim() !== ''; })) {
+                rows.push(currentRow);
+            }
+
+            currentRow = [];
+            currentValue = '';
+            continue;
+        }
+
+        currentValue += char;
+    }
+
+    currentRow.push(currentValue);
+    if (currentRow.some(function (cell) { return String(cell).trim() !== ''; })) {
+        rows.push(currentRow);
+    }
+
+    return rows;
+}
+
+function parseCsv(text) {
+    const rows = csvToRows(text);
+    if (!rows.length) {
+        return [];
+    }
+
+    const headers = rows.shift().map(normalizeHeader);
+
+    return rows.map(function (row) {
+        const record = {};
+
+        headers.forEach(function (header, index) {
+            record[header] = (row[index] || '').trim();
+        });
+
+        return record;
+    });
+}
+
+function parseDate(value) {
+    const raw = String(value || '').trim();
+
+    if (!raw) {
+        return null;
+    }
+
+    if (/^\d{4}-\d{2}$/.test(raw)) {
+        return new Date(raw + '-01T00:00:00');
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+        return new Date(raw + 'T00:00:00');
+    }
+
+    const parsed = new Date(raw);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function formatValue(value) {
+    const text = String(value || '').trim();
+    return text && text !== 'False' ? text : 'None';
+}
+
+function escapeHtml(text) {
+    return String(text || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function parseItemDate(raw) {
+    raw = String(raw || '').trim();
+    if (!raw) return null;
+    // Year range: "2019–2020"
+    const yearRangeMatch = raw.match(/^(\d{4})[–\-]/);
+    if (yearRangeMatch) return new Date(parseInt(yearRangeMatch[1]), 0, 1);
+    // Year only: "2018"
+    if (/^\d{4}$/.test(raw)) return new Date(parseInt(raw), 0, 1);
+    // "Month Day1-Day2 YYYY": "March 22-24 2026"
+    const dayRangeMatch = raw.match(/^([A-Za-z]+)\s+(\d+)-\d+\s+(\d{4})$/);
+    if (dayRangeMatch) {
+        const d = new Date(dayRangeMatch[1] + ' ' + dayRangeMatch[2] + ', ' + dayRangeMatch[3]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    // "Month1-Month2 YYYY": "March-April 2026"
+    const monthRangeMatch = raw.match(/^([A-Za-z]+)-[A-Za-z]+\s+(\d{4})$/);
+    if (monthRangeMatch) {
+        const d = new Date(monthRangeMatch[1] + ' 1, ' + monthRangeMatch[2]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    // "Month1 Day1-Month2 Day2 YYYY": "Sept 15-Nov 15 2026"
+    const crossMonthMatch = raw.match(/^([A-Za-z]+)\s+(\d+)-[A-Za-z]+\s+\d+\s+(\d{4})$/);
+    if (crossMonthMatch) {
+        const d = new Date(crossMonthMatch[1] + ' ' + crossMonthMatch[2] + ', ' + crossMonthMatch[3]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    // "Month YYYY": "Dec 2019"
+    const monthYearMatch = raw.match(/^([A-Za-z]+)\s+(\d{4})$/);
+    if (monthYearMatch) {
+        const d = new Date(monthYearMatch[1] + ' 1, ' + monthYearMatch[2]);
+        if (!isNaN(d.getTime())) return d;
+    }
+    const d = new Date(raw);
+    return isNaN(d.getTime()) ? null : d;
+}
+
+function buildItemTitle(date, event, details) {
+    return '<strong>' + escapeHtml(date) + '</strong><br>' +
+           '<em>' + escapeHtml(event) + '</em><br>' +
+           escapeHtml(details);
+}
+
+// End of the month (or month range) for a date with no day: "Nov 2026", "March-April 2026".
+function parseMonthOnlyEnd(raw) {
+    const match = String(raw || '').trim().match(/^(?:[A-Za-z]+-)?([A-Za-z]+)\s+(\d{4})$/);
+    if (!match) return null;
+    const lastMonth = new Date(match[1] + ' 1, ' + match[2]);
+    if (isNaN(lastMonth.getTime())) return null;
+    return new Date(lastMonth.getFullYear(), lastMonth.getMonth() + 1, 1);
+}
+
+// Items before the window are pinned to its left edge so they stay visible.
+// Month bars keep their real end when it is on screen, or their length when wholly past.
+function overlayItemDates(item, winStart) {
+    const start = item.originalDate < winStart ? new Date(winStart.getTime() + 1) : item.originalDate;
+    if (!item.endDate) return { start: start };
+    const end = item.endDate > start
+        ? item.endDate
+        : new Date(start.getTime() + (item.endDate - item.originalDate));
+    return { start: start, end: end };
+}
+
+function updateAllOverlayPositions() {
+    if (!itemsDataSet) return;
+    const win = timeline.getWindow();
+    if (lastOverlayWindowStart && lastOverlayWindowStart.getTime() === win.start.getTime()) return;
+    lastOverlayWindowStart = win.start;
+    const updates = [];
+    [FDA_OVERLAY, EVENTS_OVERLAY].forEach(function (overlay) {
+        overlay.data.forEach(function (item) {
+            updates.push(Object.assign({ id: item.id }, overlayItemDates(item, win.start)));
+        });
+    });
+    if (updates.length) itemsDataSet.update(updates);
+}
+
+function addOverlayToTimeline(overlay) {
+    if (!itemsDataSet || !groupsDataSet) return;
+    const winStart = timeline.getWindow().start;
+    groupsDataSet.add({ id: overlay.id, content: overlay.groupLabel, value: overlay.groupValue, title: overlay.groupTitle });
+    const items = overlay.data.map(function (item) {
+        return Object.assign({
+            id: item.id,
+            group: overlay.id,
+            type: item.endDate ? 'range' : 'point',
+            content: '<span>' + escapeHtml(item.event) + '</span>',
+            title: buildItemTitle(item.date, item.event, item.details),
+            className: overlay.className + (item.endDate ? ' month' : ''),
+            originalDate: item.originalDate,
+            endDate: item.endDate
+        }, overlayItemDates(item, winStart));
+    });
+    itemsDataSet.add(items);
+}
+
+function removeOverlayFromTimeline(overlay) {
+    if (!itemsDataSet || !groupsDataSet) return;
+    itemsDataSet.remove(overlay.data.map(function (item) { return item.id; }));
+    if (groupsDataSet.get(overlay.id)) groupsDataSet.remove(overlay.id);
+}
+
+function toggleOverlay(overlay, checked) {
+    if (!overlay.loaded) {
+        fetch(overlay.csvPath, { cache: 'no-store' })
+            .then(function (r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.text();
+            })
+            .then(function (text) {
+                const records = parseCsv(text);
+                overlay.data = records.reduce(function (acc, record, i) {
+                    const date = (record['date'] || '').trim();
+                    const event = (record['event'] || '').trim();
+                    const details = (record['details'] || '').trim();
+                    const originalDate = parseItemDate(date);
+                    if (!originalDate || !event) return acc;
+                    const endDate = overlay.monthBars ? parseMonthOnlyEnd(date) : null;
+                    acc.push({ id: overlay.idPrefix + i, originalDate: originalDate, endDate: endDate, date: date, event: event, details: details });
+                    return acc;
+                }, []);
+                overlay.loaded = true;
+                if (checked) addOverlayToTimeline(overlay);
+            })
+            .catch(function (err) {
+                console.error('Failed to load ' + overlay.csvPath, err);
+            });
+    } else if (checked) {
+        addOverlayToTimeline(overlay);
+    } else {
+        removeOverlayFromTimeline(overlay);
+    }
+}
+
+function buildTooltipValues(record) {
+    return {
+        primaryCompletion: formatValue(record['primary completion']),
+        phase: formatValue(record['phase']),
+        ibrxDrug: formatValue(record['ibrx drug']),
+        sponsor: formatValue(record['sponsor'])
+    };
+}
+
+function selectedTooltipKeys() {
+    const checkedInputs = Array.from(
+        document.querySelectorAll('.control-group sl-checkbox[name="radio"]')
+    ).filter(function (input) {
+        return input.checked;
+    });
+
+    const keys = checkedInputs.map(function (input) {
+        return input.getAttribute('data-tooltip-key') || 'none';
+    });
+
+    if (!keys.length || keys.includes('none')) {
+        return [];
+    }
+
+    return keys;
+}
+
+function allTooltipCheckboxes() {
+    return Array.from(document.querySelectorAll('.control-group sl-checkbox[name="radio"]'));
+}
+
+function findTooltipCheckboxByKey(key) {
+    return allTooltipCheckboxes().find(function (input) {
+        return (input.getAttribute('data-tooltip-key') || 'none') === key;
+    }) || null;
+}
+
+function lineGraphCheckbox() {
+    return document.getElementById('showRevenueLineGraph');
+}
+
+function syncLineGraphVisibility() {
+    if (!revenueOverlay) {
+        return;
+    }
+
+    const input = lineGraphCheckbox();
+    if (input && input.checked) {
+        revenueOverlay.show();
+        return;
+    }
+
+    revenueOverlay.hide();
+}
+
+function clearLineGraphSelection() {
+    const input = lineGraphCheckbox();
+    if (!input) {
+        return;
+    }
+
+    input.checked = false;
+    syncLineGraphVisibility();
+}
+
+function setupTooltipToggleBehavior() {
+    allTooltipCheckboxes().forEach(function (input) {
+        input.addEventListener('sl-change', function () {
+            const key = input.getAttribute('data-tooltip-key') || 'none';
+            const allInputs = allTooltipCheckboxes();
+
+            if (key === 'none' && input.checked) {
+                allInputs.forEach(function (candidate) {
+                    if (candidate !== input) {
+                        candidate.checked = false;
+                    }
+                });
+
+                clearLineGraphSelection();
+            }
+
+            if (key !== 'none' && input.checked) {
+                const clearInput = findTooltipCheckboxByKey('none');
+                if (clearInput) {
+                    clearInput.checked = false;
+                }
+            }
+
+            updateTooltips();
+        });
+    });
+}
+
+function applyClearTooltipDefault() {
+    const allInputs = allTooltipCheckboxes();
+    const anyChecked = allInputs.some(function (input) {
+        return input.checked;
+    });
+
+    if (!anyChecked) {
+        const clearInput = findTooltipCheckboxByKey('none');
+        if (clearInput) {
+            clearInput.checked = true;
+        }
+    }
+}
+
+function buildTitle(item) {
+    const cols = item.columns || {};
+    const indication = escapeHtml(item.indication || 'Unknown indication');
+    const category = item.category ? ' (' + escapeHtml(item.category) + ')' : '';
+    return [
+        '<strong>' + indication + category + '</strong>',
+        'Phase: ' + escapeHtml(cols.phase || 'None'),
+        'Primary completion: ' + escapeHtml(cols.primaryCompletion || 'None'),
+        'IBRX drug: ' + escapeHtml(cols.ibrxDrug || 'None'),
+        'Sponsor: ' + escapeHtml(cols.sponsor || 'None')
+    ].join('<br>');
+}
+
+// Tailwind palette from CSS vars in css/bencustom.css
+function twColor(tokenName) {
+    const rootStyle = getComputedStyle(document.documentElement);
+    return rootStyle.getPropertyValue(tokenName).trim();
+}
+
+const TW = {
+    anktiva:    twColor('--tw-amber-200'),
+    p1:         twColor('--tw-emerald-100'),
+    p2:         twColor('--tw-emerald-300'),
+    p3:         twColor('--tw-emerald-400'),
+    ibrx:       twColor('--tw-blue-300'),
+    notibrx:    twColor('--tw-violet-300'),
+    notAnktiva: twColor('--tw-rose-200'),
+    enddate:    twColor('--tw-zinc-300'),
+};
+
+function badgeBgColor(tooltipKey, value) {
+    const v = value.toLowerCase();
+    if (tooltipKey === 'primaryCompletion') {
+        return TW.enddate;
+    }
+    if (tooltipKey === 'phase') {
+        if (v.includes('p3')) return TW.p3;
+        if (v.includes('p2')) return TW.p2;
+        if (v.includes('p1') || v.includes('early')) return TW.p1;
+    }
+    if (tooltipKey === 'ibrxDrug') {
+        if (v.includes('anktiva')) return TW.anktiva;  // Anktiva: amber-200
+        return TW.notAnktiva;                               // other IBRX drugs: rose-300
+    }
+    if (tooltipKey === 'sponsor') {
+        if (v.includes('immunitybio') || v.includes('ibrx')) return TW.ibrx;
+        return TW.notibrx;
+    }
+    return TW.enddate;
+}
+
+function buildContent(item) {
+    const indication = item.indication || 'Unknown';
+    const url = item.url || '';
+    const cols = item.columns || {};
+    const tooltipKeys = selectedTooltipKeys();
+
+    const wrapper = document.createElement('span');
+
+    if (url) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = indication;
+        wrapper.appendChild(link);
+    } else {
+        wrapper.appendChild(document.createTextNode(indication));
+    }
+
+    tooltipKeys.forEach(function (tooltipKey) {
+        const subtitleValue = cols[tooltipKey] || '';
+        if (!subtitleValue || subtitleValue === 'None') {
+            return;
+        }
+
+        const badge = document.createElement('span');
+        badge.textContent = subtitleValue;
+        badge.style.cssText = 'background:' + badgeBgColor(tooltipKey, subtitleValue) + ';padding:2px 5px;margin-left:6px;font-size:0.85em;border-radius:3px;color:#000;font-weight:bold;';
+        wrapper.appendChild(badge);
+    });
+
+    return wrapper;
+}
+
+const READOUT_DAYS = 60;
+
+function createTimelineItems(records) {
+    return records.reduce(function (items, record, index) {
+        const indication = record['indication'];
+        const category = record['category'];
+        const url = record['link'];
+        const start = parseDate(record['study start']);
+        let end = parseDate(record['primary completion']);
+        let readoutStyle;
+
+        if (!indication || !start) {
+            return items;
+        }
+
+        if (!end || end <= start) {
+            end = new Date(start.getTime());
+            end.setDate(end.getDate() + 10);
+        } else {
+            // Shade the last READOUT_DAYS before primary completion, when data may come out early.
+            // A percentage of the bar, so it stays the right length at any zoom.
+            const fadeStart = Math.max(0, 1 - READOUT_DAYS * 86400000 / (end - start)) * 100;
+            readoutStyle = '--readout-start: ' + fadeStart.toFixed(2) + '%';
+        }
+
+        const item = {
+            id: 'trial-' + index,
+            group: 3,
+            content: '',
+            start: start,
+            end: end,
+            className: readoutStyle ? 'Trials readout' : 'Trials',
+            style: readoutStyle,
+            subgroup: category || 'Other',
+            columns: buildTooltipValues(record),
+            indication: indication,
+            category: category,
+            url: url
+        };
+
+        item.title = buildTitle(item);
+        item.content = buildContent(item);
+        items.push(item);
+        return items;
+    }, []);
+}
+
+function updateTooltips() {
+    if (!itemsDataSet) {
+        return;
+    }
+
+    itemsDataSet.update(allItems.map(function (item) {
+        item.title = buildTitle(item);
+        item.content = buildContent(item);
+        return {
+            id: item.id,
+            title: item.title,
+            content: item.content
+        };
+    }));
+}
+
+function addMonths(date, months) {
+    const adjusted = new Date(date.getTime());
+    adjusted.setMonth(adjusted.getMonth() + months);
+    return adjusted;
+}
+
+function getCurrentDataAnchorFromRecords(records) {
+    if (!records.length) {
+        return null;
+    }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let best = null;
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    records.forEach(function (record) {
+        const candidates = [
+            parseDate(record['study start']),
+            parseDate(record['primary completion'])
+        ].filter(function (date) {
+            return !!date;
+        });
+
+        candidates.forEach(function (date) {
+            const distance = Math.abs(date.getTime() - today.getTime());
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = date;
+            }
+        });
+    });
+
+    return best;
+}
+
+function getDefaultWindow() {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    start.setDate(start.getDate() - 6 * 7);
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    end.setDate(end.getDate() + 10 * 7);
+    return { start: start, end: end };
+}
+
+function getRevenueLeapsWindowFromRecords(records) {
+    const anchor = getCurrentDataAnchorFromRecords(records);
+    if (!anchor) {
+        return null;
+    }
+
+    return {
+        start: addMonths(anchor, -30),
+        end: addMonths(anchor, 30)
+    };
+}
+
+function applyDefaultTimelineWindow() {
+    if (!timeline || !defaultTimelineWindow) {
+        return;
+    }
+
+    timeline.setWindow(defaultTimelineWindow.start, defaultTimelineWindow.end, { animation: false });
+}
+
+function enforceInitialWindow(attempt) {
+    if (!timeline || !defaultTimelineWindow) {
+        return;
+    }
+
+    applyDefaultTimelineWindow();
+
+    if (attempt < 5) {
+        setTimeout(function () {
+            enforceInitialWindow(attempt + 1);
+        }, 120);
+    }
+}
+
+function renderTimeline(records) {
+    const container = document.getElementById('visualization');
+    const options = {
+        groupOrder: function (first, second) {
+            return first.value - second.value;
+        },
+        editable: false,
+        margin: {
+            item: 5,
+            axis: 5
+        },
+        stack: true,
+        stackSubgroups: true
+    };
+
+    allItems = createTimelineItems(records);
+    defaultTimelineWindow = getDefaultWindow();
+    revenueLeapsWindow = getRevenueLeapsWindowFromRecords(records);
+    options.start = defaultTimelineWindow.start;
+    options.end = defaultTimelineWindow.end;
+
+    itemsDataSet = new vis.DataSet(allItems);
+    itemsView = new vis.DataView(itemsDataSet, { filter: isInTradeWindow });
+    groupsDataSet = new vis.DataSet(GROUPS);
+    timeline = new vis.Timeline(container, itemsView, groupsDataSet, options);
+
+    if (window.createRevenueOverlay) {
+        revenueOverlay = window.createRevenueOverlay(timeline, container);
+    }
+
+    enforceInitialWindow(0);
+
+    timeline.on('changed', updateTooltips);
+    timeline.on('rangechange', updateAllOverlayPositions);
+    updateTooltips();
+}
+
+function applyTooltipSelectionFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const tooltipKey = (params.get('tooltip') || '').trim();
+    if (!tooltipKey) {
+        return;
+    }
+
+    const input = findTooltipCheckboxByKey(tooltipKey);
+    if (input) {
+        const clearInput = findTooltipCheckboxByKey('none');
+        if (tooltipKey !== 'none' && clearInput) {
+            clearInput.checked = false;
+        }
+        input.checked = true;
+    }
+}
+
+// Trials are kept if they end in the trade window; FDA and event points if they fall in it,
+// month bars if they overlap it.
+function isInTradeWindow(item) {
+    if (!tradeWindowFilter) return true;
+    const inside = function (date) {
+        return date >= tradeWindowFilter.start && date <= tradeWindowFilter.end;
+    };
+    if (String(item.id).indexOf('trial-') === 0) return inside(item.end);
+    if (item.endDate) return item.originalDate <= tradeWindowFilter.end && item.endDate > tradeWindowFilter.start;
+    if (item.originalDate) return inside(item.originalDate);
+    return true;
+}
+
+function setTradeWindowFilter(range) {
+    tradeWindowFilter = range;
+    if (itemsView) itemsView.refresh();
+}
+
+function setTradeWindow() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const end = new Date(today.getTime());
+    end.setDate(end.getDate() + 90);
+    end.setHours(23, 59, 59, 999);
+    setTradeWindowFilter({ start: today, end: end });
+    timeline.setWindow(today, end);
+}
+
+function setRevenueAndLeapsWindow() {
+    if (!timeline) {
+        return;
+    }
+
+    setTradeWindowFilter(null);
+
+    if (revenueLeapsWindow) {
+        timeline.setWindow(revenueLeapsWindow.start, revenueLeapsWindow.end, { animation: false });
+    } else {
+        timeline.fit();
+    }
+
+    const input = lineGraphCheckbox();
+    if (input) {
+        input.checked = true;
+    }
+
+    syncLineGraphVisibility();
+}
+
+const SETTINGS_KEY = 'ibrxTimeline.settings';
+
+// Checkbox settings, kept in localStorage so they survive reloads in this browser.
+function loadSettings() {
+    try {
+        return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || null;
+    } catch (error) {
+        return null;
+    }
+}
+
+function saveSettings() {
+    const settings = {
+        tooltips: allTooltipCheckboxes().filter(function (input) {
+            return input.checked;
+        }).map(function (input) {
+            return input.getAttribute('data-tooltip-key') || 'none';
+        }),
+        revenue: !!lineGraphCheckbox().checked,
+        fda: !!document.getElementById('showFdaDesignations').checked,
+        events: !!document.getElementById('showEvents').checked
+    };
+    try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    } catch (error) {
+        // Storage blocked (private window, site data off): settings last for this visit only.
+    }
+}
+
+function applySavedSettings() {
+    const settings = loadSettings();
+    if (!settings) {
+        return;
+    }
+
+    const keys = Array.isArray(settings.tooltips) ? settings.tooltips : [];
+    allTooltipCheckboxes().forEach(function (input) {
+        input.checked = keys.includes(input.getAttribute('data-tooltip-key') || 'none');
+    });
+    lineGraphCheckbox().checked = !!settings.revenue;
+    document.getElementById('showFdaDesignations').checked = !!settings.fda;
+    document.getElementById('showEvents').checked = !!settings.events;
+}
+
+function bindControls() {
+    setupTooltipToggleBehavior();
+    applySavedSettings();
+    applyTooltipSelectionFromQuery();
+    applyClearTooltipDefault();
+    updateTooltips();
+
+    const timelineNotesDialog = document.getElementById('timelineNotesDialog');
+    const settingsDialog = document.getElementById('settingsDialog');
+
+    document.getElementById('openTimelineNotes').addEventListener('click', function () {
+        timelineNotesDialog.show();
+    });
+
+    document.getElementById('openSettings').addEventListener('click', function () {
+        settingsDialog.show();
+    });
+
+    document.getElementById('closeSettings').addEventListener('click', function () {
+        settingsDialog.hide();
+    });
+
+    // Runs after each checkbox's own handler, so it saves the settled state.
+    settingsDialog.addEventListener('sl-change', function () {
+        saveSettings();
+    });
+
+    document.getElementById('zoomIn').onclick = function () {
+        timeline.zoomIn(0.6);
+    };
+
+    document.getElementById('zoomOut').onclick = function () {
+        timeline.zoomOut(0.6);
+    };
+
+    document.getElementById('fit').onclick = function () {
+        setTradeWindowFilter(null);
+        timeline.fit();
+    };
+
+    document.getElementById('swing').onclick = function () {
+        setTradeWindow();
+    };
+
+    document.getElementById('fitRevenueLeaps').onclick = function () {
+        setRevenueAndLeapsWindow();
+    };
+
+    const showRevenueLineGraph = lineGraphCheckbox();
+    if (showRevenueLineGraph) {
+        showRevenueLineGraph.addEventListener('sl-change', function () {
+            syncLineGraphVisibility();
+        });
+    }
+
+    syncLineGraphVisibility();
+
+    const fdaCheckbox = document.getElementById('showFdaDesignations');
+    if (fdaCheckbox) {
+        fdaCheckbox.addEventListener('sl-change', function () {
+            toggleOverlay(FDA_OVERLAY, fdaCheckbox.checked);
+        });
+    }
+
+    const eventsCheckbox = document.getElementById('showEvents');
+    if (eventsCheckbox) {
+        eventsCheckbox.addEventListener('sl-change', function () {
+            toggleOverlay(EVENTS_OVERLAY, eventsCheckbox.checked);
+        });
+    }
+
+    if (fdaCheckbox && fdaCheckbox.checked) toggleOverlay(FDA_OVERLAY, true);
+    if (eventsCheckbox && eventsCheckbox.checked) toggleOverlay(EVENTS_OVERLAY, true);
+}
+
+function showLoadError(message) {
+    document.getElementById('tooltipOptions').textContent = message;
+}
+
+function loadTimelineFromCsv() {
+    fetch('data/ibrx.csv', { cache: 'no-store' })
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+
+            return response.text();
+        })
+        .then(function (text) {
+            const records = parseCsv(text);
+            renderTimeline(records);
+            bindControls();
+        })
+        .catch(function (error) {
+            console.error('Failed to load data/ibrx.csv', error);
+            showLoadError('Failed to load data/ibrx.csv');
+        });
+}
+
+document.addEventListener('DOMContentLoaded', loadTimelineFromCsv);
+    </script>
+
+<sl-dialog label="Timeline settings" id="settingsDialog">
+    <h3 class="settings-heading">Trial labels</h3>
+    <div class="control-group settings-group">
+        <sl-checkbox name="radio" value="4" data-tooltip-key="none" checked>Clear Tooltips</sl-checkbox>
+        <sl-checkbox name="radio" value="0" data-tooltip-key="primaryCompletion">Primary completion date</sl-checkbox>
+        <sl-checkbox name="radio" value="1" data-tooltip-key="phase">Phase</sl-checkbox>
+        <sl-checkbox name="radio" value="2" data-tooltip-key="ibrxDrug">IBRX drug</sl-checkbox>
+        <sl-checkbox name="radio" value="3" data-tooltip-key="sponsor">Study sponsor</sl-checkbox>
+    </div>
+    <h3 class="settings-heading">Overlays</h3>
+    <div class="control-group settings-group">
+        <sl-checkbox id="showRevenueLineGraph">Show revenue</sl-checkbox>
+        <sl-checkbox id="showFdaDesignations">Anktiva FDA designations</sl-checkbox>
+        <sl-checkbox id="showEvents">Events</sl-checkbox>
+    </div>
+    <p class="settings-note">Saved in this browser.</p>
+    <sl-button slot="footer" variant="primary" id="closeSettings">Done</sl-button>
+</sl-dialog>
+
+<sl-dialog label="ImmunityBio trial timeline notes" id="timelineNotesDialog">
+    <img src="img/keytrial.png" class="timeline-note-img" alt="Timeline key" />
+
+    <ul>
+        <li>Not included: trials with a status of withdrawn, terminated, unknown, or started prior to 2020.</li>
+        <li>Trial date range starts with the primary study completion date ends with the study completion published on clinicaltrials.gov.</li>
+        <li>For the timeline's readability and usability reasons, the smallest increment between the primary and study completion date is 10 days. There are a few cases where those dates are identical on clinicaltrials.gov.</li>
+        <li>IBRX completes and withdraws studies without announcement, so there's no way to know if/when results are forthcoming. They also occasionally release preliminary data prior to study completion.</li>
+        <li>Reporting requirement for National Cancer Institute-sponsored studies: <a href="https://stkt.co/0TPs9dwQ">Within 12 months of the earlier of estimated/actual primary completion date.</a></li>
+        <li>Drugs may have multiple names. For example: Anktiva = N-803 = Alt-803 = Inbakicept</li>
+    </ul>
+
+    <sl-button slot="footer" variant="primary" id="closeTimelineNotes">Close</sl-button>
+</sl-dialog>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dialog = document.getElementById('timelineNotesDialog');
+    const closeButton = document.getElementById('closeTimelineNotes');
+    if (dialog && closeButton) {
+        closeButton.addEventListener('click', function () {
+            dialog.hide();
+        });
+    }
+});
+</script>
+
+ 
+<p style="color:#cccccc; text-align:center;">Copyright 2026, Ben Rogers</p>
+</body>
+</html>

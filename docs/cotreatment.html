@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>IBRX Co-Treatment &amp; Partner Pharma Analysis</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ImmunityBio (IBRX) co-treatment and partner pharma analysis with interactive drill-down charts.">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/sidenav.css" rel="stylesheet" type="text/css">
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px 24px 40px;
+        }
+        .page-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0 0 20px;
+        }
+
+        /* Charts */
+        .charts-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        .chart-card {
+            flex: 1;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px 16px 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+        .chart-card h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 0 0 12px;
+        }
+        .chart-container {
+            position: relative;
+            height: 310px;
+        }
+        .chart-hint {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        /* Filter bar */
+        .chart-reset-btn {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background: rgba(71, 85, 105, 0.88);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 13px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            z-index: 5;
+            transition: background 0.15s;
+            pointer-events: auto;
+        }
+        .chart-reset-btn:hover { background: rgba(15, 23, 42, 0.92); }
+        .chart-reset-btn.hidden { display: none; }
+
+        /* Table */
+        .table-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+        .table-header-row h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        #rowCount {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        .table-wrapper {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+        #dataTable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+        #dataTable thead th {
+            background: #f1f5f9;
+            padding: 9px 11px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #cbd5e1;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            cursor: pointer;
+            user-select: none;
+        }
+        #dataTable thead th:hover { background: #e2e8f0; }
+        #dataTable thead th::after {
+            content: ' ⇅';
+            opacity: 0.35;
+            font-size: 0.75em;
+        }
+        #dataTable thead th.sort-asc::after  { content: ' ▲'; opacity: 0.75; }
+        #dataTable thead th.sort-desc::after { content: ' ▼'; opacity: 0.75; }
+        #dataTable tbody td {
+            padding: 7px 11px;
+            border-bottom: 1px solid #e9edf2;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+        #dataTable tbody tr:last-child td { border-bottom: none; }
+        #dataTable tbody tr:nth-child(even) td { background: #f8fafc; }
+        #dataTable tbody tr:hover td { background: #eff6ff; }
+        #dataTable a { color: #2563eb; text-decoration: none; font-weight: 500; }
+        #dataTable a:hover { text-decoration: underline; }
+        .highlight-cell { background: #fef9c3 !important; }
+
+        /* Loading */
+        #loadingMsg {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 700px) {
+            .charts-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WJY24VJ39L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WJY24VJ39L');
+</script>
+<body class="ibrx-csv-timeline">
+
+<header class="hero">
+    <canvas aria-hidden="true"></canvas>
+    <div class="hero-text">
+        <div class="hero-kicker">ImmunityBio · IBRX</div>
+        <h1 class="hero-title">Co-Treatment &amp; Partner Pharma</h1>
+        <div class="hero-subtitle">Combination drugs and third-party partners across IBRX trials</div>
+    </div>
+</header>
+<script src="js/sidenav.js"></script>
+<script src="js/header-helix.js"></script>
+
+<section>
+    <p class="page-subtitle">Click any chart segment to filter the table. Click the same segment again to deselect.</p>
+
+    <div class="charts-row">
+        <div class="chart-card">
+            <h2>Co-Treatments</h2>
+            <div class="chart-container">
+                <canvas id="cotreatChart"></canvas>
+                <button class="chart-reset-btn hidden" id="cotreatResetBtn">Reset</button>
+            </div>
+            <p class="chart-hint">Click a segment to drill down</p>
+        </div>
+        <div class="chart-card">
+            <h2>Co-treatment 3rd Parties</h2>
+            <div class="chart-container">
+                <canvas id="pharmaChart"></canvas>
+                <button class="chart-reset-btn hidden" id="pharmaResetBtn">Reset</button>
+            </div>
+            <p class="chart-hint">Click a segment to drill down</p>
+        </div>
+    </div>
+
+    <div id="loadingMsg">Loading trial data&hellip;</div>
+
+    <div id="mainContent" style="display:none;">
+        <div class="table-header-row">
+            <h3>Clinical Trials</h3>
+            <span id="rowCount"></span>
+        </div>
+        <div class="table-wrapper">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th data-col="Indication">Indication</th>
+                        <th data-col="Phase">Phase</th>
+                        <th data-col="IBRX drug">IBRX Drug</th>
+                        <th data-col="Co-treatments">Co-treatments</th>
+                        <th data-col="Co-treatment 3rd Parties">Co-treatment 3rd Parties</th>
+                        <th data-col="Link">NCT Link</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+// ─── Palette ─────────────────────────────────────────────────────────────────
+const PALETTE = [
+    '#7c6e5a', // warm brown  (None)
+    '#4e79a7', // steel blue
+    '#f28e2b', // amber
+    '#e15759', // coral red
+    '#76b7b2', // sea teal
+    '#59a14f', // leaf green
+    '#edc948', // golden yellow
+    '#b07aa1', // mauve
+    '#ff9da7', // soft pink
+    '#9c755f', // sienna
+    '#bab0ac', // warm gray (11th+)
+];
+const OTHERS_COLOR = '#c8c8c8';
+const TOP_N = 10;
+
+// ─── State ───────────────────────────────────────────────────────────────────
+let allRows = [];
+let cotreatChart = null;
+let pharmaChart  = null;
+let activeCotreat = null;   // string label or '__others__' or null
+let activePharma  = null;
+let cotreatTopLabels = [];  // top-N labels (not including Others)
+let pharmaTopLabels  = [];
+let cotreatOthersSet = new Set();
+let pharmaOthersSet  = new Set();
+let cotreatColors = [];
+let pharmaColors  = [];
+let sortCol = null;   // CSV column key or null
+let sortDir = 'asc';  // 'asc' | 'desc'
+
+// ─── CSV helpers ─────────────────────────────────────────────────────────────
+function splitField(val) {
+    if (!val || !val.trim() || val.trim().toLowerCase() === 'none') return ['None'];
+    return val.split(';').map(s => s.trim()).filter(Boolean);
+}
+
+function countBy(rows, field) {
+    const map = {};
+    rows.forEach(r => {
+        splitField(r[field]).forEach(item => {
+            map[item] = (map[item] || 0) + 1;
+        });
+    });
+    return map;
+}
+
+// ─── Chart data builder ───────────────────────────────────────────────────────
+// rows + field are needed so "Others" counts distinct trials, not summed occurrences.
+function buildChartData(rows, field) {
+    const countMap = countBy(rows, field);
+    const sorted = Object.entries(countMap).sort((a, b) => b[1] - a[1]);
+    const top    = sorted.slice(0, TOP_N);
+    const others = sorted.slice(TOP_N);
+
+    const labels = top.map(([l]) => l);
+    const values = top.map(([, v]) => v);
+    const colors = top.map((_, i) => PALETTE[i] || PALETTE[PALETTE.length - 1]);
+    const othersNames = others.map(([l]) => l);
+
+    if (others.length) {
+        const othersSet = new Set(othersNames);
+        // Count distinct trials that contain at least one "Others" item
+        const othersTotal = rows.filter(r =>
+            splitField(r[field]).some(item => othersSet.has(item))
+        ).length;
+        labels.push('Others');
+        values.push(othersTotal);
+        colors.push(OTHERS_COLOR);
+    }
+
+    return { labels, values, colors, othersNames };
+}
+
+// ─── Chart factory ────────────────────────────────────────────────────────────
+function makeChart(canvasId, chartData, onSliceClick) {
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                data: chartData.values,
+                backgroundColor: [...chartData.colors],
+                borderColor: '#fff',
+                borderWidth: 2,
+                hoverBorderWidth: 3,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '38%',
+            animation: { duration: 300 },
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        font: { size: 11 },
+                        boxWidth: 13,
+                        padding: 9,
+                        generateLabels(chart) {
+                            return chart.data.labels.map((label, i) => ({
+                                text: `${truncate(label, 28)} (${chart.data.datasets[0].data[i]})`,
+                                fillStyle: chart.data.datasets[0].backgroundColor[i],
+                                strokeStyle: '#fff',
+                                lineWidth: 1,
+                                index: i,
+                                hidden: false,
+                            }));
+                        }
+                    },
+                    onClick(e, item) {
+                        onSliceClick(item.index, this.chart);
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title(items) { return items[0].label; },
+                        label(item) {
+                            const total = item.dataset.data.reduce((a, b) => a + b, 0);
+                            const pct = ((item.parsed / total) * 100).toFixed(1);
+                            return ` ${item.parsed} trial${item.parsed !== 1 ? 's' : ''} (${pct}%)`;
+                        }
+                    }
+                }
+            },
+            onClick(event, elements) {
+                if (elements.length) onSliceClick(elements[0].index, this);
+            }
+        }
+    });
+    return chart;
+}
+
+function truncate(str, max) {
+    return str.length > max ? str.slice(0, max - 1) + '…' : str;
+}
+
+// ─── Highlight active slice ───────────────────────────────────────────────────
+function applyHighlight(chart, activeIndex, baseColors) {
+    if (activeIndex === null) {
+        chart.data.datasets[0].backgroundColor = [...baseColors];
+    } else {
+        chart.data.datasets[0].backgroundColor = baseColors.map((c, i) =>
+            i === activeIndex ? c : c + '44'
+        );
+    }
+    chart.update('none');
+}
+
+// ─── Filter ───────────────────────────────────────────────────────────────────
+function matchesFilter(row, active, othersSet, field) {
+    if (active === null) return true;
+    const items = splitField(row[field]);
+    if (active === '__others__') return items.some(it => othersSet.has(it));
+    return items.includes(active);
+}
+
+function filteredRows() {
+    return allRows.filter(r =>
+        matchesFilter(r, activeCotreat, cotreatOthersSet, 'Co-treatments') &&
+        matchesFilter(r, activePharma,  pharmaOthersSet,  'Co-treatment 3rd Parties')
+    );
+}
+
+// ─── Table sort ───────────────────────────────────────────────────────────────
+function sortedRows(rows) {
+    if (!sortCol) return rows;
+    return [...rows].sort((a, b) => {
+        const av = (a[sortCol] || '').toLowerCase();
+        const bv = (b[sortCol] || '').toLowerCase();
+        if (av < bv) return sortDir === 'asc' ? -1 : 1;
+        if (av > bv) return sortDir === 'asc' ?  1 : -1;
+        return 0;
+    });
+}
+
+function updateSortHeaders() {
+    document.querySelectorAll('#dataTable thead th').forEach(th => {
+        th.classList.remove('sort-asc', 'sort-desc');
+        if (th.dataset.col === sortCol) {
+            th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+        }
+    });
+}
+
+// ─── Table render ─────────────────────────────────────────────────────────────
+function renderTable(rows) {
+    const display = sortedRows(rows);
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+    display.forEach(row => {
+        const nctId = (row['Link'] || '').split('/').pop();
+        const tr = document.createElement('tr');
+        tr.innerHTML =
+            `<td>${esc(row['Indication'])}</td>` +
+            `<td>${esc(row['Phase'])}</td>` +
+            `<td>${esc(row['IBRX drug'])}</td>` +
+            `<td>${esc(row['Co-treatments'])}</td>` +
+            `<td>${esc(row['Co-treatment 3rd Parties'])}</td>` +
+            `<td>${nctId ? `<a href="${esc(row['Link'])}" target="_blank" rel="noopener">${esc(nctId)}</a>` : ''}</td>`;
+        tbody.appendChild(tr);
+    });
+    document.getElementById('rowCount').textContent =
+        `${rows.length} of ${allRows.length} trial${allRows.length !== 1 ? 's' : ''}`;
+}
+
+function esc(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Filter UI ────────────────────────────────────────────────────────────────
+function updateResetBtns() {
+    document.getElementById('cotreatResetBtn').classList.toggle('hidden', activeCotreat === null);
+    document.getElementById('pharmaResetBtn').classList.toggle('hidden',  activePharma  === null);
+}
+
+function positionResetBtn(chart, btn) {
+    const { left, right, top, bottom } = chart.chartArea;
+    btn.style.left = ((left + right) / 2 / chart.canvas.width  * 100) + '%';
+    btn.style.top  = ((top + bottom) / 2 / chart.canvas.height * 100) + '%';
+}
+
+function refresh() {
+    const rows = filteredRows();
+    renderTable(rows);
+    updateResetBtns();
+}
+
+// ─── Cross-chart update helper ────────────────────────────────────────────────
+// Rebuilds `target` chart from `rows` and updates the associated globals.
+function reloadChart(target, rows, field) {
+    const data = buildChartData(rows, field);
+    target.data.labels = data.labels;
+    target.data.datasets[0].data = data.values;
+    // reset highlight (no active selection on dependent chart)
+    target.data.datasets[0].backgroundColor = [...data.colors];
+    target.update();
+    return data;
+}
+
+// ─── Click handlers ───────────────────────────────────────────────────────────
+function handleCotreatClick(index, chart) {
+    const label = chart.data.labels[index];
+    const value = label === 'Others' ? '__others__' : label;
+
+    if (activeCotreat === value) {
+        // Deselect — restore pharma chart to global view
+        activeCotreat = null;
+        applyHighlight(cotreatChart, null, cotreatColors);
+        const phData = reloadChart(pharmaChart, allRows, 'Co-treatment 3rd Parties');
+        pharmaColors = [...phData.colors];
+        pharmaOthersSet = new Set(phData.othersNames);
+        activePharma = null;
+    } else {
+        activeCotreat = value;
+        activePharma  = null;                           // only one driver at a time
+        applyHighlight(cotreatChart, index, cotreatColors);
+        const filtered = filteredRows();
+        const phData = reloadChart(pharmaChart, filtered, 'Co-treatment 3rd Parties');
+        pharmaColors = [...phData.colors];
+        pharmaOthersSet = new Set(phData.othersNames);
+    }
+    refresh();
+}
+
+function handlePharmaClick(index, chart) {
+    const label = chart.data.labels[index];
+    const value = label === 'Others' ? '__others__' : label;
+
+    if (activePharma === value) {
+        // Deselect — restore cotreat chart to global view
+        activePharma = null;
+        applyHighlight(pharmaChart, null, pharmaColors);
+        const ctData = reloadChart(cotreatChart, allRows, 'Co-treatments');
+        cotreatColors = [...ctData.colors];
+        cotreatOthersSet = new Set(ctData.othersNames);
+        activeCotreat = null;
+    } else {
+        activePharma  = value;
+        activeCotreat = null;                           // only one driver at a time
+        applyHighlight(pharmaChart, index, pharmaColors);
+        const filtered = filteredRows();
+        const ctData = reloadChart(cotreatChart, filtered, 'Co-treatments');
+        cotreatColors = [...ctData.colors];
+        cotreatOthersSet = new Set(ctData.othersNames);
+    }
+    refresh();
+}
+
+// ─── Reset buttons ────────────────────────────────────────────────────────────
+document.getElementById('cotreatResetBtn').addEventListener('click', () => {
+    activeCotreat = null;
+    applyHighlight(cotreatChart, null, cotreatColors);
+    const phData = reloadChart(pharmaChart, allRows, 'Co-treatment 3rd Parties');
+    pharmaColors = [...phData.colors];
+    pharmaOthersSet = new Set(phData.othersNames);
+    activePharma = null;
+    refresh();
+});
+document.getElementById('pharmaResetBtn').addEventListener('click', () => {
+    activePharma = null;
+    applyHighlight(pharmaChart, null, pharmaColors);
+    const ctData = reloadChart(cotreatChart, allRows, 'Co-treatments');
+    cotreatColors = [...ctData.colors];
+    cotreatOthersSet = new Set(ctData.othersNames);
+    activeCotreat = null;
+    refresh();
+});
+
+// ─── Header sort clicks ───────────────────────────────────────────────────────
+document.querySelectorAll('#dataTable thead th[data-col]').forEach(th => {
+    th.addEventListener('click', () => {
+        const col = th.dataset.col;
+        if (sortCol === col) {
+            sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            sortCol = col;
+            sortDir = 'asc';
+        }
+        updateSortHeaders();
+        refresh();
+    });
+});
+
+// ─── Boot ─────────────────────────────────────────────────────────────────────
+fetch('data/ibrx.csv')
+    .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+    })
+    .then(text => {
+        const parsed = Papa.parse(text, {
+            header: true,
+            skipEmptyLines: true,
+        });
+        allRows = parsed.data.filter(r => r['Indication'] && r['Indication'].trim());
+
+        // Build chart data (rows + field passed so Others counts distinct trials)
+        const ctData = buildChartData(allRows, 'Co-treatments');
+        const phData = buildChartData(allRows, 'Co-treatment 3rd Parties');
+
+        cotreatTopLabels = ctData.labels.filter(l => l !== 'Others');
+        pharmaTopLabels  = phData.labels.filter(l => l !== 'Others');
+        cotreatOthersSet = new Set(ctData.othersNames);
+        pharmaOthersSet  = new Set(phData.othersNames);
+        cotreatColors    = [...ctData.colors];
+        pharmaColors     = [...phData.colors];
+
+        // Create charts
+        cotreatChart = makeChart('cotreatChart', ctData, handleCotreatClick);
+        pharmaChart  = makeChart('pharmaChart',  phData, handlePharmaClick);
+
+        positionResetBtn(cotreatChart, document.getElementById('cotreatResetBtn'));
+        positionResetBtn(pharmaChart,  document.getElementById('pharmaResetBtn'));
+
+        // Show content
+        document.getElementById('loadingMsg').style.display = 'none';
+        document.getElementById('mainContent').style.display = '';
+
+        renderTable(allRows);
+    })
+    .catch(err => {
+        document.getElementById('loadingMsg').textContent = `Error loading data: ${err.message}`;
+    });
+</script>
+</body>
+</html>
