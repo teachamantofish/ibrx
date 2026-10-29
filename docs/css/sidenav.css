@@ -152,34 +152,9 @@ body.has-sidenav {
     color: #93a6c6;
 }
 
-/* Kicker and subtitle on one line along the top of the header, about 30% larger. */
-.hero-meta {
-    position: absolute;
-    top: 1em;
-    left: 32px;
-    right: 32px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 24px;
-}
-
-.hero-meta .hero-kicker {
-    font-size: 14px;
-}
-
-.hero-meta .hero-subtitle {
-    font-size: 16px;
-}
-
 @media (max-width: 640px) {
     .hero {
         height: 96px;
-    }
-
-    .hero-meta {
-        left: 16px;
-        right: 16px;
     }
 
     .hero-text {

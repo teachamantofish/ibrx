@@ -3,16 +3,22 @@
     const PAGES = [
         {
             href: 'index.html',
-            label: 'Trading Timeline',
+            label: 'Trial timeline',
             // Gantt bars
             icon: '<path d="M4 6h9M7 12h11M5 18h7"/><path d="M3 3v18" opacity=".45"/>'
         },
         {
             href: 'cotreatment.html',
-            label: 'Partner Drug/Pharma',
+            label: 'Drug combos/collab',
             // Molecule: three bonded atoms
             icon: '<circle cx="7" cy="7" r="2.6"/><circle cx="17" cy="9" r="2.6"/><circle cx="10" cy="17.5" r="2.6"/>' +
                 '<path d="M9.5 7.6l5 .9M8 9.4l1.3 5.6M15.2 11l-3.4 4.6"/>'
+        },
+        {
+            href: 'trials.html',
+            label: 'Trial data',
+            // Table grid
+            icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14.5h18M9 9v11"/>'
         }
     ];
 

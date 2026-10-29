@@ -38,10 +38,9 @@
 <header class="hero">
     <canvas aria-hidden="true"></canvas>
     <div class="hero-text">
-        <div class="hero-meta">
-            <div class="hero-kicker">ImmunityBio · IBRX</div>
-            <div class="hero-subtitle">Trials · FDA designations · Events · Revenue</div>
-        </div>
+        <div class="hero-kicker">ImmunityBio · IBRX</div>
+        <h1 class="hero-title">Trial Timeline</h1>
+        <div class="hero-subtitle">Trials · FDA designations · Events · Revenue</div>
     </div>
 </header>
     <section>
@@ -49,11 +48,10 @@
     <br/>
     <div id="visualization">
         <div class="menu timeline-actions">
-            <sl-button id="zoomIn" variant="primary" size="small">Zoom in</sl-button>
-            <sl-button id="zoomOut" variant="primary" size="small">Zoom out</sl-button>
-            <sl-button id="fit" variant="neutral" size="small">Fit all</sl-button>
-            <sl-button id="swing" variant="neutral" size="small">Fit 90 day trade window</sl-button>
-            <sl-button id="fitRevenueLeaps" variant="success" size="small">Fit Revenue and LEAPs window</sl-button>
+            <sl-button id="zoomIn" size="small">Zoom in</sl-button>
+            <sl-button id="zoomOut" size="small">Zoom out</sl-button>
+            <sl-button id="fit" size="small">Fit all</sl-button>
+            <sl-button id="fitRevenueLeaps" size="small">Fit Revenue and LEAPs window</sl-button>
             <div class="timeline-tools">
                 <sl-icon-button id="openTimelineNotes" name="question-circle" label="Timeline notes"></sl-icon-button>
                 <sl-icon-button id="openSettings" name="gear" label="Settings"></sl-icon-button>
@@ -83,9 +81,6 @@ let timeline = null;
 let itemsDataSet = null;
 let groupsDataSet = null;
 let allItems = [];
-let itemsView = null;
-// {start, end} while "Fit 90 day trade window" is filtering items; null shows everything.
-let tradeWindowFilter = null;
 // Opening view: 6 weeks back to 10 weeks ahead of today.
 let defaultTimelineWindow = null;
 // "Fit Revenue and LEAPs window": 30 months either side of the trial date nearest today.
@@ -709,9 +704,8 @@ function renderTimeline(records) {
     options.end = defaultTimelineWindow.end;
 
     itemsDataSet = new vis.DataSet(allItems);
-    itemsView = new vis.DataView(itemsDataSet, { filter: isInTradeWindow });
     groupsDataSet = new vis.DataSet(GROUPS);
-    timeline = new vis.Timeline(container, itemsView, groupsDataSet, options);
+    timeline = new vis.Timeline(container, itemsDataSet, groupsDataSet, options);
 
     if (window.createRevenueOverlay) {
         revenueOverlay = window.createRevenueOverlay(timeline, container);
@@ -741,40 +735,10 @@ function applyTooltipSelectionFromQuery() {
     }
 }
 
-// Trials are kept if they end in the trade window; FDA and event points if they fall in it,
-// month bars if they overlap it.
-function isInTradeWindow(item) {
-    if (!tradeWindowFilter) return true;
-    const inside = function (date) {
-        return date >= tradeWindowFilter.start && date <= tradeWindowFilter.end;
-    };
-    if (String(item.id).indexOf('trial-') === 0) return inside(item.end);
-    if (item.endDate) return item.originalDate <= tradeWindowFilter.end && item.endDate > tradeWindowFilter.start;
-    if (item.originalDate) return inside(item.originalDate);
-    return true;
-}
-
-function setTradeWindowFilter(range) {
-    tradeWindowFilter = range;
-    if (itemsView) itemsView.refresh();
-}
-
-function setTradeWindow() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const end = new Date(today.getTime());
-    end.setDate(end.getDate() + 90);
-    end.setHours(23, 59, 59, 999);
-    setTradeWindowFilter({ start: today, end: end });
-    timeline.setWindow(today, end);
-}
-
 function setRevenueAndLeapsWindow() {
     if (!timeline) {
         return;
     }
-
-    setTradeWindowFilter(null);
 
     if (revenueLeapsWindow) {
         timeline.setWindow(revenueLeapsWindow.start, revenueLeapsWindow.end, { animation: false });
@@ -870,12 +834,7 @@ function bindControls() {
     };
 
     document.getElementById('fit').onclick = function () {
-        setTradeWindowFilter(null);
         timeline.fit();
-    };
-
-    document.getElementById('swing').onclick = function () {
-        setTradeWindow();
     };
 
     document.getElementById('fitRevenueLeaps').onclick = function () {

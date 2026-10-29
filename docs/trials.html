@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>IBRX Trial Data</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ImmunityBio (IBRX) clinical trial data in a sortable, searchable table.">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/sidenav.css" rel="stylesheet" type="text/css">
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px 24px 40px;
+        }
+        .page-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0 0 20px;
+        }
+        .table-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            overflow-x: auto;
+        }
+        table.dataTable {
+            font-size: 0.82rem;
+        }
+        table.dataTable td.nowrap {
+            white-space: nowrap;
+        }
+        table.dataTable a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        table.dataTable a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WJY24VJ39L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WJY24VJ39L');
+</script>
+<body class="ibrx-csv-timeline">
+
+<header class="hero">
+    <canvas aria-hidden="true"></canvas>
+    <div class="hero-text">
+        <div class="hero-kicker">ImmunityBio · IBRX</div>
+        <h1 class="hero-title">Trial Data</h1>
+        <div class="hero-subtitle">All IBRX trials · click a column header to sort</div>
+    </div>
+</header>
+<script src="js/sidenav.js"></script>
+<script src="js/header-helix.js"></script>
+
+<section>
+    <p class="page-subtitle" id="loadingMsg">Loading trials…</p>
+    <div class="table-card">
+        <table id="trialsTable" class="display" style="width:100%"></table>
+    </div>
+</section>
+
+<script>
+// ─── Boot ─────────────────────────────────────────────────────────────────────
+fetch('data/ibrx.csv')
+    .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+    })
+    .then(text => {
+        const parsed = Papa.parse(text, {
+            header: true,
+            skipEmptyLines: true,
+            transformHeader: h => h.trim(),
+        });
+        const rows = parsed.data.filter(r => r['Indication'] && r['Indication'].trim());
+        const fields = parsed.meta.fields;
+
+        const columns = fields.map(field => {
+            const col = { title: field, data: row => row[field] || '' };
+            if (field === 'Link') {
+                col.title = 'Trial';
+                col.render = (url, type) => {
+                    const id = url.split('/').pop();
+                    return type === 'display' && url ? `<a href="${url}" target="_blank" rel="noopener">${id}</a>` : id;
+                };
+            }
+            if (field === 'Study start' || field === 'Primary completion') col.className = 'nowrap';
+            return col;
+        });
+
+        new DataTable('#trialsTable', {
+            data: rows,
+            columns: columns,
+            order: [[fields.indexOf('Study start'), 'desc']],
+            pageLength: 50,
+            lengthMenu: [25, 50, 100, { label: 'All', value: -1 }],
+        });
+
+        document.getElementById('loadingMsg').textContent = `${rows.length} trials. Click a column header to sort; shift-click to sort by multiple columns.`;
+    })
+    .catch(err => {
+        document.getElementById('loadingMsg').textContent = `Error loading data: ${err.message}`;
+    });
+</script>
+</body>
+</html>
