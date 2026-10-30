@@ -1,0 +1,23 @@
+{
+  "updatedAt": 1793328980781,
+  "agents": [
+    {
+      "id": "main",
+      "task": "add call vol, put vol, and total OI. I haven't figure out how to get past totals yet. . . .",
+      "type": "main",
+      "model": "claude-opus-5-5",
+      "status": "running",
+      "toolCalls": 2,
+      "lastTool": "Bash",
+      "steps": 1,
+      "tokens": {
+        "input": 2,
+        "output": 1754,
+        "cacheRead": 279791,
+        "cacheWrite": 94
+      },
+      "startedAt": 1793328957659,
+      "endedAt": null
+    }
+  ]
+}

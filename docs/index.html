@@ -54,7 +54,6 @@
             <sl-button id="fitRevenueLeaps" size="small">Fit Revenue and LEAPs window</sl-button>
             <div class="timeline-tools">
                 <sl-icon-button id="openTimelineNotes" name="question-circle" label="Timeline notes"></sl-icon-button>
-                <sl-icon-button id="openSettings" name="gear" label="Settings"></sl-icon-button>
             </div>
         </div>
 
@@ -264,15 +263,33 @@ function parseMonthOnlyEnd(raw) {
     return new Date(lastMonth.getFullYear(), lastMonth.getMonth() + 1, 1);
 }
 
-// Items before the window are pinned to its left edge so they stay visible.
-// Month bars keep their real end when it is on screen, or their length when wholly past.
+// Month bars before the window are pinned to its left edge so they stay visible.
+// They keep their real end when it is on screen, or their length when wholly past.
 function overlayItemDates(item, winStart) {
+    if (!item.endDate) return { start: item.originalDate };
     const start = item.originalDate < winStart ? new Date(winStart.getTime() + 1) : item.originalDate;
-    if (!item.endDate) return { start: start };
     const end = item.endDate > start
         ? item.endDate
         : new Date(start.getTime() + (item.endDate - item.originalDate));
     return { start: start, end: end };
+}
+
+// A dot that has scrolled off the left edge takes its label with it.
+function overlayItemVisible(item, winStart) {
+    return !!item.endDate || item.originalDate >= winStart;
+}
+
+function overlayTimelineItem(overlay, item, winStart) {
+    return Object.assign({
+        id: item.id,
+        group: overlay.id,
+        type: item.endDate ? 'range' : 'point',
+        content: '<span>' + escapeHtml(item.event) + '</span>',
+        title: buildItemTitle(item.date, item.event, item.details),
+        className: overlay.className + (item.endDate ? ' month' : ''),
+        originalDate: item.originalDate,
+        endDate: item.endDate
+    }, overlayItemDates(item, winStart));
 }
 
 function updateAllOverlayPositions() {
@@ -280,38 +297,88 @@ function updateAllOverlayPositions() {
     const win = timeline.getWindow();
     if (lastOverlayWindowStart && lastOverlayWindowStart.getTime() === win.start.getTime()) return;
     lastOverlayWindowStart = win.start;
+    const additions = [];
     const updates = [];
+    const removals = [];
     [FDA_OVERLAY, EVENTS_OVERLAY].forEach(function (overlay) {
+        if (!overlay.active) return;
         overlay.data.forEach(function (item) {
-            updates.push(Object.assign({ id: item.id }, overlayItemDates(item, win.start)));
+            const shown = !!itemsDataSet.get(item.id);
+            if (!overlayItemVisible(item, win.start)) {
+                if (shown) removals.push(item.id);
+            } else if (!shown) {
+                additions.push(overlayTimelineItem(overlay, item, win.start));
+            } else if (item.endDate) {
+                updates.push(Object.assign({ id: item.id }, overlayItemDates(item, win.start)));
+            }
         });
     });
+    if (removals.length) itemsDataSet.remove(removals);
+    if (additions.length) itemsDataSet.add(additions);
     if (updates.length) itemsDataSet.update(updates);
 }
 
 function addOverlayToTimeline(overlay) {
     if (!itemsDataSet || !groupsDataSet) return;
     const winStart = timeline.getWindow().start;
+    overlay.active = true;
     groupsDataSet.add({ id: overlay.id, content: overlay.groupLabel, value: overlay.groupValue, title: overlay.groupTitle });
-    const items = overlay.data.map(function (item) {
-        return Object.assign({
-            id: item.id,
-            group: overlay.id,
-            type: item.endDate ? 'range' : 'point',
-            content: '<span>' + escapeHtml(item.event) + '</span>',
-            title: buildItemTitle(item.date, item.event, item.details),
-            className: overlay.className + (item.endDate ? ' month' : ''),
-            originalDate: item.originalDate,
-            endDate: item.endDate
-        }, overlayItemDates(item, winStart));
-    });
-    itemsDataSet.add(items);
+    itemsDataSet.add(overlay.data.filter(function (item) {
+        return overlayItemVisible(item, winStart);
+    }).map(function (item) {
+        return overlayTimelineItem(overlay, item, winStart);
+    }));
 }
 
 function removeOverlayFromTimeline(overlay) {
     if (!itemsDataSet || !groupsDataSet) return;
+    overlay.active = false;
     itemsDataSet.remove(overlay.data.map(function (item) { return item.id; }));
     if (groupsDataSet.get(overlay.id)) groupsDataSet.remove(overlay.id);
+}
+
+const DAY_MS = 86400000;
+// Day gridlines appear once the window is down to about 3 months.
+const DAY_GRID_MAX_DAYS = 92;
+let dayGridLayer = null;
+let dayAxisOn = false;
+
+// While the day lines show, the time axis numbers every day, with the month and year beneath.
+function setDayAxis(on) {
+    if (on === dayAxisOn) return;
+    dayAxisOn = on;
+    document.getElementById('visualization').classList.toggle('day-axis', on);
+    timeline.setOptions({ timeAxis: on ? { scale: 'day', step: 1 } : { scale: undefined, step: undefined } });
+}
+
+function updateDayGrid() {
+    if (!timeline) return;
+    if (!dayGridLayer) {
+        const center = document.querySelector('#visualization .vis-panel.vis-center');
+        if (!center) return;
+        dayGridLayer = document.createElement('div');
+        dayGridLayer.className = 'day-grid';
+        center.prepend(dayGridLayer);
+    }
+
+    const win = timeline.getWindow();
+    const showDays = win.end - win.start <= DAY_GRID_MAX_DAYS * DAY_MS;
+    setDayAxis(showDays);
+    if (!showDays) {
+        dayGridLayer.replaceChildren();
+        return;
+    }
+
+    const lines = [];
+    const day = new Date(win.start.getTime());
+    day.setHours(0, 0, 0, 0);
+    for (; day <= win.end; day.setDate(day.getDate() + 1)) {
+        const line = document.createElement('div');
+        // Whole pixels: a faint 1px line at a fractional x blurs away to nothing.
+        line.style.transform = 'translateX(' + Math.round(timeline.body.util.toScreen(day)) + 'px)';
+        lines.push(line);
+    }
+    dayGridLayer.replaceChildren.apply(dayGridLayer, lines);
 }
 
 function toggleOverlay(overlay, checked) {
@@ -715,6 +782,7 @@ function renderTimeline(records) {
 
     timeline.on('changed', updateTooltips);
     timeline.on('rangechange', updateAllOverlayPositions);
+    timeline.on('changed', updateDayGrid);
     updateTooltips();
 }
 
@@ -806,22 +874,14 @@ function bindControls() {
     updateTooltips();
 
     const timelineNotesDialog = document.getElementById('timelineNotesDialog');
-    const settingsDialog = document.getElementById('settingsDialog');
+    const settingsPanel = document.getElementById('timelineSettings');
 
     document.getElementById('openTimelineNotes').addEventListener('click', function () {
         timelineNotesDialog.show();
     });
 
-    document.getElementById('openSettings').addEventListener('click', function () {
-        settingsDialog.show();
-    });
-
-    document.getElementById('closeSettings').addEventListener('click', function () {
-        settingsDialog.hide();
-    });
-
     // Runs after each checkbox's own handler, so it saves the settled state.
-    settingsDialog.addEventListener('sl-change', function () {
+    settingsPanel.addEventListener('sl-change', function () {
         saveSettings();
     });
 
@@ -895,24 +955,24 @@ function loadTimelineFromCsv() {
 document.addEventListener('DOMContentLoaded', loadTimelineFromCsv);
     </script>
 
-<sl-dialog label="Timeline settings" id="settingsDialog">
-    <h3 class="settings-heading">Trial labels</h3>
-    <div class="control-group settings-group">
+<!-- Timeline settings: js/sidenav.js moves this under the "Trial timeline" menu item. -->
+<div id="timelineSettings" class="sidenav-panel" data-sidenav-panel hidden>
+    <h3 class="sidenav-panel-heading">Trial labels</h3>
+    <div class="control-group sidenav-panel-group">
         <sl-checkbox name="radio" value="4" data-tooltip-key="none" checked>Clear Tooltips</sl-checkbox>
         <sl-checkbox name="radio" value="0" data-tooltip-key="primaryCompletion">Primary completion date</sl-checkbox>
         <sl-checkbox name="radio" value="1" data-tooltip-key="phase">Phase</sl-checkbox>
         <sl-checkbox name="radio" value="2" data-tooltip-key="ibrxDrug">IBRX drug</sl-checkbox>
         <sl-checkbox name="radio" value="3" data-tooltip-key="sponsor">Study sponsor</sl-checkbox>
     </div>
-    <h3 class="settings-heading">Overlays</h3>
-    <div class="control-group settings-group">
+    <h3 class="sidenav-panel-heading">Overlays</h3>
+    <div class="control-group sidenav-panel-group">
         <sl-checkbox id="showRevenueLineGraph">Show revenue</sl-checkbox>
         <sl-checkbox id="showFdaDesignations">Anktiva FDA designations</sl-checkbox>
         <sl-checkbox id="showEvents">Events</sl-checkbox>
     </div>
-    <p class="settings-note">Saved in this browser.</p>
-    <sl-button slot="footer" variant="primary" id="closeSettings">Done</sl-button>
-</sl-dialog>
+    <p class="sidenav-panel-note">Saved in this browser.</p>
+</div>
 
 <sl-dialog label="ImmunityBio trial timeline notes" id="timelineNotesDialog">
     <img src="img/keytrial.png" class="timeline-note-img" alt="Timeline key" />

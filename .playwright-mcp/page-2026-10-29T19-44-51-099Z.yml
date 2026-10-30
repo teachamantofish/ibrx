@@ -1,0 +1,683 @@
+- generic [active] [ref=e1]:
+  - navigation "Pages" [ref=e2]:
+    - button "Open menu" [ref=e3] [cursor=pointer]
+    - list [ref=e6]:
+      - listitem [ref=e7]:
+        - link "Trading Timeline" [ref=e8] [cursor=pointer]:
+          - /url: index.html
+      - listitem [ref=e12]:
+        - link "Partner Drug/Pharma" [ref=e13] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=e20]:
+        - link "Trial data" [ref=e21] [cursor=pointer]:
+          - /url: trials.html
+  - banner [ref=e26]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trial Data" [level=1]
+      - generic: All IBRX trials · click a column header to sort
+  - generic [ref=e28]:
+    - paragraph [ref=e29]: 44 trials. Click a column header to sort; shift-click to sort by multiple columns.
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - generic [ref=e34]:
+          - combobox "entries per page" [ref=e35]:
+            - option "25"
+            - option "50" [selected]
+            - option "100"
+            - option "All"
+          - text: entries per page
+        - generic [ref=e37]:
+          - text: "Search:"
+          - searchbox "Search:" [ref=e38]
+      - table [ref=e41]:
+        - rowgroup [ref=e54]:
+          - row [ref=e55]:
+            - 'columnheader "Indication: Activate to sort" [ref=e56] [cursor=pointer]':
+              - button "Indication" [ref=e57]
+            - 'columnheader "Category: Activate to sort" [ref=e59] [cursor=pointer]':
+              - button "Category" [ref=e60]
+            - 'columnheader "Trial: Activate to sort" [ref=e62] [cursor=pointer]':
+              - button "Trial" [ref=e63]
+            - 'columnheader "Study start: Activate to remove sorting" [ref=e65] [cursor=pointer]':
+              - button "Study start" [ref=e66]
+            - 'columnheader "Primary completion: Activate to sort" [ref=e68] [cursor=pointer]':
+              - button "Primary completion" [ref=e69]
+            - 'columnheader "Phase: Activate to sort" [ref=e71] [cursor=pointer]':
+              - button "Phase" [ref=e72]
+            - 'columnheader "IBRX drug: Activate to sort" [ref=e74] [cursor=pointer]':
+              - button "IBRX drug" [ref=e75]
+            - 'columnheader "Co-treatments: Activate to sort" [ref=e77] [cursor=pointer]':
+              - button "Co-treatments" [ref=e78]
+            - 'columnheader "Sponsor: Activate to sort" [ref=e80] [cursor=pointer]':
+              - button "Sponsor" [ref=e81]
+            - 'columnheader "Platform: Activate to sort" [ref=e83] [cursor=pointer]':
+              - button "Platform" [ref=e84]
+            - 'columnheader "Co-treatment 3rd Parties: Activate to sort" [ref=e86] [cursor=pointer]':
+              - button "Co-treatment 3rd Parties" [ref=e87]
+        - rowgroup [ref=e89]:
+          - row [ref=e90]:
+            - cell "Urothelial Carcinoma" [ref=e91]
+            - cell "Cancer" [ref=e92]
+            - cell [ref=e93]:
+              - link "NCT07217496" [ref=e94] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07217496
+            - cell "2026-12" [ref=e95]
+            - cell "2028-01" [ref=e96]
+            - cell "P1" [ref=e97]
+            - cell "Anktiva" [ref=e98]
+            - cell "enfortumab vedotin; Pembrolizumab/Keytruda" [ref=e99]
+            - cell "IBRX" [ref=e100]
+            - cell "Immunocytokine" [ref=e101]
+            - cell "Merck & Co. (MSD)" [ref=e102]
+          - row [ref=e103]:
+            - cell "Prostate Cancer; Metastatic Prostate Cancer" [ref=e104]
+            - cell "Cancer" [ref=e105]
+            - cell [ref=e106]:
+              - link "NCT07756593" [ref=e107] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07756593
+            - cell "2026-11-30" [ref=e108]
+            - cell "2029-04-14" [ref=e109]
+            - cell "P1" [ref=e110]
+            - cell "Anktiva" [ref=e111]
+            - cell "Sipuleucel-T" [ref=e112]
+            - cell "Washington U. School of Medicine" [ref=e113]
+            - cell "Immunocytokine" [ref=e114]
+            - cell "Dendreon; IBRX" [ref=e115]
+          - row [ref=e116]:
+            - cell "Adenocarcinoma; Prostate Cancer; Neoplasms; Carcinoma; Neoplasms, Glandular and Epithelial; Neoplasms by Histologic Type" [ref=e117]
+            - cell "Cancer" [ref=e118]
+            - cell [ref=e119]:
+              - link "NCT07574541" [ref=e120] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07574541
+            - cell "2026-11-02" [ref=e121]
+            - cell "2027-06-15" [ref=e122]
+            - cell "P2" [ref=e123]
+            - cell "TriAdeno vaccine; Anktiva" [ref=e124]
+            - cell "None" [ref=e125]
+            - cell "National Cancer Institute (NCI)" [ref=e126]
+            - cell "Immunocytokine" [ref=e127]
+            - cell "None" [ref=e128]
+          - row [ref=e129]:
+            - cell "Sepsis" [ref=e130]
+            - cell "Immunodeficiency" [ref=e131]
+            - cell [ref=e132]:
+              - link "NCT07783789" [ref=e133] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07783789
+            - cell "2026-10-15" [ref=e134]
+            - cell "2028-05-12" [ref=e135]
+            - cell "P2" [ref=e136]
+            - cell "Anktiva" [ref=e137]
+            - cell "Placebo" [ref=e138]
+            - cell "IBRX" [ref=e139]
+            - cell "Immunocytokine" [ref=e140]
+            - cell "None" [ref=e141]
+          - row [ref=e142]:
+            - cell "Recurrent Prostate Cancer; Prostate Cancer" [ref=e143]
+            - cell "Cancer" [ref=e144]
+            - cell [ref=e145]:
+              - link "NCT07686380" [ref=e146] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07686380
+            - cell "2026-10-01" [ref=e147]
+            - cell "2029-01-30" [ref=e148]
+            - cell "P2" [ref=e149]
+            - cell "Anktiva" [ref=e150]
+            - cell "ETBX-71 Vaccine; 18F-DCFPyL" [ref=e151]
+            - cell "National Cancer Institute (NCI)" [ref=e152]
+            - cell "Immunocytokine" [ref=e153]
+            - cell "None" [ref=e154]
+          - row [ref=e155]:
+            - cell "Head and neck cancer" [ref=e156]
+            - cell "Cancer" [ref=e157]
+            - cell [ref=e158]:
+              - link "NCT07628062" [ref=e159] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07628062
+            - cell "2026-07-22" [ref=e160]
+            - cell "2030-12-31" [ref=e161]
+            - cell "P2" [ref=e162]
+            - cell "Anktiva" [ref=e163]
+            - cell "hAd5-HPV Vaccine; Nab-Paclitaxel; Cisplatin; De-Intensified IMRT; Standard of Care IMRT" [ref=e164]
+            - cell "IBRX" [ref=e165]
+            - cell "Immunocytokine" [ref=e166]
+            - cell "None" [ref=e167]
+          - row [ref=e168]:
+            - cell "Non-small Cell Lung Cancer" [ref=e169]
+            - cell "Cancer" [ref=e170]
+            - cell [ref=e171]:
+              - link "NCT07355205" [ref=e172] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07355205
+            - cell "2026-07-07" [ref=e173]
+            - cell "2032-07-31" [ref=e174]
+            - cell "P1; P2" [ref=e175]
+            - cell "Anktiva" [ref=e176]
+            - cell "Ipilimumab; Nivolumab" [ref=e177]
+            - cell "Washington U. School of Medicine" [ref=e178]
+            - cell "Immunocytokine" [ref=e179]
+            - cell "IBRX; The Foundation for Barnes-Jewish Hospital; Bristol-Myers Squibb (Yervoy); Bristol-Myers Squibb (Opdivo)" [ref=e180]
+          - row [ref=e181]:
+            - cell "Sepsis; Septic Shock; Lymphopenia; Immunosuppression; Critical Illness" [ref=e182]
+            - cell "Immunodeficiency" [ref=e183]
+            - cell [ref=e184]:
+              - link "NCT07578558" [ref=e185] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07578558
+            - cell "2026-07-06" [ref=e186]
+            - cell "2027-08-03" [ref=e187]
+            - cell "P2" [ref=e188]
+            - cell "Anktiva" [ref=e189]
+            - cell "Standard of Care" [ref=e190]
+            - cell "IBRX" [ref=e191]
+            - cell "Immunocytokine" [ref=e192]
+            - cell "None" [ref=e193]
+          - row [ref=e194]:
+            - cell "Myxoid Liposarcoma; Round Cell Liposarcoma; Synovial Sarcoma" [ref=e195]
+            - cell "Cancer" [ref=e196]
+            - cell [ref=e197]:
+              - link "NCT07261657" [ref=e198] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07261657
+            - cell "2026-04-13" [ref=e199]
+            - cell "2030-09-02" [ref=e200]
+            - cell "EARLY_PHASE1" [ref=e201]
+            - cell "Anktiva" [ref=e202]
+            - cell "Biospecimen Collection; Computed Tomography; Leukapheresis; Magnetic Resonance Imaging; X-Ray Imaging" [ref=e203]
+            - cell "Seth Pollack" [ref=e204]
+            - cell "Immunocytokine" [ref=e205]
+            - cell "National Cancer Institute (NCI)" [ref=e206]
+          - row [ref=e207]:
+            - cell "Non-Hodgkin's Lymphoma" [ref=e208]
+            - cell "Cancer" [ref=e209]
+            - cell [ref=e210]:
+              - link "NCT07477366" [ref=e211] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07477366
+            - cell "2026-04" [ref=e212]
+            - cell "2027-12" [ref=e213]
+            - cell "P2" [ref=e214]
+            - cell "CD19 T-haNK; Anktiva" [ref=e215]
+            - cell "Rituximab" [ref=e216]
+            - cell "IBRX" [ref=e217]
+            - cell "Immunocytokine" [ref=e218]
+            - cell "Genentech / Biogen et al." [ref=e219]
+          - row [ref=e220]:
+            - cell "Long Covid" [ref=e221]
+            - cell "Virus" [ref=e222]
+            - cell [ref=e223]:
+              - link "NCT07108036" [ref=e224] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07108036
+            - cell "2025-11-14" [ref=e225]
+            - cell "2026-10" [ref=e226]
+            - cell "P2" [ref=e227]
+            - cell "Anktiva" [ref=e228]
+            - cell "None" [ref=e229]
+            - cell "IBRX" [ref=e230]
+            - cell "Immunocytokine" [ref=e231]
+            - cell "None" [ref=e232]
+          - row [ref=e233]:
+            - cell "Non-Hodgkin's Lymphoma" [ref=e234]
+            - cell "Cancer" [ref=e235]
+            - cell [ref=e236]:
+              - link "NCT07125872" [ref=e237] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07125872
+            - cell "2025-11-11" [ref=e238]
+            - cell "2027-05-25" [ref=e239]
+            - cell "P2" [ref=e240]
+            - cell "CD19 T-haNK" [ref=e241]
+            - cell "None" [ref=e242]
+            - cell "IBRX" [ref=e243]
+            - cell "Immunocytokine" [ref=e244]
+            - cell "None" [ref=e245]
+          - row [ref=e246]:
+            - cell "Neuroblastoma Recurrent" [ref=e247]
+            - cell "Cancer" [ref=e248]
+            - cell [ref=e249]:
+              - link "NCT07085338" [ref=e250] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07085338
+            - cell "2025-11-10" [ref=e251]
+            - cell "2028-02-01" [ref=e252]
+            - cell "P2" [ref=e253]
+            - cell "Anktiva" [ref=e254]
+            - cell "Temozolomide; Irinotecan; hu14.18K322A; Sargramostim" [ref=e255]
+            - cell "St. Jude Children's Research Hospital" [ref=e256]
+            - cell "Immunocytokine" [ref=e257]
+            - cell "generic (multiple manufacturers); St. Jude Children's Research Hospital / Renaissance Pharma et al.; Partner Therapeutics (Leukine; originally Immunex)" [ref=e258]
+          - row [ref=e259]:
+            - cell "Non-muscle Invasive Bladder Cancer" [ref=e260]
+            - cell "Cancer" [ref=e261]
+            - cell [ref=e262]:
+              - link "NCT06829823" [ref=e263] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06829823
+            - cell "2025-11" [ref=e264]
+            - cell "2026-11" [ref=e265]
+            - cell "P2" [ref=e266]
+            - cell "Anktiva" [ref=e267]
+            - cell "BCG; Gemcitabine" [ref=e268]
+            - cell "IBRX" [ref=e269]
+            - cell "Immunocytokine" [ref=e270]
+            - cell "Merck / Sanofi et al.; generic (multiple manufacturers)" [ref=e271]
+          - row [ref=e272]:
+            - cell "Non Muscle Invasive Bladder Cancer" [ref=e273]
+            - cell "Cancer" [ref=e274]
+            - cell [ref=e275]:
+              - link "NCT06800963" [ref=e276] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06800963
+            - cell "2025-10-15" [ref=e277]
+            - cell "2028-02" [ref=e278]
+            - cell "P1; P2" [ref=e279]
+            - cell "None" [ref=e280]
+            - cell "Intravesical Recombinant Mycobacterium" [ref=e281]
+            - cell "IBRX" [ref=e282]
+            - cell "Immunocytokine" [ref=e283]
+            - cell "ImmunityBio" [ref=e284]
+          - row [ref=e285]:
+            - cell "Non-small Cell Lung Cancer" [ref=e286]
+            - cell "Cancer" [ref=e287]
+            - cell [ref=e288]:
+              - link "NCT06745908" [ref=e289] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06745908
+            - cell "2025-10-01" [ref=e290]
+            - cell "2028-09" [ref=e291]
+            - cell "P3" [ref=e292]
+            - cell "Anktiva" [ref=e293]
+            - cell "Tislelizumab; Docetaxel; Prior failed checkpoint inhibitor" [ref=e294]
+            - cell "IBRX" [ref=e295]
+            - cell "Immunocytokine" [ref=e296]
+            - cell "BeiGene; generic (multiple manufacturers)" [ref=e297]
+          - row [ref=e298]:
+            - cell "Head and neck cancer" [ref=e299]
+            - cell "Cancer" [ref=e300]
+            - cell [ref=e301]:
+              - link "NCT06161545" [ref=e302] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06161545
+            - cell "2025-09-24" [ref=e303]
+            - cell "2026-12-01" [ref=e304]
+            - cell "P2" [ref=e305]
+            - cell "PD-L1 t-haNK cells; Anktiva" [ref=e306]
+            - cell "Pembrolizumab/Keytruda" [ref=e307]
+            - cell "National Cancer Institute (NCI)" [ref=e308]
+            - cell "Immunocytokine" [ref=e309]
+            - cell "Merck & Co. (MSD)" [ref=e310]
+          - row [ref=e311]:
+            - cell "Long Covid" [ref=e312]
+            - cell "Virus" [ref=e313]
+            - cell [ref=e314]:
+              - link "NCT07123727" [ref=e315] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07123727
+            - cell "2025-09-04" [ref=e316]
+            - cell "2027-03" [ref=e317]
+            - cell "P2" [ref=e318]
+            - cell "Anktiva" [ref=e319]
+            - cell "None" [ref=e320]
+            - cell "IBRX" [ref=e321]
+            - cell "Immunocytokine" [ref=e322]
+            - cell "None" [ref=e323]
+          - row [ref=e324]:
+            - cell "Non-Hodgkin's Lymphoma" [ref=e325]
+            - cell "Cancer" [ref=e326]
+            - cell [ref=e327]:
+              - link "NCT05618925" [ref=e328] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT05618925
+            - cell "2025-08-22" [ref=e329]
+            - cell "2026-05-15" [ref=e330]
+            - cell "P1" [ref=e331]
+            - cell "Anktiva; CD19 T-haNK" [ref=e332]
+            - cell "Cyclophosphamide; Fludarabine; Rituximab" [ref=e333]
+            - cell "IBRX" [ref=e334]
+            - cell "Immunocytokine" [ref=e335]
+            - cell "generic (multiple manufacturers); Genentech / Biogen et al." [ref=e336]
+          - row [ref=e337]:
+            - cell "HIV/AIDS" [ref=e338]
+            - cell "Virus" [ref=e339]
+            - cell [ref=e340]:
+              - link "NCT07145164" [ref=e341] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT07145164
+            - cell "2025-08-19" [ref=e342]
+            - cell "2027-12" [ref=e343]
+            - cell "P2" [ref=e344]
+            - cell "Anktiva" [ref=e345]
+            - cell "Saline placebo" [ref=e346]
+            - cell "Michael Peluso, MD" [ref=e347]
+            - cell "Immunocytokine" [ref=e348]
+            - cell "amfAR, The Foundation for AIDS Research" [ref=e349]
+          - row [ref=e350]:
+            - cell "Ovarian Cancer" [ref=e351]
+            - cell "Cancer" [ref=e352]
+            - cell [ref=e353]:
+              - link "NCT06710288" [ref=e354] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06710288
+            - cell "2024-11-06" [ref=e355]
+            - cell "2027-05" [ref=e356]
+            - cell "P2" [ref=e357]
+            - cell "Anktiva; M-CENK" [ref=e358]
+            - cell "Gemcitabine" [ref=e359]
+            - cell "IBRX" [ref=e360]
+            - cell "Immunocytokine" [ref=e361]
+            - cell "generic (multiple manufacturers)" [ref=e362]
+          - row [ref=e363]:
+            - cell "Non-Hodgkin's Lymphoma" [ref=e364]
+            - cell "Cancer" [ref=e365]
+            - cell [ref=e366]:
+              - link "NCT06334991" [ref=e367] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06334991
+            - cell "2024-08-23" [ref=e368]
+            - cell "2027-10" [ref=e369]
+            - cell "P1" [ref=e370]
+            - cell "CD19 T-haNK" [ref=e371]
+            - cell "None" [ref=e372]
+            - cell "IBRX" [ref=e373]
+            - cell "Immunocytokine" [ref=e374]
+            - cell "None" [ref=e375]
+          - row [ref=e376]:
+            - cell "Glioblastoma" [ref=e377]
+            - cell "Cancer" [ref=e378]
+            - cell [ref=e379]:
+              - link "NCT06061809" [ref=e380] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06061809
+            - cell "2024-08-07" [ref=e381]
+            - cell "2029-12-31" [ref=e382]
+            - cell "P2" [ref=e383]
+            - cell "PD-L1 t-haNK; Anktiva" [ref=e384]
+            - cell "Bevacizumab; Tumor Treating Fields" [ref=e385]
+            - cell "IBRX" [ref=e386]
+            - cell "Immunocytokine" [ref=e387]
+            - cell "Genentech / Roche (Avastin); Novocure" [ref=e388]
+          - row [ref=e389]:
+            - cell "HPV-Related Carcinoma" [ref=e390]
+            - cell "Cancer" [ref=e391]
+            - cell [ref=e392]:
+              - link "NCT05976828" [ref=e393] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT05976828
+            - cell "2024-06-14" [ref=e394]
+            - cell "2027-09-02" [ref=e395]
+            - cell "P1" [ref=e396]
+            - cell "IBRX-042" [ref=e397]
+            - cell "None" [ref=e398]
+            - cell "IBRX" [ref=e399]
+            - cell "Immunocytokine" [ref=e400]
+            - cell "None" [ref=e401]
+          - row [ref=e402]:
+            - cell "Endometrial Cancer" [ref=e403]
+            - cell "Cancer" [ref=e404]
+            - cell [ref=e405]:
+              - link "NCT06253494" [ref=e406] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06253494
+            - cell "2024-05-14" [ref=e407]
+            - cell "2026-12-31" [ref=e408]
+            - cell "P1; P2" [ref=e409]
+            - cell "Anktiva" [ref=e410]
+            - cell "AdHER2DC vaccine; Pembrolizumab/Keytruda; Lenvatinib; PATHWAY HER2 assay" [ref=e411]
+            - cell "National Cancer Institute (NCI)" [ref=e412]
+            - cell "Immunocytokine" [ref=e413]
+            - cell "NCI (proprietary agent); Merck & Co. (MSD); Eisai / Merck et al." [ref=e414]
+          - row [ref=e415]:
+            - cell "Metastatic Colorectal Cancer" [ref=e416]
+            - cell "Cancer" [ref=e417]
+            - cell [ref=e418]:
+              - link "NCT06149481" [ref=e419] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06149481
+            - cell "2024-03-26" [ref=e420]
+            - cell "2027-10-31" [ref=e421]
+            - cell "P1; P2" [ref=e422]
+            - cell "Anktiva" [ref=e423]
+            - cell "Retifanlimab; Therapeutic CEA; Brachyury; MUC1 TriAdeno Vaccine Platform; SX-682" [ref=e424]
+            - cell "National Cancer Institute (NCI)" [ref=e425]
+            - cell "Immunocytokine" [ref=e426]
+            - cell "Incyte / MacroGenics et al.; NCI (investigational); NCI / Bavarian Nordic et al.; Syntrix Biosystems" [ref=e427]
+          - row [ref=e428]:
+            - cell "Head and neck cancer" [ref=e429]
+            - cell "Cancer" [ref=e430]
+            - cell [ref=e431]:
+              - link "NCT06239220" [ref=e432] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06239220
+            - cell "2024-02-16" [ref=e433]
+            - cell "2026-12-31" [ref=e434]
+            - cell "P2" [ref=e435]
+            - cell "PD-L1 t-haNK" [ref=e436]
+            - cell "Cetuximab; NAI" [ref=e437]
+            - cell "Dana-Farber Cancer Institute" [ref=e438]
+            - cell "Immunocytokine" [ref=e439]
+            - cell "IBRX; Eli Lilly / Bristol-Myers Squibb et al." [ref=e440]
+          - row [ref=e441]:
+            - cell "Healthy Subjects" [ref=e442]
+            - cell "Cancer" [ref=e443]
+            - cell [ref=e444]:
+              - link "NCT06040918" [ref=e445] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT06040918
+            - cell "2023-10-04" [ref=e446]
+            - cell "2024-09-03" [ref=e447]
+            - cell "P1" [ref=e448]
+            - cell "Anktiva" [ref=e449]
+            - cell "None" [ref=e450]
+            - cell "IBRX" [ref=e451]
+            - cell "Immunocytokine" [ref=e452]
+            - cell "None" [ref=e453]
+          - row [ref=e454]:
+            - cell "Non Muscle Invasive Bladder Cancer" [ref=e455]
+            - cell "Cancer" [ref=e456]
+            - cell [ref=e457]:
+              - link "NCT05981131" [ref=e458] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT05981131
+            - cell "2023-08-17" [ref=e459]
+            - cell "2033-08-30" [ref=e460]
+            - cell "None" [ref=e461]
+            - cell "Anktiva" [ref=e462]
+            - cell "BCG" [ref=e463]
+            - cell "IBRX" [ref=e464]
+            - cell "Immunocytokine" [ref=e465]
+            - cell "Merck / Sanofi et al." [ref=e466]
+          - row [ref=e467]:
+            - cell "Colorectal Carcinoma; Colorectal Neoplasm; Lynch Syndrome" [ref=e468]
+            - cell "Cancer" [ref=e469]
+            - cell [ref=e470]:
+              - link "NCT05419011" [ref=e471] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT05419011
+            - cell "2023-05-08" [ref=e472]
+            - cell "2027-07-01" [ref=e473]
+            - cell "P2" [ref=e474]
+            - cell "Anktiva" [ref=e475]
+            - cell "Adenovirus 5 CEA/MUC1/Brachyury Vaccine Tri-Ad5; Biopsy Procedure; Biospecimen Collection; Colonoscopy; Placebo Administration; Questionnaire Administration" [ref=e476]
+            - cell "National Cancer Institute (NCI)" [ref=e477]
+            - cell "Immunocytokine" [ref=e478]
+            - cell "NCI / Etubics et al." [ref=e479]
+          - row [ref=e480]:
+            - cell "HIV/AIDS" [ref=e481]
+            - cell "Cancer" [ref=e482]
+            - cell [ref=e483]:
+              - link "NCT05245292" [ref=e484] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT05245292
+            - cell "2022-12-07" [ref=e485]
+            - cell "2025-12-09" [ref=e486]
+            - cell "P1" [ref=e487]
+            - cell "Anktiva" [ref=e488]
+            - cell "3BNC117-LS; 10-1074-LS" [ref=e489]
+            - cell "Rockefeller U." [ref=e490]
+            - cell "Immunocytokine" [ref=e491]
+            - cell "NIAID; Weill Medical College of Cornell U.; U. of Pennsylvania; Rockefeller University / Gilead et al." [ref=e492]
+          - row [ref=e493]:
+            - cell "Pancreatic Cancer" [ref=e494]
+            - cell "Cancer" [ref=e495]
+            - cell [ref=e496]:
+              - link "NCT05304936" [ref=e497] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT05304936
+            - cell "2022-10-17" [ref=e498]
+            - cell "2025-02-15" [ref=e499]
+            - cell "P1; P2" [ref=e500]
+            - cell "None" [ref=e501]
+            - cell "HCW9218; Gemcitabine; Nab-paclitaxel" [ref=e502]
+            - cell "IBRX" [ref=e503]
+            - cell "Immunocytokine" [ref=e504]
+            - cell "HCW Biologics; generic (multiple manufacturers); Abraxis BioScience (now Celgene/BMS)" [ref=e505]
+          - row [ref=e506]:
+            - cell "Non-small Cell Lung Cancer" [ref=e507]
+            - cell "Cancer" [ref=e508]
+            - cell [ref=e509]:
+              - link "NCT05096663" [ref=e510] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT05096663
+            - cell "2022-03-15" [ref=e511]
+            - cell "2027-06-30" [ref=e512]
+            - cell "P2; P3" [ref=e513]
+            - cell "Anktiva" [ref=e514]
+            - cell "Cobalamin; Dexamethasone; Docetaxel; Folic Acid; Gemcitabine; Pembrolizumab/Keytruda; Pemetrexed; Ramucirumab" [ref=e515]
+            - cell "SWOG Cancer Research Network" [ref=e516]
+            - cell "Immunocytokine" [ref=e517]
+            - cell "National Cancer Institute (NCI); generic (supplement/drug); generic (multiple manufacturers); Merck & Co. (MSD); Eli Lilly (Alimta); Eli Lilly (Cyramza)" [ref=e518]
+          - row [ref=e519]:
+            - cell "Gastroesophageal Junction Cancers; Advanced HNSCC" [ref=e520]
+            - cell "Cancer" [ref=e521]
+            - cell [ref=e522]:
+              - link "NCT04847466" [ref=e523] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04847466
+            - cell "2021-12-14" [ref=e524]
+            - cell "2025-12-22" [ref=e525]
+            - cell "P2" [ref=e526]
+            - cell "Anktiva; PD-L1 t-haNK" [ref=e527]
+            - cell "Pembrolizumab/Keytruda" [ref=e528]
+            - cell "National Cancer Institute (NCI)" [ref=e529]
+            - cell "Immunocytokine" [ref=e530]
+            - cell "Merck & Co. (MSD)" [ref=e531]
+          - row [ref=e532]:
+            - cell "Metastatic Solid Tumor" [ref=e533]
+            - cell "Cancer" [ref=e534]
+            - cell [ref=e535]:
+              - link "NCT04898543" [ref=e536] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04898543
+            - cell "2021-06-21" [ref=e537]
+            - cell "2026-05-31" [ref=e538]
+            - cell "P1" [ref=e539]
+            - cell "M-CENK; Anktiva" [ref=e540]
+            - cell "Apheresis collection of MNCs" [ref=e541]
+            - cell "IBRX" [ref=e542]
+            - cell "Immunocytokine" [ref=e543]
+            - cell "None" [ref=e544]
+          - row [ref=e545]:
+            - cell "HIV/AIDS" [ref=e546]
+            - cell "Virus" [ref=e547]
+            - cell [ref=e548]:
+              - link "NCT04340596" [ref=e549] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04340596
+            - cell "2021-05-21" [ref=e550]
+            - cell "2026-05-07" [ref=e551]
+            - cell "P1" [ref=e552]
+            - cell "Anktiva" [ref=e553]
+            - cell "VRC07-523LS; 10-1074" [ref=e554]
+            - cell "NIAID" [ref=e555]
+            - cell "Immunocytokine" [ref=e556]
+            - cell "Rockefeller U.; IBRX; NIAID / NIH; Rockefeller University / Gilead et al." [ref=e557]
+          - row [ref=e558]:
+            - cell "HIV/AIDS" [ref=e559]
+            - cell "Virus" [ref=e560]
+            - cell [ref=e561]:
+              - link "NCT04808908" [ref=e562] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04808908
+            - cell "2021-04-01" [ref=e563]
+            - cell "2022-07-18" [ref=e564]
+            - cell "P1" [ref=e565]
+            - cell "Anktiva" [ref=e566]
+            - cell "None" [ref=e567]
+            - cell "U. of Minnesota" [ref=e568]
+            - cell "Immunocytokine" [ref=e569]
+            - cell "NIAID" [ref=e570]
+          - row [ref=e571]:
+            - cell "COVID" [ref=e572]
+            - cell "Virus" [ref=e573]
+            - cell [ref=e574]:
+              - link "NCT04710303" [ref=e575] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04710303
+            - cell "2021-03-02" [ref=e576]
+            - cell "2022-08-02" [ref=e577]
+            - cell "P1" [ref=e578]
+            - cell "hAd5-S-Fusion+N-ETSD vaccine" [ref=e579]
+            - cell "None" [ref=e580]
+            - cell "IBRX" [ref=e581]
+            - cell "Immunocytokine" [ref=e582]
+            - cell "None" [ref=e583]
+          - row [ref=e584]:
+            - cell "HIV/AIDS" [ref=e585]
+            - cell "Virus" [ref=e586]
+            - cell [ref=e587]:
+              - link "NCT04505501" [ref=e588] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04505501
+            - cell "2021-03-01" [ref=e589]
+            - cell "2025-06-30" [ref=e590]
+            - cell "P2" [ref=e591]
+            - cell "Anktiva" [ref=e592]
+            - cell "None" [ref=e593]
+            - cell "Thai Red Cross AIDS Research Centre" [ref=e594]
+            - cell "Immunocytokine" [ref=e595]
+            - cell "Henry M. Jackson Foundation for the Advancement of Military Medicine; Walter Reed Army Institute of Research (WRAIR)" [ref=e596]
+          - row [ref=e597]:
+            - cell "COVID" [ref=e598]
+            - cell "Virus" [ref=e599]
+            - cell [ref=e600]:
+              - link "NCT04591717" [ref=e601] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04591717
+            - cell "2020-10-19" [ref=e602]
+            - cell "2022-04-20" [ref=e603]
+            - cell "P1" [ref=e604]
+            - cell "hAd5-S-Fusion+N-ETSD vaccine" [ref=e605]
+            - cell "None" [ref=e606]
+            - cell "IBRX" [ref=e607]
+            - cell "Immunocytokine" [ref=e608]
+            - cell "None" [ref=e609]
+          - row [ref=e610]:
+            - cell "Small Bowel Cancers; Colorectal Cancers" [ref=e611]
+            - cell "Cancer" [ref=e612]
+            - cell [ref=e613]:
+              - link "NCT04491955" [ref=e614] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04491955
+            - cell "2020-09-22" [ref=e615]
+            - cell "2022-10-25" [ref=e616]
+            - cell "P2" [ref=e617]
+            - cell "Anktiva" [ref=e618]
+            - cell "CV301; MSB0011359C; NHS-IL12" [ref=e619]
+            - cell "National Cancer Institute (NCI)" [ref=e620]
+            - cell "Immunocytokine" [ref=e621]
+            - cell "Bavarian Nordic / NCI et al.; EMD Serono / Merck KGaA et al.; EMD Serono / NCI et al." [ref=e622]
+          - row [ref=e623]:
+            - cell "Pancreatic Cancer" [ref=e624]
+            - cell "Cancer" [ref=e625]
+            - cell [ref=e626]:
+              - link "NCT04390399" [ref=e627] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04390399
+            - cell "2020-07-21" [ref=e628]
+            - cell "2025-10-13" [ref=e629]
+            - cell "P2" [ref=e630]
+            - cell "Anktiva; Aldoxorubicin HCl; PD-L1 t-haNK" [ref=e631]
+            - cell "Nab-paclitaxel; Gemcitabine; Cyclophosphamide; 5-Fluorouracil; Leucovorin; SBRT; Irinotecan liposome" [ref=e632]
+            - cell "IBRX" [ref=e633]
+            - cell "Immunocytokine" [ref=e634]
+            - cell "Abraxis BioScience (now Celgene/BMS); generic (multiple manufacturers); Ipsen (Onivyde)" [ref=e635]
+          - row [ref=e636]:
+            - cell "Head and neck cancer" [ref=e637]
+            - cell "Cancer" [ref=e638]
+            - cell [ref=e639]:
+              - link "NCT04290546" [ref=e640] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04290546
+            - cell "2020-07-20" [ref=e641]
+            - cell "2024-09-01" [ref=e642]
+            - cell "P1" [ref=e643]
+            - cell "Anktiva" [ref=e644]
+            - cell "CIML NK cell Infusion; Ipilimumab; Cetuximab" [ref=e645]
+            - cell "Dana-Farber Cancer Institute" [ref=e646]
+            - cell "Immunocytokine" [ref=e647]
+            - cell "Altor BioScience; Bristol-Myers Squibb; Miltenyi Biomedicine GmbH; Dana-Farber Cancer Institute / NCI et al.; Bristol-Myers Squibb (Yervoy); Eli Lilly / Bristol-Myers Squibb et al." [ref=e648]
+          - row [ref=e649]:
+            - cell "Head and neck cancer" [ref=e650]
+            - cell "Cancer" [ref=e651]
+            - cell [ref=e652]:
+              - link "NCT04247282" [ref=e653] [cursor=pointer]:
+                - /url: https://clinicaltrials.gov/study/NCT04247282
+            - cell "2020-06-09" [ref=e654]
+            - cell "2021-08-24" [ref=e655]
+            - cell "P1; P2" [ref=e656]
+            - cell "Anktiva" [ref=e657]
+            - cell "M7824; TriAd vaccine" [ref=e658]
+            - cell "National Cancer Institute (NCI)" [ref=e659]
+            - cell "Immunocytokine" [ref=e660]
+            - cell "Merck KGaA / GSK et al.; Bavarian Nordic / NCI et al." [ref=e661]
+        - rowgroup
+      - generic [ref=e662]:
+        - status [ref=e664]: Showing 1 to 44 of 44 entries
+        - navigation "pagination" [ref=e667]:
+          - link "First" [disabled] [ref=e668]: «
+          - link "Previous" [disabled] [ref=e669]: ‹
+          - link "1" [ref=e670] [cursor=pointer]
+          - link "Next" [disabled] [ref=e671]: ›
+          - link "Last" [disabled] [ref=e672]: »

@@ -1,0 +1,54 @@
+- generic [active] [ref=f5e1]:
+  - navigation "Pages" [ref=f5e2]:
+    - button "Open menu" [ref=f5e3] [cursor=pointer]
+    - list [ref=f5e6]:
+      - listitem [ref=f5e7]:
+        - link "Trial timeline" [ref=f5e8] [cursor=pointer]:
+          - /url: index.html
+      - listitem [ref=f5e12]:
+        - link "Drug combos/collab" [ref=f5e13] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=f5e20]:
+        - link "Trial data" [ref=f5e21] [cursor=pointer]:
+          - /url: trials.html
+      - listitem [ref=f5e26]:
+        - link "Trading Environment" [ref=f5e27] [cursor=pointer]:
+          - /url: environment.html
+  - banner [ref=f5e39]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trading Environment" [level=1]
+      - generic: Catalyst intensity · next 60 days
+  - generic [ref=f5e41]:
+    - paragraph [ref=f5e42]: 9 events shape the next 60 days. Hover a cell for details.
+    - generic [ref=f5e43]:
+      - generic [ref=f5e44]:
+        - heading "Catalyst matrix" [level=2] [ref=f5e45]
+        - button "3D" [pressed] [ref=f5e46] [cursor=pointer]
+        - button "Replay" [ref=f5e47] [cursor=pointer]
+      - generic [ref=f5e49]:
+        - generic [ref=f5e52]:
+          - generic [ref=f5e53]: Today
+          - generic [ref=f5e54]: Nov 4
+          - generic [ref=f5e55]: Nov 11
+          - generic [ref=f5e56]: Nov 18
+          - generic [ref=f5e57]: Nov 25
+          - generic [ref=f5e58]: Dec 2
+          - generic [ref=f5e59]: Dec 9
+          - generic [ref=f5e60]: Dec 16
+          - generic [ref=f5e61]: Dec 23
+        - generic [ref=f5e62]:
+          - generic [ref=f5e63]: All catalysts
+          - generic "ESMO Congress" [ref=f5e129]: Oct 23
+          - generic "QUILT-2.005 topline results (Estimated)" [ref=f5e195]: Nov 1
+          - generic "Q3 financial results (Estimated)" [ref=f5e261]: Nov 3
+          - generic "SITC Annual Meeting" [ref=f5e327]: Nov 4
+          - generic "SNO (Society for Neuro-Oncology)" [ref=f5e393]: Nov 12
+          - generic "MaTOS" [ref=f5e459]: Nov 19
+          - generic "QUILT-2.005 supplemental BLA submission (expected)" [ref=f5e525]: Dec 1
+          - generic "ESMO Asia" [ref=f5e591]: Dec 3
+          - generic "ASH Annual Meeting" [ref=f5e657]: Dec 12
+      - generic [ref=f5e722]:
+        - generic [ref=f5e723]: Quiet
+        - generic [ref=f5e725]: Hot
+    - paragraph [ref=f5e726]: "Each cell is a rough intensity score: it builds over the week or two before an event, peaks while it runs, and fades a few days after. FDA, data and revenue events weigh more than conferences; month-only and estimated dates are spread out."

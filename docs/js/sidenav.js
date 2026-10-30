@@ -1,4 +1,6 @@
 // Left menu shared by the timeline pages: icons only, labels when the hamburger opens it.
+// A page can put its own controls under its menu item with a [data-sidenav-panel] element;
+// the menu then starts open and docks beside the page instead of covering it.
 (function () {
     const PAGES = [
         {
@@ -19,6 +21,16 @@
             label: 'Trial data',
             // Table grid
             icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14.5h18M9 9v11"/>'
+        },
+        {
+            href: 'environment.html',
+            label: 'Trading Environment',
+            // Heat map: a 3x3 block of cells
+            icon: '<rect x="3.5" y="3.5" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="3.5" width="4.5" height="4.5" rx="1"/>' +
+                '<rect x="16" y="3.5" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
+                '<rect x="3.5" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="9.75" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
+                '<rect x="16" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="3.5" y="16" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
+                '<rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/><rect x="16" y="16" width="4.5" height="4.5" rx="1"/>'
         }
     ];
 
@@ -48,12 +60,33 @@
         document.body.prepend(nav);
         document.body.classList.add('has-sidenav');
 
+        const panel = document.querySelector('[data-sidenav-panel]');
+        const activeItem = nav.querySelector('a.active');
+        const docked = !!(panel && activeItem);
+        if (docked) {
+            activeItem.parentNode.appendChild(panel);
+            panel.hidden = false;
+            document.body.classList.add('sidenav-docked');
+        }
+
         const toggle = nav.querySelector('.sidenav-toggle');
         function setOpen(open) {
             nav.classList.toggle('open', open);
             backdrop.classList.toggle('open', open);
+            document.body.classList.toggle('sidenav-open', open);
             toggle.setAttribute('aria-expanded', String(open));
             toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+
+        // Docked: the page narrows as the menu opens, so tell it to re-measure once the slide ends.
+        nav.addEventListener('transitionend', function (event) {
+            if (docked && event.target === nav && event.propertyName === 'width') {
+                window.dispatchEvent(new Event('resize'));
+            }
+        });
+
+        if (docked && window.matchMedia('(min-width: 900px)').matches) {
+            setOpen(true);
         }
 
         toggle.addEventListener('click', function () {
@@ -63,7 +96,7 @@
             setOpen(false);
         });
         document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') setOpen(false);
+            if (event.key === 'Escape' && !docked) setOpen(false);
         });
     }
 

@@ -1,0 +1,58 @@
+- generic [active] [ref=f9e1]:
+  - navigation "Pages" [ref=f9e2]:
+    - button "Open menu" [ref=f9e3] [cursor=pointer]
+    - list [ref=f9e6]:
+      - listitem [ref=f9e7]:
+        - link "Trial timeline" [ref=f9e8] [cursor=pointer]:
+          - /url: index.html
+      - listitem [ref=f9e12]:
+        - link "Drug combos/collab" [ref=f9e13] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=f9e20]:
+        - link "Trial data" [ref=f9e21] [cursor=pointer]:
+          - /url: trials.html
+      - listitem [ref=f9e26]:
+        - link "Trading Environment" [ref=f9e27] [cursor=pointer]:
+          - /url: environment.html
+  - banner [ref=f9e39]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trading Environment" [level=1]
+      - generic: Catalyst intensity · next 60 days
+  - generic [ref=f9e41]:
+    - paragraph [ref=f9e42]: 11 events shape the next 60 days. Hover a cell for details.
+    - generic [ref=f9e43]:
+      - generic [ref=f9e44]:
+        - heading "Catalyst matrix" [level=2] [ref=f9e45]
+        - button "Replay" [ref=f9e46] [cursor=pointer]
+      - generic [ref=f9e47]:
+        - generic [ref=f9e50]:
+          - generic [ref=f9e51]: Oct 30
+          - generic [ref=f9e52]: Nov 6
+          - generic [ref=f9e53]: Nov 13
+          - generic [ref=f9e54]: OPEX Nov 20
+          - generic [ref=f9e55]: Nov 27
+          - generic [ref=f9e56]: Dec 4
+          - generic [ref=f9e57]: Dec 11
+          - generic [ref=f9e58]: OPEX Dec 18
+          - generic [ref=f9e59]: Dec 25
+        - generic [ref=f9e60]:
+          - generic [ref=f9e61]: All catalysts
+          - generic "QUILT-3.032 long-term data in Journal of Urology" [ref=f9e126]
+          - generic "Database lock QUILT-2.005 (BCG-naïve NMIBC)" [ref=f9e190]
+          - generic "ESMO Congress" [ref=f9e254]
+          - generic "Q3 financial results" [ref=f9e318]
+          - generic "SITC Annual Meeting" [ref=f9e382]
+          - generic "SNO (Society for Neuro-Oncology)" [ref=f9e446]
+          - generic "QUILT-2.005 topline results" [ref=f9e510]
+          - generic "MaTOS" [ref=f9e574]
+          - generic "ESMO Asia" [ref=f9e638]
+          - generic "ASH Annual Meeting" [ref=f9e702]
+          - generic "QUILT-2.005 supplemental BLA submission" [ref=f9e766]
+      - generic [ref=f9e829]:
+        - generic [ref=f9e830]: Quiet
+        - generic [ref=f9e832]: Hot
+    - paragraph [ref=f9e833]:
+      - text: One column per day from today. Date marks fall on Fridays (weekly options expiry); teal lines mark monthly expiry, the third Friday. Trial events peak on their date and fade over two weeks; estimated dates are spread five days either side. Category weights live in
+      - code [ref=f9e834]: js/environment-config.js
+      - text: .

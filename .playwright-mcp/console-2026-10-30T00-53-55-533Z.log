@@ -1,0 +1,23 @@
+[   41926ms] [LOG] %cInvalid type received for "scale". Expected: string, undefined. Received [null] "null"
+
+Problem value found at: 
+options = {
+  timeAxis: {
+    scale
+  }
+}
+
+
+ background: #FFeeee; color: #dd0000 @ http://localhost:8765/js/time/timeline-graph2d.min.js:15
+[   41927ms] [LOG] %cInvalid type received for "step". Expected: number, undefined. Received [null] "null"
+
+Problem value found at: 
+options = {
+  timeAxis: {
+    step
+  }
+}
+
+
+ background: #FFeeee; color: #dd0000 @ http://localhost:8765/js/time/timeline-graph2d.min.js:15
+[   41927ms] [LOG] %cErrors have been found in the supplied options object. background: #FFeeee; color: #dd0000 @ http://localhost:8765/js/time/timeline-graph2d.min.js:15

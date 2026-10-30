@@ -1,0 +1,63 @@
+- generic [active] [ref=f3e1]:
+  - navigation "Pages" [ref=f3e2]:
+    - button "Close menu" [expanded] [ref=f3e3] [cursor=pointer]
+    - list [ref=f3e6]:
+      - listitem [ref=f3e7]:
+        - link "Trial timeline" [ref=f3e8] [cursor=pointer]:
+          - /url: index.html
+        - generic [ref=f3e12]:
+          - heading "Trial labels" [level=3] [ref=f3e13]
+          - generic [ref=f3e14]:
+            - generic [ref=f3e17] [cursor=pointer]:
+              - checkbox "Clear Tooltips" [checked]
+              - generic [ref=f3e20]: Clear Tooltips
+            - generic [ref=f3e23] [cursor=pointer]:
+              - checkbox "Primary completion date"
+              - generic [ref=f3e25]: Primary completion date
+            - generic [ref=f3e28] [cursor=pointer]:
+              - checkbox "Phase"
+              - generic [ref=f3e30]: Phase
+            - generic [ref=f3e33] [cursor=pointer]:
+              - checkbox "IBRX drug"
+              - generic [ref=f3e35]: IBRX drug
+            - generic [ref=f3e38] [cursor=pointer]:
+              - checkbox "Study sponsor"
+              - generic [ref=f3e40]: Study sponsor
+          - heading "Overlays" [level=3] [ref=f3e41]
+          - generic [ref=f3e42]:
+            - generic [ref=f3e45] [cursor=pointer]:
+              - checkbox "Show revenue"
+              - generic [ref=f3e47]: Show revenue
+            - generic [ref=f3e50] [cursor=pointer]:
+              - checkbox "Anktiva FDA designations" [checked]
+              - generic [ref=f3e53]: Anktiva FDA designations
+            - generic [ref=f3e56] [cursor=pointer]:
+              - checkbox "Events" [checked]
+              - generic [ref=f3e59]: Events
+          - paragraph [ref=f3e60]: Saved in this browser.
+      - listitem [ref=f3e61]:
+        - link "Drug combos/collab" [ref=f3e62] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=f3e69]:
+        - link "Trial data" [ref=f3e70] [cursor=pointer]:
+          - /url: trials.html
+      - listitem [ref=f3e75]:
+        - link "Trading Environment" [ref=f3e76] [cursor=pointer]:
+          - /url: environment.html
+  - banner [ref=f3e88]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trial Timeline" [level=1]
+      - generic: Trials · FDA designations · Events · Revenue
+  - generic [ref=f3e90]:
+    - generic [ref=f3e91]:
+      - generic [ref=f3e92]:
+        - button "Zoom in" [ref=f3e94] [cursor=pointer]
+        - button "Zoom out" [ref=f3e97] [cursor=pointer]
+        - button "Fit all" [ref=f3e100] [cursor=pointer]
+        - button "Fit Revenue and LEAPs window" [ref=f3e103] [cursor=pointer]
+        - button "Timeline notes" [ref=f3e107] [cursor=pointer]
+      - paragraph [ref=f3e108]:
+        - strong [ref=f3e109]: "Note: Click on the chart and scroll for continuous zoom"
+    - generic: Close
+    - paragraph [ref=f3e111]: Copyright 2026, Ben Rogers

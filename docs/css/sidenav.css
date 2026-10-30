@@ -105,6 +105,89 @@ body.has-sidenav {
     pointer-events: auto;
 }
 
+/* Docked menu (a page with [data-sidenav-panel]): on wide screens it pushes the page over
+   instead of covering it, so the page stays usable while it is open. */
+@media (min-width: 900px) {
+    body.has-sidenav.sidenav-docked {
+        transition: padding-left 0.22s ease;
+    }
+
+    body.has-sidenav.sidenav-docked.sidenav-open {
+        padding-left: var(--sidenav-expanded);
+    }
+
+    body.sidenav-docked #sidenav.open {
+        box-shadow: none;
+    }
+
+    body.sidenav-docked .sidenav-backdrop {
+        display: none;
+    }
+}
+
+#sidenav.open {
+    overflow-y: auto;
+}
+
+/* Page controls under the active menu item, shown only while the menu is open. */
+#sidenav .sidenav-panel {
+    width: var(--sidenav-expanded);
+    padding: 4px 16px 16px 20px;
+    box-sizing: border-box;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.15s ease, visibility 0s linear 0.15s;
+    --sl-input-label-color: var(--sidenav-fg);
+    --sl-input-label-color-hover: #ffffff;
+}
+
+#sidenav.open .sidenav-panel {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0.06s, 0s;
+}
+
+#sidenav .sidenav-panel span {
+    opacity: 1;
+}
+
+#sidenav .sidenav-panel-heading {
+    margin: 12px 0 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7f93b5;
+}
+
+#sidenav .sidenav-panel-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+#sidenav .sidenav-panel sl-checkbox {
+    --size: 15px;
+    white-space: normal;
+}
+
+#sidenav .sidenav-panel sl-checkbox::part(label) {
+    color: var(--sidenav-fg);
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+#sidenav .sidenav-panel sl-checkbox:hover::part(label) {
+    color: #ffffff;
+}
+
+#sidenav .sidenav-panel-note {
+    margin: 14px 0 0;
+    font-size: 11px;
+    color: #7f93b5;
+}
+
 /* Header: a DNA helix that unwinds into a price line. */
 .hero {
     position: relative;

@@ -1,0 +1,23 @@
+{
+  "updatedAt": 1793322537212,
+  "agents": [
+    {
+      "id": "main",
+      "task": "looking good. change  button label from \"Option center\" to \"Opex center\" and toggle it to \"Date center\" when in date mode. ",
+      "type": "main",
+      "model": "claude-opus-5-5",
+      "status": "running",
+      "toolCalls": 20,
+      "lastTool": "Bash",
+      "steps": 17,
+      "tokens": {
+        "input": 38,
+        "output": 18105,
+        "cacheRead": 2610961,
+        "cacheWrite": 26172
+      },
+      "startedAt": 1793322260925,
+      "endedAt": null
+    }
+  ]
+}

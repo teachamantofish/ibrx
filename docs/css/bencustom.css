@@ -302,30 +302,37 @@ a:active {
     --size: 16px;
 }
 
-.ibrx-csv-timeline #settingsDialog {
-    --width: min(92vw, 30rem);
+/* Group names in the left column read bottom-to-top. */
+.ibrx-csv-timeline .vis-labelset .vis-label .vis-inner {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding: 8px 6px;
 }
 
-.ibrx-csv-timeline .settings-heading {
-    margin: 0 0 8px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #64748b;
+/* One line per day, drawn by index.html once 3 months or less are on screen.
+   Above the items, so the days still show across the trial bars. */
+.ibrx-csv-timeline .day-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* align-items: each checkbox only as wide as its label, so the whole row is clickable. */
-.ibrx-csv-timeline .settings-group {
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 0 0 20px;
+.ibrx-csv-timeline .day-grid div {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 1px solid rgba(100, 116, 139, 0.18);
 }
 
-.ibrx-csv-timeline .settings-note {
-    margin: 0;
-    font-size: 12px;
-    color: #94a3b8;
+/* Day numbers on the time axis: centred in each day, small enough that "28" fits at 3 months. */
+.ibrx-csv-timeline #visualization.day-axis .vis-time-axis .vis-text.vis-minor {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 9px;
+    text-align: center;
+    overflow: visible;
 }
 
 .ibrx-csv-timeline .timeline-note-img {

@@ -1,0 +1,112 @@
+- generic [active] [ref=f4e1]:
+  - navigation "Pages" [ref=f4e2]:
+    - button "Open menu" [ref=f4e3] [cursor=pointer]
+    - list [ref=f4e6]:
+      - listitem [ref=f4e7]:
+        - link "Trial timeline" [ref=f4e8] [cursor=pointer]:
+          - /url: index.html
+      - listitem [ref=f4e12]:
+        - link "Drug combos/collab" [ref=f4e13] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=f4e20]:
+        - link "Trial data" [ref=f4e21] [cursor=pointer]:
+          - /url: trials.html
+  - banner [ref=f4e26]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trial Timeline" [level=1]
+      - generic: Trials · FDA designations · Events · Revenue
+  - generic [ref=f4e28]:
+    - generic [ref=f4e29]:
+      - generic [ref=f4e30]:
+        - button "Zoom in" [ref=f4e32] [cursor=pointer]
+        - button "Zoom out" [ref=f4e35] [cursor=pointer]
+        - button "Fit all" [ref=f4e38] [cursor=pointer]
+        - button "Fit Revenue and LEAPs window" [ref=f4e41] [cursor=pointer]
+        - generic [ref=f4e43]:
+          - button "Timeline notes" [ref=f4e45] [cursor=pointer]
+          - button "Settings" [ref=f4e47] [cursor=pointer]
+      - paragraph [ref=f4e48]:
+        - strong [ref=f4e49]: "Note: Click on the chart and scroll for continuous zoom"
+      - generic [ref=f4e52]:
+        - generic [ref=f4e54]:
+          - 'generic "Current time: Thursday, October 29th 2026, 15:52:00"'
+        - generic [ref=f4e68]:
+          - link "Non-small Cell Lung Cancer" [ref=f4e73] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT05096663
+          - link "Prostate Cancer; Metastatic Prostate Cancer" [ref=f4e78] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07756593
+          - link "Long Covid" [ref=f4e83] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07108036
+          - link "HIV/AIDS" [ref=f4e88] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07145164
+          - link "Long Covid" [ref=f4e93] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07123727
+          - link "Sepsis; Septic Shock; Lymphopenia; Immunosuppression; Critical Illness" [ref=f4e98] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07578558
+          - link "Head and neck cancer" [ref=f4e103] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06239220
+          - link "Neuroblastoma Recurrent" [ref=f4e108] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07085338
+          - link "Non Muscle Invasive Bladder Cancer" [ref=f4e113] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06800963
+          - link "Recurrent Prostate Cancer; Prostate Cancer" [ref=f4e118] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07686380
+          - link "Urothelial Carcinoma" [ref=f4e123] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07217496
+          - link "Non-Hodgkin's Lymphoma" [ref=f4e128] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07125872
+          - link "Endometrial Cancer" [ref=f4e133] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06253494
+          - link "Non-Hodgkin's Lymphoma" [ref=f4e138] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07477366
+          - link "Non-Hodgkin's Lymphoma" [ref=f4e143] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06334991
+          - link "Head and neck cancer" [ref=f4e148] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06161545
+          - link "Non-small Cell Lung Cancer" [ref=f4e153] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07355205
+          - link "HPV-Related Carcinoma" [ref=f4e158] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT05976828
+          - link "Colorectal Carcinoma; Colorectal Neoplasm; Lynch Syndrome" [ref=f4e163] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT05419011
+          - link "Head and neck cancer" [ref=f4e168] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07628062
+          - link "Metastatic Colorectal Cancer" [ref=f4e173] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06149481
+          - link "Ovarian Cancer" [ref=f4e178] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06710288
+          - link "Glioblastoma" [ref=f4e183] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06061809
+          - link "Non-small Cell Lung Cancer" [ref=f4e188] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06745908
+          - link "Non Muscle Invasive Bladder Cancer" [ref=f4e193] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT05981131
+          - link "Non-muscle Invasive Bladder Cancer" [ref=f4e198] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT06829823
+          - link "Sepsis" [ref=f4e203] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07783789
+          - link "Myxoid Liposarcoma; Round Cell Liposarcoma; Synovial Sarcoma" [ref=f4e208] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07261657
+          - link "Adenocarcinoma; Prostate Cancer; Neoplasms; Carcinoma; Neoplasms, Glandular and Epithelial; Neoplasms by Histologic Type" [ref=f4e213] [cursor=pointer]:
+            - /url: https://clinicaltrials.gov/study/NCT07574541
+        - generic "Timeline from study start to primary completion" [ref=f4e217]: Trial
+        - generic [ref=f4e220]:
+          - generic [ref=f4e221]: Sep
+          - generic [ref=f4e222]: Oct
+          - generic [ref=f4e223]: Nov
+          - generic [ref=f4e224]: Dec
+          - generic [ref=f4e225]: Jan
+          - generic [ref=f4e226]: "2027"
+          - generic [ref=f4e228]: "2026"
+    - generic: Clear Tooltips
+    - generic: Primary completion date
+    - generic: Phase
+    - generic: IBRX drug
+    - generic: Study sponsor
+    - generic: Show revenue
+    - generic: Anktiva FDA designations
+    - generic: Events
+    - generic: Done
+    - generic: Close
+    - paragraph [ref=f4e51]: Copyright 2026, Ben Rogers

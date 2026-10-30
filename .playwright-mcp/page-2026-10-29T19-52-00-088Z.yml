@@ -1,0 +1,41 @@
+- generic [active] [ref=f4e1]:
+  - navigation "Pages" [ref=f4e2]:
+    - button "Open menu" [ref=f4e3] [cursor=pointer]
+    - list [ref=f4e6]:
+      - listitem [ref=f4e7]:
+        - link "Trial timeline" [ref=f4e8] [cursor=pointer]:
+          - /url: index.html
+      - listitem [ref=f4e12]:
+        - link "Drug combos/collab" [ref=f4e13] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=f4e20]:
+        - link "Trial data" [ref=f4e21] [cursor=pointer]:
+          - /url: trials.html
+  - banner [ref=f4e26]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trial Timeline" [level=1]
+      - generic: Trials · FDA designations · Events · Revenue
+  - generic [ref=f4e28]:
+    - generic [ref=f4e29]:
+      - generic [ref=f4e30]:
+        - button "Zoom in" [ref=f4e32] [cursor=pointer]
+        - button "Zoom out" [ref=f4e35] [cursor=pointer]
+        - button "Fit all" [ref=f4e38] [cursor=pointer]
+        - button "Fit Revenue and LEAPs window" [ref=f4e41] [cursor=pointer]
+        - generic [ref=f4e43]:
+          - button "Timeline notes" [ref=f4e45] [cursor=pointer]
+          - button "Settings" [ref=f4e47] [cursor=pointer]
+      - paragraph [ref=f4e48]:
+        - strong [ref=f4e49]: "Note: Click on the chart and scroll for continuous zoom"
+    - generic: Clear Tooltips
+    - generic: Primary completion date
+    - generic: Phase
+    - generic: IBRX drug
+    - generic: Study sponsor
+    - generic: Show revenue
+    - generic: Anktiva FDA designations
+    - generic: Events
+    - generic: Done
+    - generic: Close
+    - paragraph [ref=f4e51]: Copyright 2026, Ben Rogers

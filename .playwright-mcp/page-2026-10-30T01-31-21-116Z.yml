@@ -1,0 +1,70 @@
+- generic [active] [ref=f82e1]:
+  - navigation "Pages" [ref=f82e2]:
+    - button "Open menu" [ref=f82e3] [cursor=pointer]
+    - list [ref=f82e6]:
+      - listitem [ref=f82e7]:
+        - link "Trial timeline" [ref=f82e8] [cursor=pointer]:
+          - /url: index.html
+      - listitem [ref=f82e12]:
+        - link "Drug combos/collab" [ref=f82e13] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=f82e20]:
+        - link "Trial data" [ref=f82e21] [cursor=pointer]:
+          - /url: trials.html
+      - listitem [ref=f82e26]:
+        - link "Trading Environment" [ref=f82e27] [cursor=pointer]:
+          - /url: environment.html
+  - banner [ref=f82e39]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trading Environment" [level=1]
+      - generic: Catalyst intensity · past 2 weeks · next 60 days
+  - generic [ref=f82e41]:
+    - paragraph [ref=f82e42]: 18 events shape the past 2 weeks and next 60 days. Hover a cell for details.
+    - generic [ref=f82e43]:
+      - generic [ref=f82e44]:
+        - heading "Catalyst matrix" [level=2] [ref=f82e45]
+        - radiogroup "Colour theme" [ref=f82e46]:
+          - radio "Magma" [ref=f82e47] [cursor=pointer]
+          - radio "Red" [checked] [ref=f82e48] [cursor=pointer]
+        - button "Opex center" [ref=f82e49] [cursor=pointer]
+      - generic [ref=f82e50]:
+        - generic [ref=f82e53]:
+          - generic [ref=f82e54]: OPEX Oct 16
+          - generic [ref=f82e55]: Oct 23
+          - generic [ref=f82e56]: Oct 30
+          - generic [ref=f82e57]: Nov 6
+          - generic [ref=f82e58]: Nov 13
+          - generic [ref=f82e59]: OPEX Nov 20
+          - generic [ref=f82e60]: Nov 27
+          - generic [ref=f82e61]: Dec 4
+          - generic [ref=f82e62]: Dec 11
+          - generic [ref=f82e63]: OPEX Dec 18
+          - generic [ref=f82e64]: Dec 25
+        - generic [ref=f82e65]:
+          - generic [ref=f82e66]: All catalysts
+          - generic "FDA expands Anktiva approval to papillary-only NMIBC" [ref=f82e145]
+          - generic "Long Covid trial (P2)" [ref=f82e223]
+          - generic "Publication:QUILT-3.032 long-term data in Journal of Urology" [ref=f82e301]
+          - 'generic "Conference attendance: Piper Sandler Virtual Oncology Symposium" [ref=f82e379]'
+          - generic "Database lock QUILT-2.005 (BCG-naïve NMIBC)" [ref=f82e457]
+          - 'generic "Conference attendance: ESMO Congress" [ref=f82e535]'
+          - generic "Q3 financial results" [ref=f82e613]
+          - 'generic "Conference attendance: SITC Annual Meeting" [ref=f82e691]'
+          - 'generic "Conference attendance: SNO (Society for Neuro-Oncology)" [ref=f82e769]'
+          - generic "Non-muscle Invasive Bladder Cancer trial (P2)" [ref=f82e847]
+          - 'generic "Conference attendance: MaTOS" [ref=f82e925]'
+          - generic "QUILT-2.005 topline results" [ref=f82e1003]
+          - generic "Head and neck cancer trial (P2)" [ref=f82e1081]
+          - 'generic "Conference attendance: ESMO Asia" [ref=f82e1159]'
+          - 'generic "Conference attendance: ASH Annual Meeting" [ref=f82e1237]'
+          - generic "QUILT-2.005 supplemental BLA submission" [ref=f82e1315]
+          - generic "Head and neck cancer trial (P2)" [ref=f82e1393]
+          - generic "Endometrial Cancer trial (P1; P2)" [ref=f82e1471]
+      - generic [ref=f82e1548]:
+        - generic [ref=f82e1549]: Quiet
+        - generic [ref=f82e1551]: Hot
+    - paragraph [ref=f82e1552]:
+      - text: One column per day, from two weeks ago to 60 days out. Date marks fall on Fridays (weekly options expiry); highlighted lines mark monthly expiry, the third Friday. Each category has its own weight and fade length either side; month-only dates peak on the 15th. Opex center moves the peak of every event whose shading overlaps a monthly OPEX onto that OPEX, fading out to the same first and last days; Date center puts them back. Categories and colour themes live in
+      - code [ref=f82e1553]: js/environment-config.js
+      - text: .

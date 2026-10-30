@@ -1,0 +1,57 @@
+- generic [active] [ref=e1]:
+  - navigation "Pages" [ref=e2]:
+    - button "Open menu" [ref=e3] [cursor=pointer]
+    - list [ref=e6]:
+      - listitem [ref=e7]:
+        - link "Trial timeline" [ref=e8] [cursor=pointer]:
+          - /url: index.html
+      - listitem [ref=e12]:
+        - link "Drug combos/collab" [ref=e13] [cursor=pointer]:
+          - /url: cotreatment.html
+      - listitem [ref=e20]:
+        - link "Trial data" [ref=e21] [cursor=pointer]:
+          - /url: trials.html
+  - banner [ref=e26]:
+    - generic:
+      - generic: ImmunityBio · IBRX
+      - heading "Trial Timeline" [level=1]
+      - generic: Trials · FDA designations · Events · Revenue
+  - generic [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Zoom in
+        - generic [ref=e32]: Zoom out
+        - generic [ref=e33]: Fit all
+        - generic [ref=e34]: Fit 90 day trade window
+        - generic [ref=e35]: Fit Revenue and LEAPs window
+      - paragraph [ref=e36]:
+        - strong [ref=e37]: "Note: Click on the chart and scroll for continuous zoom"
+    - generic [ref=e39]:
+      - heading "Trial labels" [level=3] [ref=e40]
+      - generic [ref=e41]:
+        - generic [ref=e42]: Clear Tooltips
+        - generic [ref=e43]: Primary completion date
+        - generic [ref=e44]: Phase
+        - generic [ref=e45]: IBRX drug
+        - generic [ref=e46]: Study sponsor
+      - heading "Overlays" [level=3] [ref=e47]
+      - generic [ref=e48]:
+        - generic [ref=e49]: Show revenue
+        - generic [ref=e50]: Anktiva FDA designations
+        - generic [ref=e51]: Events
+      - paragraph [ref=e52]: Saved in this browser.
+      - text: Done
+    - generic [ref=e53]:
+      - img "Timeline key" [ref=e54]
+      - list [ref=e55]:
+        - listitem [ref=e56]: "Not included: trials with a status of withdrawn, terminated, unknown, or started prior to 2020."
+        - listitem [ref=e57]: Trial date range starts with the primary study completion date ends with the study completion published on clinicaltrials.gov.
+        - listitem [ref=e58]: For the timeline's readability and usability reasons, the smallest increment between the primary and study completion date is 10 days. There are a few cases where those dates are identical on clinicaltrials.gov.
+        - listitem [ref=e59]: IBRX completes and withdraws studies without announcement, so there's no way to know if/when results are forthcoming. They also occasionally release preliminary data prior to study completion.
+        - listitem [ref=e60]:
+          - text: "Reporting requirement for National Cancer Institute-sponsored studies:"
+          - link "Within 12 months of the earlier of estimated/actual primary completion date." [ref=e61] [cursor=pointer]:
+            - /url: https://stkt.co/0TPs9dwQ
+        - listitem [ref=e62]: "Drugs may have multiple names. For example: Anktiva = N-803 = Alt-803 = Inbakicept"
+      - text: Close
+    - paragraph [ref=e63]: Copyright 2026, Ben Rogers
