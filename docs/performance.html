@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>IBRX Account Performance</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Weekly (Friday) option trading performance compared with IBRX stock.">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/sidenav.css" rel="stylesheet" type="text/css">
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css">
+    <link href="css/performance.css" rel="stylesheet" type="text/css">
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WJY24VJ39L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WJY24VJ39L');
+</script>
+<body class="ibrx-csv-timeline">
+
+<header class="hero">
+    <canvas aria-hidden="true"></canvas>
+    <div class="hero-text">
+        <div class="hero-kicker">Weekly gain/loss measured atFriday close</div>
+        <h1 class="hero-title">IBRX Options Account Performance</h1>
+        <div class="hero-subtitle" id="range">100% option holdings vs 100% stock holdings</div>
+    </div>
+</header>
+<script src="js/sidenav.js"></script>
+<script src="js/header-helix.js"></script>
+
+<main class="perf">
+    <div class="notice" id="notice" hidden></div>
+    <div class="perf-layout">
+        <div class="perf-main">
+            <div class="tiles" id="tiles"></div>
+            <div class="card">
+                <div class="card-head">
+                    <h2>% change since <span id="start">first Friday</span></h2>
+                    <div class="legend" id="legend"></div>
+                </div>
+                <div class="chart" id="line-chart"></div>
+                <p class="foot">Stops two weeks before the latest Friday. Position size is an illustration of gains being reinvested, not measured data.</p>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <h2>Week-over-week % change: <span id="wow-title">total vs stock</span></h2>
+                    <div class="legend" id="wow-legend"></div>
+                </div>
+                <div class="chart" id="bar-chart"></div>
+                <p class="foot">Stops two weeks before the latest Friday.</p>
+            </div>
+            <div class="card">
+                <h2>Weekly detail</h2>
+                <div class="table-wrap"><table id="table"></table></div>
+                <p class="foot">Stops two weeks before the latest Friday. Returns come from Schwab's daily balances (no dollar amounts are shown), so deposits, withdrawals and transfers count as gains or losses.</p>
+            </div>
+        </div>
+        <aside class="perf-side">
+            <div class="card note-card">
+                <h2>Primary strategy</h2>
+                <ul>
+                    <li>Options only</li>
+                    <li>Buy low, sell high (BLSH)</li>
+                    <li>BLSH requires legging into positions</li>
+                    <li>Anchor position with 1-2 year LEAPs</li>
+                    <li>Buy long term ITM; sell short term OTM </li>
+                    <li>Always roll short up/out for credit</li>
+                    <li>Sell 20-30% of position on spikes</li>
+                    <li>Buy back in on 10-20% dips</li>
+                    <li>Trade balanced--never naked short/long</li>
+                    <li>Grow position by rolling profits</li>
+                </ul>
+            </div>
+            <div class="card note-card">
+                <h2>Risks</h2>
+                <ul>
+                    <li>Psychological weakness such as FOMO</li>
+                    <li>Black swan events</li>
+                    <li>Sector and market risk</li>
+                    <li>Shorts limit profit on huge squeeze</li>
+                    <li>Large moves in wrong direction while legging</li>
+                </ul>
+            </div>
+            <div class="card note-card">
+                <h2>Known mistakes</h2>
+                <ul>
+                    <li>FOMO: e.g., sold at 10.64 and bought 10.24 in October</li>
+                    <li>Failure to sell on spikes</li>
+                    <li>Buying back in too early</li>
+                    <li>Not keeping enough cash primed</li>
+                    <li>Too much near-term trading</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+    <div class="tip" id="tip" hidden></div>
+</main>
+<script type="module" src="js/performance.js"></script>
+</body>
+</html>

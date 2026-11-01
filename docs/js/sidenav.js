@@ -31,6 +31,12 @@
                 '<rect x="3.5" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="9.75" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
                 '<rect x="16" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="3.5" y="16" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
                 '<rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/><rect x="16" y="16" width="4.5" height="4.5" rx="1"/>'
+        },
+        {
+            href: 'performance.html',
+            label: 'Account performance',
+            // Rising line on axes
+            icon: '<path d="M4 4v16h16" opacity=".45"/><path d="M7 15l4-4 3 3 6-7"/>'
         }
     ];
 

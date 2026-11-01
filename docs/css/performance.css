@@ -1,0 +1,86 @@
+/* Account performance page (performance.html). Everything sits under .perf so it can't
+   touch the other pages; the dark cards keep the series colours readable. */
+.perf {
+  color-scheme: dark;
+  --surface: #0b0d1a;
+  --line: rgba(120, 140, 255, 0.22);
+  --grid: rgba(150, 160, 200, 0.12);
+  --text: #dfe6f3;
+  --dim: #8b95b2;
+  --up: #4ade80;
+  --down: #f87171;
+  /* Categorical slots, validated against --surface (dataviz validator, dark mode). */
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --s4: #c98500;
+  --s5: #d55181;
+  --s6: #8f6bd8;
+  --bench: #dfe6f3;
+  max-width: 1520px;
+  margin: 0;
+  padding: 16px 16px 40px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.perf *, .perf *::before, .perf *::after { box-sizing: border-box; }
+.perf h2 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; margin: 0; text-transform: uppercase; color: var(--text); }
+.perf .label { font-size: 10px; letter-spacing: 0.18em; color: var(--dim); }
+
+.perf .notice { border: 1px solid #f59e0b; background: #fffbeb; color: #92400e;
+          border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; }
+
+.perf .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.perf .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; color: var(--text); }
+.perf .tile .big { font-size: 26px; font-weight: 700; margin-top: 4px; }
+.perf .tile .sub { color: var(--dim); font-size: 12px; margin-top: 2px; }
+.perf .up { color: var(--up); }
+.perf .down { color: var(--down); }
+
+.perf .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 14px; color: var(--text); }
+.perf .card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.perf .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.perf .legend button {
+  font: inherit; font-size: 12px; color: var(--text); background: none; border: 0; padding: 2px 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.perf .legend button.off { color: var(--dim); text-decoration: line-through; }
+.perf .legend button.off .key { opacity: 0.3; }
+.perf .key { width: 18px; height: 0; border-top: 2px solid; display: inline-block; }
+.perf .key.dashed { border-top-style: dashed; }
+.perf .key.dotted { border-top-style: dotted; }
+.perf .key.box { width: 10px; height: 10px; border: 0; border-radius: 2px; }
+
+.perf .chart { position: relative; width: 100%; }
+.perf .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.perf .chart text { fill: var(--dim); font-family: inherit; font-size: 11px; }
+.perf .chart .end-label { fill: var(--text); font-weight: 700; }
+
+.perf .tip {
+  position: fixed; pointer-events: none; z-index: 10; background: rgba(6, 8, 20, 0.95); border: 1px solid var(--line);
+  border-radius: 6px; padding: 8px 10px; font-size: 12px; min-width: 220px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); color: var(--text);
+}
+.perf .tip .tip-date { font-weight: 700; margin-bottom: 4px; }
+.perf .tip-row { display: grid; grid-template-columns: 14px 1fr auto auto; gap: 8px; align-items: center; line-height: 1.6; }
+.perf .tip-row .num { text-align: right; }
+
+.perf .table-wrap { overflow-x: auto; margin-top: 8px; }
+.perf table { border-collapse: collapse; width: 100%; font-size: 12px; white-space: nowrap; }
+.perf th, .perf td { padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--grid); }
+.perf th { color: var(--dim); font-weight: 500; font-size: 11px; letter-spacing: 0.06em; vertical-align: bottom; }
+.perf th:first-child, .perf td:first-child { text-align: left; }
+.perf td .pct { display: block; font-size: 11px; }
+.perf tr:hover td { background: rgba(120, 140, 255, 0.06); }
+.perf .foot { color: var(--dim); font-size: 11px; margin: 10px 0 0; }
+
+/* Charts on the left, note cards stacked on the right; one column when there's no room for both. */
+.perf .perf-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: start; }
+.perf .note-card ul { margin: 10px 0 0; padding-left: 18px; line-height: 1.7; }
+@media (max-width: 1000px) {
+  .perf .perf-layout { grid-template-columns: minmax(0, 1fr); }
+}
+.perf #wow-title select {
+  font: inherit; font-size: 12px; font-weight: 700; color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 4px; padding: 3px 6px; text-transform: none;
+}

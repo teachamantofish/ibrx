@@ -3,6 +3,8 @@ window.ENV_CONFIG = {
     // Event categories, checked in order against "Event Details": the first entry whose match patterns
     // all hit sets the category, so put specific categories above general ones. An entry with no match
     // catches everything left and must stay last. Entries with a source are fed by that file instead.
+    // weight, fadeLeft and fadeRight are the defaults for the matrix's settings dialog (the gear icon).
+    // A value changed in the dialog is saved in that browser and overrides the one here.
     //   weight     peak heat, 0 (none) to 1 (hottest)
     //   fadeLeft   days the heat takes to build from nothing before the event
     //   fadeRight  days the heat takes to fade to nothing after the event
@@ -184,6 +186,7 @@ window.ENV_CONFIG = {
     //           left of that, 'shares' inside the plot's right edge; any other axis gets its own
     //           scale with no labels (read its value at the line's end or in the legend)
     //   format  'price' ($8.74), 'shares' (7.11M) or 'contracts' (5,254)
+    //   color, width  defaults for the chart's settings dialog (the gear icon)
     intensitySeries: [
         { column: 'close', label: 'Close', axis: 'price', format: 'price', color: '#e2e8f0', width: 2 },
         { column: 'volume', label: 'Volume', axis: 'shares', format: 'shares', color: '#60a5fa', width: 1.5 },

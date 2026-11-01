@@ -68,6 +68,28 @@
             text-transform: uppercase;
             color: var(--accent);
         }
+        .gear-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            padding: 0;
+            border: 0;
+            border-radius: 6px;
+            background: none;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.15s, background-color 0.15s;
+        }
+        .gear-btn:hover {
+            background: rgba(var(--accent-rgb), 0.12);
+            color: var(--accent);
+        }
+        .gear-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.45);
+        }
         .env-btn {
             height: 26px;
             padding: 0 12px;
@@ -319,6 +341,21 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 6px;
+            cursor: pointer;
+        }
+        .ix-legend .series input {
+            flex: none;
+            width: 12px;
+            height: 12px;
+            margin: 0;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        .ix-legend .series.off {
+            color: var(--muted);
+        }
+        .ix-legend .series.off .swatch {
+            opacity: 0.3;
         }
         .ix-legend .swatch {
             flex: none;
@@ -394,6 +431,85 @@
             color: var(--muted);
         }
 
+        /* Settings dialogs. applyTheme() gives them the same colours as the cards. */
+        .env-dialog {
+            max-width: calc(100vw - 32px);
+            max-height: calc(100vh - 32px);
+            box-sizing: border-box;
+            padding: 16px 18px;
+            border: 1px solid var(--btn-border);
+            border-radius: 14px;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            color: var(--fg);
+            color-scheme: dark;
+            overflow: auto;
+        }
+        .env-dialog::backdrop {
+            background: rgba(5, 15, 36, 0.55);
+        }
+        .env-dialog h3 {
+            margin: 0 0 4px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+        .env-dialog p {
+            margin: 0 0 12px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+        .env-dialog table {
+            border-collapse: collapse;
+            font-size: 11.5px;
+        }
+        .env-dialog th {
+            padding: 0 0 6px 12px;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--muted);
+            text-align: left;
+            white-space: nowrap;
+        }
+        .env-dialog tbody th {
+            padding: 3px 12px 3px 0;
+            font-size: 11.5px;
+            font-weight: 400;
+            color: var(--fg);
+        }
+        .env-dialog td {
+            padding: 3px 0 3px 12px;
+        }
+        .env-dialog input {
+            box-sizing: border-box;
+            width: 70px;
+            height: 26px;
+            padding: 0 6px;
+            border: 1px solid var(--btn-border);
+            border-radius: 6px;
+            background: var(--btn-bg);
+            color: var(--fg-strong);
+            font: 12px system-ui, sans-serif;
+        }
+        .env-dialog input[type="color"] {
+            padding: 2px;
+            cursor: pointer;
+        }
+        .env-dialog input:focus-visible {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .dialog-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .dialog-actions .reset {
+            margin-right: auto;
+        }
+
         @media (max-width: 480px) {
             .env-card { --lab: 120px; }
             .lab { font-size: 9.5px; line-height: 12px; }
@@ -429,6 +545,8 @@
     <p class="page-subtitle" id="loadingMsg">Loading events…</p>
     <div class="env-card" id="envCard">
         <div class="env-toolbar">
+            <button type="button" class="gear-btn" data-dialog="matrixDialog"
+                    title="Matrix settings" aria-label="Matrix settings"></button>
             <h2>Event catalyst matrix</h2>
             <div class="theme-pick" id="themePick" role="radiogroup" aria-label="Colour theme"></div>
             <button type="button" class="env-btn" id="opexBtn"
@@ -440,11 +558,38 @@
     </div>
     <div class="env-card intensity-card" id="intensityCard">
         <div class="env-toolbar">
+            <button type="button" class="gear-btn" data-dialog="intensityDialog"
+                    title="Chart settings" aria-label="Chart settings"></button>
             <h2>Market intensity catalysts</h2>
         </div>
         <div id="intensity"></div>
     </div>
 </section>
+
+<dialog class="env-dialog" id="matrixDialog" data-group="categories" aria-labelledby="matrixDialogTitle">
+    <form method="dialog">
+        <h3 id="matrixDialogTitle">Matrix settings</h3>
+        <p>Saved in this browser. Weight is peak heat from 0 to 1; fades are in days.</p>
+        <table></table>
+        <div class="dialog-actions">
+            <button type="button" class="env-btn reset">Reset to defaults</button>
+            <button type="button" class="env-btn cancel">Cancel</button>
+            <button type="submit" class="env-btn active">Save</button>
+        </div>
+    </form>
+</dialog>
+<dialog class="env-dialog" id="intensityDialog" data-group="series" aria-labelledby="intensityDialogTitle">
+    <form method="dialog">
+        <h3 id="intensityDialogTitle">Chart settings</h3>
+        <p>Saved in this browser.</p>
+        <table></table>
+        <div class="dialog-actions">
+            <button type="button" class="env-btn reset">Reset to defaults</button>
+            <button type="button" class="env-btn cancel">Cancel</button>
+            <button type="submit" class="env-btn active">Save</button>
+        </div>
+    </form>
+</dialog>
 
 <script>
 const CONFIG = window.ENV_CONFIG;
@@ -453,7 +598,80 @@ const DAYS = PAST_DAYS + 61; // ... then today plus 60 days out
 const DAY_MS = 86400000;
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const THEME_KEY = 'ibrxEnvTheme';
+const SETTINGS_KEY = 'ibrxEnvSettings';
 let ramp = [];
+
+// ─── Saved settings ───────────────────────────────────────────────────────────
+// environment-config.js holds the defaults. The settings dialogs and the legend checkboxes change
+// the config objects in place, and only values that differ from the defaults are saved, so a
+// default edited later still reaches every setting left alone here.
+const isFade = v => Number.isInteger(v) && v >= 0 && v <= 120;
+const SETTINGS = {
+    categories: {
+        items: CONFIG.categories,
+        key: cat => cat.id,
+        fields: {
+            weight: v => typeof v === 'number' && v >= 0 && v <= 1,
+            fadeLeft: isFade,
+            fadeRight: isFade
+        }
+    },
+    series: {
+        items: CONFIG.intensitySeries,
+        key: series => series.column,
+        fields: {
+            color: v => /^#[0-9a-f]{6}$/i.test(v),
+            width: v => typeof v === 'number' && v >= 0.5 && v <= 6,
+            hidden: v => typeof v === 'boolean'
+        }
+    }
+};
+
+Object.values(SETTINGS).forEach(group => {
+    group.defaults = new Map(group.items.map(item => {
+        const values = {};
+        Object.keys(group.fields).forEach(field => {
+            if (field === 'hidden') item.hidden = false;
+            values[field] = item[field];
+        });
+        return [group.key(item), values];
+    }));
+});
+
+// Applies what this browser saved; anything unknown or out of range is ignored.
+function loadSettings() {
+    let saved = {};
+    try {
+        saved = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {};
+    } catch (e) { /* storage blocked or unreadable: use the defaults */ }
+    Object.entries(SETTINGS).forEach(([name, group]) => {
+        group.items.forEach(item => {
+            const values = (saved[name] || {})[group.key(item)] || {};
+            Object.entries(group.fields).forEach(([field, valid]) => {
+                if (valid(values[field])) item[field] = values[field];
+            });
+        });
+    });
+}
+
+function saveSettings() {
+    const saved = {};
+    Object.entries(SETTINGS).forEach(([name, group]) => {
+        group.items.forEach(item => {
+            const id = group.key(item);
+            Object.keys(group.fields).forEach(field => {
+                if (item[field] === group.defaults.get(id)[field]) return;
+                saved[name] = saved[name] || {};
+                saved[name][id] = saved[name][id] || {};
+                saved[name][id][field] = item[field];
+            });
+        });
+    });
+    try {
+        if (Object.keys(saved).length) localStorage.setItem(SETTINGS_KEY, JSON.stringify(saved));
+        else localStorage.removeItem(SETTINGS_KEY);
+    } catch (e) { /* not remembered; fine */ }
+}
 
 function hexToRgb(hex) {
     return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
@@ -484,7 +702,7 @@ function savedThemeName() {
 function applyTheme(name) {
     const theme = CONFIG.themes[name];
     ramp = theme.ramp.map(hexToRgb);
-    document.querySelectorAll('.env-card').forEach(card => {
+    document.querySelectorAll('.env-card, .env-dialog').forEach(card => {
         Object.entries(theme.vars).forEach(([key, value]) => card.style.setProperty(key, value));
     });
     document.querySelector('.env-legend .bar').style.background = `linear-gradient(90deg, ${theme.ramp.join(', ')})`;
@@ -623,6 +841,14 @@ function totalsOf(events) {
     return totals.map(t => t / maxTotal);
 }
 
+// Puts each event's peak on its monthly OPEX (on) or back on its own date (off).
+function centerPeaks(model, on) {
+    model.events.forEach(ev => {
+        ev.values = on ? opexValues(ev, model.days) : ev.baseValues;
+    });
+    model.totals = totalsOf(model.events);
+}
+
 function buildMatrix(sourceRows) {
     const today = new Date();
     const days = Array.from({ length: DAYS }, (_, i) =>
@@ -752,15 +978,41 @@ function intensityModel(model, rows) {
         def,
         points: cols.map(c => ({ c, v: parseFloat(byDay.get(c)[def.column]) })).filter(p => !Number.isNaN(p.v))
     }));
+    return { days: model.days, cols, series, axes: axesFor(series) };
+}
+
+// Lines that are switched on and have data.
+function shownSeries() {
+    return intensity.series.filter(sr => !sr.def.hidden && sr.points.length);
+}
+
+// y scales from the lines that are switched on, so the rest fill the plot when one is hidden.
+function axesFor(series) {
     const axes = {};
-    series.forEach(sr => {
+    series.filter(sr => !sr.def.hidden).forEach(sr => {
         (axes[sr.def.axis] = axes[sr.def.axis] || { values: [], format: sr.def.format })
             .values.push(...sr.points.map(p => p.v));
     });
     Object.entries(axes).forEach(([name, axis]) => {
         if (axis.values.length) Object.assign(axis, axisRange(axis.values, name !== 'price'));
     });
-    return { days: model.days, cols, series, axes };
+    return axes;
+}
+
+function redrawIntensity() {
+    intensity.axes = axesFor(intensity.series);
+    drawIntensity();
+}
+
+// The legend rows stay in place while the mouse moves; showIntensityDay() only changes their text.
+function buildIntensityLegend() {
+    const legend = document.getElementById('ixLegend');
+    legend.innerHTML = `<div class="day"></div>` + intensity.series.map(sr =>
+        `<label class="series${sr.def.hidden ? ' off' : ''}" data-column="${sr.def.column}">` +
+        `<input type="checkbox"${sr.def.hidden ? '' : ' checked'}>` +
+        `<span class="swatch" style="border-color:${sr.def.color}"></span>` +
+        `${sr.def.label}<span class="val"></span></label>`
+    ).join('') + `<div class="note" hidden></div>`;
 }
 
 function renderIntensity(model, dailyRows) {
@@ -773,8 +1025,18 @@ function renderIntensity(model, dailyRows) {
         `<div class="ix-plot" id="ixPlot">` + grid + opexLinesHtml(model.days, '-1px') +
         (hasData ? '' : `<div class="ix-empty">No market data in this window</div>`) +
         `<svg id="ixSvg" aria-hidden="true"></svg></div></div>`;
+    buildIntensityLegend();
     showIntensityDay(null);
     matchIntensityHeight();
+
+    document.getElementById('ixLegend').addEventListener('change', e => {
+        const row = e.target.closest('.series');
+        const sr = intensity.series.find(x => x.def.column === row.dataset.column);
+        sr.def.hidden = !e.target.checked;
+        row.classList.toggle('off', sr.def.hidden);
+        saveSettings();
+        redrawIntensity();
+    });
 
     const plot = document.getElementById('ixPlot');
     plot.addEventListener('mousemove', e => {
@@ -815,11 +1077,11 @@ function drawIntensity() {
         return `<line x1="${x}" x2="${x}" y1="0" y2="${h}"/>`;
     }).join('');
 
-    // Each line's latest value at its end, in its colour; labels closer than 12px are pushed apart.
-    const ends = intensity.series.filter(sr => sr.points.length).map(sr => {
+    // Each line's latest value and name at its end, in its colour; labels closer than 12px are pushed apart.
+    const ends = shownSeries().map(sr => {
         const last = sr.points[sr.points.length - 1];
         const [x, y] = xy(last.c, last.v, sr.def.axis);
-        return { x, y, labelY: y, sr, text: fmtValue(last.v, sr.def.format) };
+        return { x, y, labelY: y, sr, text: `${fmtValue(last.v, sr.def.format)} ${sr.def.label}` };
     }).sort((a, b) => a.y - b.y);
     ends.forEach((end, i) => {
         if (i) end.labelY = Math.max(end.labelY, ends[i - 1].labelY + 12);
@@ -827,8 +1089,7 @@ function drawIntensity() {
 
     svg.innerHTML =
         `<g stroke="rgba(147, 166, 198, 0.12)" stroke-width="${1 / dpr}">${dayLines}</g>` +
-        intensity.series.map(sr => {
-            if (!sr.points.length) return '';
+        shownSeries().map(sr => {
             const d = sr.points.map((p, i) => (i ? 'L' : 'M') + xy(p.c, p.v, sr.def.axis).map(n => n.toFixed(1)).join(','));
             return `<path d="${d.join('')}" fill="none" stroke="${sr.def.color}" stroke-width="${sr.def.width}" ` +
                 `stroke-linejoin="round" stroke-linecap="round"/>`;
@@ -859,10 +1120,7 @@ function showIntensityDay(c) {
     intensity.hoverCol = c;
     const col = c === null ? intensity.cols[intensity.cols.length - 1] : c;
     const legend = document.getElementById('ixLegend');
-    if (col === undefined) {
-        legend.innerHTML = '';
-        return;
-    }
+    if (col === undefined) return;
     const valueAt = sr => (sr.points.find(p => p.c === col) || {}).v;
     const columnAt = column => {
         const sr = intensity.series.find(x => x.def.column === column);
@@ -870,15 +1128,18 @@ function showIntensityDay(c) {
     };
     const vol = columnAt('volume');
     const shortVal = columnAt('short_volume');
-    legend.innerHTML =
-        `<div class="day">${c === null ? 'Latest · ' : ''}${fmtDate(intensity.days[col])}</div>` +
-        intensity.series.map(sr => {
-            const v = valueAt(sr);
-            return `<div class="series"><span class="swatch" style="border-color:${sr.def.color}"></span>` +
-                `${sr.def.label}<span class="val">${v === undefined ? '–' : fmtValue(v, sr.def.format)}</span></div>`;
-        }).join('') +
-        (vol && shortVal ? `<div class="note">Short volume is ${Math.round(shortVal / vol * 100)}% of volume ` +
-            `(FINRA-reported short sales only).</div>` : '');
+    legend.querySelector('.day').textContent = `${c === null ? 'Latest · ' : ''}${fmtDate(intensity.days[col])}`;
+    intensity.series.forEach(sr => {
+        const v = valueAt(sr);
+        legend.querySelector(`[data-column="${sr.def.column}"] .val`).textContent =
+            v === undefined ? '–' : fmtValue(v, sr.def.format);
+    });
+    const note = legend.querySelector('.note');
+    note.hidden = !(vol && shortVal);
+    if (!note.hidden) {
+        note.textContent = `Short volume is ${Math.round(shortVal / vol * 100)}% of volume ` +
+            `(FINRA-reported short sales only).`;
+    }
 
     const hover = document.getElementById('ixHover');
     if (!hover || !intensity.xy) return;
@@ -889,7 +1150,7 @@ function showIntensityDay(c) {
     const h = document.getElementById('ixPlot').clientHeight;
     const x = intensity.colX(col);
     hover.innerHTML = `<line x1="${x}" x2="${x}" y1="0" y2="${h}" stroke="rgba(255,255,255,0.35)"/>` +
-        intensity.series.map(sr => {
+        shownSeries().map(sr => {
             const v = valueAt(sr);
             if (v === undefined) return '';
             const [px, py] = intensity.xy(col, v, sr.def.axis);
@@ -1001,10 +1262,7 @@ function wireInteractions(model) {
         opexBtn.textContent = on ? 'Date center' : 'Opex center';
         opexBtn.title = on ? 'Put each event\'s peak back on its own date'
             : 'Move each event\'s peak onto the monthly OPEX it overlaps';
-        model.events.forEach(ev => {
-            ev.values = on ? opexValues(ev, model.days) : ev.baseValues;
-        });
-        model.totals = totalsOf(model.events);
+        centerPeaks(model, on);
         hm.classList.remove('play');
         [model.totals].concat(model.events.map(ev => ev.values)).forEach((values, r) => {
             hm.querySelectorAll(`.c[data-r="${r}"]`).forEach((cell, c) => {
@@ -1012,6 +1270,89 @@ function wireInteractions(model) {
                 cell.style.background = cellColor(values[c]);
                 cell.classList.toggle('hot', values[c] >= CONFIG.hotHeat);
             });
+        });
+    });
+}
+
+// ─── Settings dialogs ─────────────────────────────────────────────────────────
+const GEAR_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0' +
+    'l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4' +
+    'a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1' +
+    'H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0' +
+    'l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51' +
+    ' 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1' +
+    'H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+
+// One input per setting, named by the row's id and the field it edits.
+function settingInput(id, field, label, attrs) {
+    return `<td><input data-id="${id}" data-field="${field}" aria-label="${escapeHtml(label)}" ${attrs}></td>`;
+}
+
+function buildSettingsTables() {
+    const fade = 'type="number" min="0" max="120" step="1" required';
+    document.querySelector('#matrixDialog table').innerHTML =
+        `<thead><tr><th></th><th>Weight</th><th>Fade before</th><th>Fade after</th></tr></thead><tbody>` +
+        CONFIG.categories.map(cat => `<tr><th scope="row">${escapeHtml(cat.label)}</th>` +
+            settingInput(cat.id, 'weight', `${cat.label} weight`, 'type="number" min="0" max="1" step="0.05" required') +
+            settingInput(cat.id, 'fadeLeft', `${cat.label} fade before`, fade) +
+            settingInput(cat.id, 'fadeRight', `${cat.label} fade after`, fade) + `</tr>`
+        ).join('') + `</tbody>`;
+    document.querySelector('#intensityDialog table').innerHTML =
+        `<thead><tr><th></th><th>Colour</th><th>Width</th></tr></thead><tbody>` +
+        CONFIG.intensitySeries.map(sr => `<tr><th scope="row">${escapeHtml(sr.label)}</th>` +
+            settingInput(sr.column, 'color', `${sr.label} colour`, 'type="color"') +
+            settingInput(sr.column, 'width', `${sr.label} width`, 'type="number" min="0.5" max="6" step="0.5" required') + `</tr>`
+        ).join('') + `</tbody>`;
+    document.querySelectorAll('.gear-btn').forEach(btn => { btn.innerHTML = GEAR_ICON; });
+}
+
+// values(id) gives the settings to show for one row: the current ones, or the defaults on Reset.
+function fillDialog(dialog, values) {
+    dialog.querySelectorAll('input').forEach(input => {
+        input.value = values(input.dataset.id)[input.dataset.field];
+    });
+}
+
+function wireSettings(model, rows) {
+    const applied = {
+        categories() {
+            Object.assign(model, buildMatrix(rows));
+            if (document.getElementById('opexBtn').classList.contains('active')) centerPeaks(model, true);
+            render(model);
+            snapGrid(); // the row count can change, and the chart card matches the matrix's height
+        },
+        series() {
+            buildIntensityLegend();
+            redrawIntensity();
+        }
+    };
+
+    document.querySelectorAll('.gear-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const dialog = document.getElementById(btn.dataset.dialog);
+            const group = SETTINGS[dialog.dataset.group];
+            fillDialog(dialog, id => group.items.find(item => group.key(item) === id));
+            dialog.showModal();
+        });
+    });
+
+    document.querySelectorAll('.env-dialog').forEach(dialog => {
+        const name = dialog.dataset.group;
+        const group = SETTINGS[name];
+        // Reset only fills the form, so Cancel still backs out of it.
+        dialog.querySelector('.reset').addEventListener('click', () => {
+            fillDialog(dialog, id => group.defaults.get(id));
+        });
+        dialog.querySelector('.cancel').addEventListener('click', () => dialog.close());
+        dialog.querySelector('form').addEventListener('submit', () => {
+            dialog.querySelectorAll('input').forEach(input => {
+                const item = group.items.find(x => group.key(x) === input.dataset.id);
+                item[input.dataset.field] = input.type === 'number' ? input.valueAsNumber : input.value;
+            });
+            saveSettings();
+            applied[name]();
         });
     });
 }
@@ -1051,6 +1392,8 @@ window.addEventListener('resize', snapGrid);
         watchScale();
     }, { once: true });
 })();
+loadSettings();
+buildSettingsTables();
 buildThemePicker();
 applyTheme(savedThemeName());
 
@@ -1071,7 +1414,8 @@ Promise.all([loadCsv('data/events.csv'), loadCsv('data/ibrx.csv'),
     Promise.all(CONFIG.intensityFiles.map(loadCsv))])
     .then(([eventRows, trialRows, intensityFiles]) => {
         const dailyRows = [].concat.apply([], intensityFiles);
-        const model = buildMatrix(eventsFromCsv(eventRows).concat(trialsFromCsv(trialRows)));
+        const sourceRows = eventsFromCsv(eventRows).concat(trialsFromCsv(trialRows));
+        const model = buildMatrix(sourceRows);
         render(model);
         renderIntensity(model, dailyRows);
         snapGrid();
@@ -1079,6 +1423,7 @@ Promise.all([loadCsv('data/events.csv'), loadCsv('data/ibrx.csv'),
         const hm = document.getElementById('hm');
         setTimeout(() => hm.classList.remove('play'), ((model.events.length + 1) * 2 + DAYS) * 8 + 600);
         wireInteractions(model);
+        wireSettings(model, sourceRows);
         // Loaded: the loading line is only for "Loading…" and errors.
         document.getElementById('loadingMsg').hidden = true;
     })

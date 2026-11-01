@@ -44,6 +44,15 @@
         table.dataTable a:hover {
             text-decoration: underline;
         }
+        #trialsTable thead th span.dt-column-order::before,
+        #trialsTable thead th span.dt-column-order::after {
+            color: #1e40af;
+            opacity: 0.7;
+        }
+        #trialsTable thead th.dt-ordering-asc span.dt-column-order::before,
+        #trialsTable thead th.dt-ordering-desc span.dt-column-order::after {
+            opacity: 1;
+        }
     </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -112,7 +121,7 @@ fetch('data/ibrx.csv')
             lengthMenu: [25, 50, 100, { label: 'All', value: -1 }],
         });
 
-        document.getElementById('loadingMsg').textContent = `${rows.length} trials. Click a column header to sort; shift-click to sort by multiple columns.`;
+        document.getElementById('loadingMsg').hidden = true;
     })
     .catch(err => {
         document.getElementById('loadingMsg').textContent = `Error loading data: ${err.message}`;
