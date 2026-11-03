@@ -1,47 +1,36 @@
 # Release notes
 
+## 11-03
+
+- Added Related Companies cards for NantWorks, Nant Capital, NANT Global Finance, and PDSB; speculative IBRX tokenization is explicitly labeled.
+
 ## 11-02
 
-- Added a "Subsidiaries" page (`docs/subsidiaries.html`, data in `data/subsidiaries.csv`) and left menu item: force-directed ownership network, jurisdiction treemap, world map, ownership bars, collapsible legal structure and a sortable table. Altor Manufacturing → Altor and the Mariposa entities → MCLR Parent are assumed parent links, not yet checked against the 10-K.
-
-## 10-29
-
-- Added a "Trial data" page (`docs/trials.html`): a DataTables table of every trial in `data/ibrx.csv`, with sortable columns, search, and links to each trial on clinicaltrials.gov.
-- Added a "Trial data" item to the left menu (`docs/js/sidenav.js`).
-- Renamed left menu items: "Trading Timeline" → "Trial timeline", "Partner Drug/Pharma" → "Drug combos/collab".
-- Restored the timeline page header to match the other pages: large white "Trial Timeline" title with kicker and subtitle stacked on the left.
-- Removed the "Fit 90 day trade window" button and its item filter from the timeline page.
-- Restyled the timeline buttons to one shared look: white rounded pills with navy text that fill navy on hover.
-- Added a "Trading Environment" page (`docs/environment.html`) and left menu item: a heat map with one row per event in `data/events.csv` and one column per day for the next 60 days. Date marks fall on Fridays (weekly options expiry), with monthly expiry highlighted.
-- Heat map category weights and keyword rules live in `docs/js/environment-config.js`. Estimated events spread full heat 5 days each side; trial events peak on their date and fade over 2 weeks.
-- Heat map colour themes: the original look is saved as "Magma", and a new "Red" theme runs from white (quiet) to red (hot) on the same navy card. Swatches in the matrix toolbar switch themes, and the browser remembers the choice. Themes are defined in `docs/js/environment-config.js`.
-- Heat map config is now one ordered `categories` array: each category sets its own weight, keyword match, and `fadeLeft` / `fadeRight` days (e.g. earnings fade 5 days each way). Every category fades in a straight line.
-- Estimated events no longer get a ±5-day block of full heat: they peak on their date and fade by their category's `fadeLeft` / `fadeRight`, like exact dates. Month-only dates peak on the 15th.
-- Database locks have their own `databaseLock` category in the heat map config, separate from other trial dates.
-- The heat map adds a row for each trial in `data/ibrx.csv` whose primary completion date falls near the 60-day window. These rows use a new `trialCompletion` config entry (`source: 'trials'`), and their tooltip shows the NCT number, drug and sponsor.
-- Timeline settings moved from the gear dialog into the left menu, stacked under "Trial timeline". On the timeline page the menu opens on load and docks beside the timeline (wide screens) instead of covering it; the hamburger still closes it. Other pages are unchanged.
-- Timeline group names (FDA, Trial, Events) in the left column now read vertically.
-- FDA and event dots no longer pin to the left edge when scrolled past: once a dot leaves the screen, the event and its label hide. Month-long event bars still pin as before.
-- Day gridlines appear on the timeline once you zoom to about 3 months or less, and the time axis numbers every day with the month and year beneath.
-- Trading Environment matrix now starts two weeks before today (75 day columns), sits left-aligned 16px from the menu, and draws the monthly OPEX lines 3px wide.
-- Matrix grid lines are all one screen pixel at any display scaling (100% to 200%). Cell, gap and row sizes are set in screen pixels for the current `devicePixelRatio`, each cell is placed from its column number so rounding cannot drift across the row, and the load-in animation is dropped once it has played. The hot-cell pulse animates only its glow (a white inset stands in for the old brightness filter); the filter put cells on GPU layers that blurred the gaps.
-- Replaced the matrix "Replay" button with "Opex center" (it reads "Date center" while active, to switch back): every event whose shading overlaps a monthly OPEX gets its darkest shade moved onto that OPEX, fading out to the same first and last shaded days set by its category in `js/environment-config.js`. The shaded cells stay the same.
-- Hovering a catalyst's name in the matrix highlights its row: the other cells dim, the row is outlined, and a tooltip shows the full name, category, date and peak heat.
-- Matrix card renamed "Event catalyst matrix". Added a "Market intensity catalysts" card below it, the same size, for line graphs (data to come). It shares the matrix's day axis, Friday date marks and monthly OPEX lines, so each day lines up in both cards; for now it shows an empty plot with "Data coming soon".
-- Market intensity chart now plots IBRX close, volume and short volume from `data/ibrx_daily.csv`, one point per trading day on the matrix's day columns. Close uses a dollar scale on the left; volume and short volume share a shares scale on the right (FINRA short volume covers only part of total volume, about 30% here). The left column reads out each line's value for the latest day, or the hovered day, with a guide line and dots on the plot. Lines, colours and axes are set in `intensitySeries` in `js/environment-config.js`.
-- Doubled the day columns on the Trading Environment page: matrix cells are 11px instead of 5px (12px per day with the gap), so both cards grow from 760px to 1210px wide. The width is `cellWidth` in `js/environment-config.js`. On windows narrower than the cards, the section scrolls sideways, both cards together.
-- Market intensity chart: each line's latest value is labelled at its end in the line's colour (e.g. $8.74), with labels nudged apart when they would overlap.
-- Market intensity chart: faint vertical gridlines, one per day, sit in the gaps between the matrix's columns so each day reads as the same column in both cards.
-- Trading Environment page: removed the explanatory line above the matrix ("18 events shape…") and the note below the cards. The line above still shows "Loading events…" and any load error, and hides once the data loads.
-- Market intensity chart: added call volume, put volume and total open interest from the new `data/ibrx_options_totals.csv`, merged by date with `data/ibrx_daily.csv` (files listed in `intensityFiles` in `js/environment-config.js`). Call and put volume share a contracts scale, labelled in a second column left of the price axis; total OI (~100x option volume) has its own unlabelled scale, read from its end label and the legend. Only Oct 29 has options data so far, so each shows as a single point.
+- Added Subsidiaries page and navigation with D3 ownership network and collapsible legal tree; assumed parent links are labeled unverified.
 
 ## 10-31
 
-- Moved the account performance page here from the `optionicity_performance` site: `docs/performance.html`, with `css/performance.css`, `js/performance.js` and `data/performance.json`. It has an "Account performance" left menu item and the site's animated header. The charts, tiles and table show the same data. The dark cards stay, but the text now uses the site's font, and the IBM Plex Mono files were not moved.
-- `data/performance.json` now comes here from `/home/ben/GIT/crons/optionicity_performance`, which commits and pushes it after each weekday 4:30 PM snapshot. It holds only percentages and the IBRX price, no dollar balances or account names.
-- Market intensity chart: each line in the left legend has a checkbox to turn it on or off, and the browser remembers the choice. The remaining lines rescale to fill the plot, and an axis's labels go when all its lines are off.
-- Trading Environment page: a gear icon left of each chart title opens that chart's settings. The matrix dialog sets weight, fade before and fade after for each category; the market intensity dialog sets each line's colour and width. Save keeps the changes in this browser, and Reset to defaults fills the form with the defaults, ready to save. `js/environment-config.js` still holds the defaults, so other visitors see those.
-- Market intensity chart: each line's end label now shows its name after the value (e.g. $8.27 Close).
-- Account performance page: the charts moved to the left, and three cards are stacked on the right: Primary strategy, Risks and Mistake analysis, each with five TBD bullets. Below about 1000px the cards drop under the charts.
-- Account performance line chart: the last two weeks are always left off (the tiles, bar chart and table still show them), and a dotted "Position size" line climbs from 0% to +50% with a small wobble. That line is an illustration, not measured data, and a note under the chart says so. The numbers are `HIDDEN_WEEKS`, `POSITION_END` and `POSITION_WOBBLE` in `js/performance.js`.
-- Account performance page: the week-over-week chart and the weekly table now also stop two weeks before the latest Friday, like the line chart, with a note saying so. The tiles and the date range in the header still run to the latest Friday.
+- Added Account Performance page with charts, tiles, weekly table, animated site header, and left-navigation link.
+- Arranged charts left and analysis cards right; cards stack below 1000px, and typography matches the site.
+- Performance charts omit latest two weeks; illustrative position-size line and notes clearly mark the gap and estimate.
+- Weekly chart and table also stop two weeks before latest Friday; tiles and header retain current dates.
+- Environment chart toggles and category/series settings save in browser; default weights, fades, colors, and series styles live in docs/js/environment-config.js.
+
+## 10-29
+
+- Added Trial Data page with a searchable, sortable table and ClinicalTrials.gov links; added it to left navigation.
+- Updated left-navigation labels and Trial Timeline header; removed the 90-day fit control and unified button styling.
+- Added Trading Environment heatmap with Friday columns and highlighted monthly OPEX dates.
+- Centralized heatmap categories, keyword matching, directional fades, color themes, and intensity-series styling in docs/js/environment-config.js.
+- Events peak on exact dates and fade by category; month-only dates peak midmonth.
+- Added database-lock and trial-completion categories; trial tooltips show NCT ID, drug, and sponsor.
+- Timeline settings dock under navigation; the menu opens on load and beside charts on wide screens.
+- Timeline group labels rotate vertically; daily gridlines and date labels appear at close zoom.
+- Offscreen FDA/event markers and labels hide, while multi-day event bars remain pinned.
+- Matrix uses 12px/day columns, starts two weeks before today, and scrolls both charts together on narrow screens.
+- Pixel-aligned cell placement keeps grid lines crisp across display scaling; glow-only pulses avoid blurred gaps.
+- Replaced Replay with OPEX Center, which recenters overlapping catalyst peaks without altering shaded dates.
+- Hovering a catalyst highlights its row, dims others, and shows category, date, and peak heat.
+- Added synchronized market-intensity chart with price, share volume, short volume, call/put volume, and open interest.
+- Price, share-volume, option-contract, and open-interest series use separate scales; latest values and names label line ends.
+- Daily gridlines align intensity-chart dates with heatmap columns; removed redundant explanatory copy.
