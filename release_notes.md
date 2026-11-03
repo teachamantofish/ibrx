@@ -1,5 +1,9 @@
 # Release notes
 
+## 11-02
+
+- Added a "Subsidiaries" page (`docs/subsidiaries.html`, data in `data/subsidiaries.csv`) and left menu item: force-directed ownership network, jurisdiction treemap, world map, ownership bars, collapsible legal structure and a sortable table. Altor Manufacturing → Altor and the Mariposa entities → MCLR Parent are assumed parent links, not yet checked against the 10-K.
+
 ## 10-29
 
 - Added a "Trial data" page (`docs/trials.html`): a DataTables table of every trial in `data/ibrx.csv`, with sortable columns, search, and links to each trial on clinicaltrials.gov.

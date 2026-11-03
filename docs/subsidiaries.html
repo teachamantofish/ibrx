@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>IBRX Subsidiaries</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ImmunityBio (IBRX) subsidiaries by jurisdiction and ownership.">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/sidenav.css" rel="stylesheet" type="text/css">
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        section { margin: 1em; padding: 0; }
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            margin-bottom: 16px;
+        }
+        .card h2 { font-size: 0.95rem; font-weight: 600; color: #374151; margin: 0 0 4px; }
+        .hint { font-size: 0.75rem; color: #94a3b8; margin: 0 0 10px; }
+        .row { display: flex; gap: 16px; }
+        .row > .card { flex: 1; min-width: 0; }
+        .row > .graph-card { flex: 0 1 auto; }
+        .row > .tree-card { flex: 0 0 320px; align-self: flex-start; }
+        .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.78rem; color: #475569; margin-bottom: 8px; }
+        .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+        svg text { font-family: inherit; }
+        #graph { max-width: 100%; height: auto; display: block; }
+
+
+        .tree ul { list-style: none; margin: 0; padding-left: 20px; border-left: 1px solid #cbd5e1; }
+        .tree > ul { border-left: none; padding-left: 0; }
+        .tree li { margin: 3px 0; font-size: 0.82rem; }
+        .tree .own { color: #64748b; font-size: 0.74rem; margin-left: 6px; }
+        .tree summary { cursor: pointer; }
+
+
+        .tip {
+            position: fixed; pointer-events: none; background: rgba(15,23,42,0.92); color: #fff;
+            font-size: 0.75rem; padding: 6px 9px; border-radius: 6px; z-index: 50; display: none; line-height: 1.4;
+        }
+        @media (max-width: 900px) { .row { flex-direction: column; } }
+    </style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3WNQBNXD3S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3WNQBNXD3S');
+</script>
+<body class="ibrx-csv-timeline">
+
+<header class="hero">
+    <canvas aria-hidden="true"></canvas>
+    <div class="hero-text">
+        <div class="hero-kicker">ImmunityBio · IBRX</div>
+        <h1 class="hero-title">Subsidiaries</h1>
+        <div class="hero-subtitle">18 subsidiaries as of 12/31/2025, by jurisdiction and ownership</div>
+    </div>
+</header>
+
+<section>
+    <div class="row">
+    <div class="card graph-card">
+        <h2>Ownership network</h2>
+        <p class="hint">Drag nodes to rearrange. Node size and ring show ownership %; colour shows jurisdiction. Altor and MCLR sub-entities link to their assumed parent.</p>
+        <div class="legend" id="legend"></div>
+        <svg id="graph" role="img" aria-label="Force-directed diagram of IBRX subsidiaries"></svg>
+    </div>
+
+    <div class="card tree-card">
+        <h2>Legal structure</h2>
+        <p class="hint">Click a parent to collapse its entities.</p>
+        <div class="tree" id="tree"></div>
+    </div>
+    </div>
+</section>
+<div class="tip" id="tip"></div>
+
+<script src="js/sidenav.js"></script>
+<script src="js/header-helix.js"></script>
+<script>
+(function () {
+    const ROOT = 'ImmunityBio, Inc.';
+    const COLORS = { Delaware: '#2563eb', Korea: '#dc2626', Ireland: '#16a34a', Italy: '#d97706' };
+    // [lon, lat]; Delaware is plotted at the US centre
+    const COORDS = { Delaware: [-98, 39], Korea: [127.8, 36.5], Ireland: [-8, 53.2], Italy: [12.5, 42.8] };
+    const tip = d3.select('#tip');
+    const showTip = (e, html) => tip.style('display', 'block').html(html)
+        .style('left', (e.clientX + 12) + 'px').style('top', (e.clientY + 12) + 'px');
+    const hideTip = () => tip.style('display', 'none');
+    const tipHtml = d => '<b>' + d.name + '</b><br>' + d.jurisdiction + ' · ' + d.owned + '% owned';
+
+    Papa.parse('data/subsidiaries.csv', {
+        download: true, header: true, skipEmptyLines: true,
+        complete: r => {
+            const rows = r.data.map(d => ({ name: d.name, jurisdiction: d.jurisdiction, owned: +d.owned, parent: d.parent || '' }));
+            legend(rows); graph(rows); tree(rows);
+        }
+    });
+
+    function legend(rows) {
+        const js = [...new Set(rows.map(d => d.jurisdiction))];
+        document.getElementById('legend').innerHTML = js.map(j =>
+            '<span><i style="background:' + COLORS[j] + '"></i>' + j + '</span>').join('');
+    }
+
+    function graph(rows) {
+        const svg = d3.select('#graph');
+        // Layout width: the row minus the 320px legal-structure card, gap and card padding
+        const W = Math.max(600, document.querySelector('.row').clientWidth - 320 - 16 - 34), H = 960;
+        const radius = d => d.root ? 38 : 12 + d.owned * 0.12;
+        // Wrap long names into lines of about 16 characters
+        const wrap = name => name.split(' ').reduce((ls, w) => {
+            if (ls.length && (ls[ls.length - 1] + ' ' + w).length <= 16) ls[ls.length - 1] += ' ' + w; else ls.push(w);
+            return ls;
+        }, []);
+
+        // Radial tree: each parent owns an angular sector, so child links never cross another branch.
+        const R = Math.min(W, H) / 2 - 80;
+        const hier = d3.stratify().id(d => d.name).parentId(d => d.parent === undefined ? null : (d.parent || ROOT))(
+            [{ name: ROOT, root: true, owned: 100 }].concat(rows.map(d => Object.assign({}, d))));
+        d3.cluster().size([2 * Math.PI, 1]).separation((p, q) => p.parent === q.parent ? 1 : 1.6)(hier);
+        let zig = 0;
+        const nodes = hier.descendants().map(h => {
+            // Stagger childless first-ring nodes in and out so neighbouring labels don't collide
+            const r = h.depth === 0 ? 0 : h.depth === 2 ? R : (h.children ? 0.55 : (zig++ % 2 ? 0.5 : 0.74)) * R;
+            return Object.assign(h.data, { depth: h.depth, x: W / 2 + r * Math.sin(h.x), y: H / 2 - r * Math.cos(h.x), h });
+        });
+        // Same scale as the layout, cropped so the first node ring sits 1em (16px) from the top and left
+        const x0 = d3.min(nodes, d => d.x - radius(d) - 6), y0 = d3.min(nodes, d => d.y - radius(d) - 6);
+        const y1 = d3.max(nodes, d => d.y + radius(d) + 50);
+        const x1 = d3.max(nodes, d => d.x + Math.max(radius(d) + 6, 55));
+        svg.attr('viewBox', [x0 - 16, y0 - 16, x1 - x0 + 32, y1 - y0 + 16]).style('width', (x1 - x0 + 32) + 'px');
+        const links = hier.links().map(l => ({ source: l.source.data, target: l.target.data }));
+
+        const link = svg.append('g').attr('stroke', '#cbd5e1').selectAll('line').data(links).join('line');
+        const node = svg.append('g').selectAll('g').data(nodes).join('g').style('cursor', 'grab')
+            .call(d3.drag()
+                .on('start', (e, d) => { dragging = d; })
+                .on('drag', (e, d) => { d.x = d.hx = e.x; d.y = d.hy = e.y; })
+                .on('end', () => { dragging = null; }));
+
+        node.append('circle').attr('r', radius)
+            .attr('fill', d => d.root ? '#0f172a' : COLORS[d.jurisdiction]);
+        // Ownership arc: full ring at 100%, partial otherwise
+        node.filter(d => !d.root).append('path')
+            .attr('d', d => d3.arc()({ innerRadius: radius(d) + 3, outerRadius: radius(d) + 6, startAngle: 0, endAngle: Math.min(d.owned, 99.999) / 100 * 2 * Math.PI }))
+            .attr('fill', '#000');
+        node.append('text').text(d => d.root ? 'IBRX' : d.owned + '%')
+            .attr('text-anchor', 'middle').attr('dy', '0.35em').attr('fill', '#fff').attr('font-weight', 700)
+            .attr('font-size', d => d.root ? 14 : 11);
+        node.filter(d => !d.root).append('text').attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#1e293b')
+            .attr('stroke', '#fff').attr('stroke-width', 3).attr('paint-order', 'stroke')
+            .selectAll('tspan').data(d => wrap(d.name).map((t, i) => ({ t, i, r: radius(d) })))
+            .join('tspan').attr('x', 0).attr('y', l => l.r + 20 + l.i * 13).text(l => l.t);
+        node.on('mousemove', (e, d) => showTip(e, d.root ? ROOT : tipHtml(d))).on('mouseleave', hideTip);
+
+        function draw() {
+            link.attr('x1', d => d.source.x).attr('y1', d => d.source.y).attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+            node.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+        }
+        draw();
+
+        // Hover repel: nodes nudge away from the cursor but never out of reach, and a node under the cursor stays put
+        const REACH = 100, PUSH = 18;
+        let cursor = null, dragging = null;
+        nodes.forEach(d => { d.hx = d.x; d.hy = d.y; });
+        svg.on('mousemove.repel', e => { cursor = d3.pointer(e, svg.node()); })
+            .on('mouseleave.repel', () => { cursor = null; });
+        d3.timer(() => {
+            const held = cursor && nodes.some(d => Math.hypot(d.x - cursor[0], d.y - cursor[1]) < radius(d) + 8);
+            nodes.forEach(d => {
+                if (d === dragging) return;
+                let tx = d.hx, ty = d.hy;
+                if (cursor && !held) {
+                    const dx = d.hx - cursor[0], dy = d.hy - cursor[1], dist = Math.hypot(dx, dy) || 1;
+                    if (dist < REACH) {
+                        const f = Math.pow(1 - dist / REACH, 2) * PUSH;
+                        tx += dx / dist * f; ty += dy / dist * f;
+                    }
+                }
+                d.x += (tx - d.x) * 0.15; d.y += (ty - d.y) * 0.15;
+            });
+            draw();
+        });
+    }
+
+    function tree(rows) {
+        const li = d => {
+            const kids = rows.filter(x => x.parent === d.name);
+            const label = d.name + '<span class="own">' + d.jurisdiction + ' · ' + d.owned + '%</span>';
+            return kids.length
+                ? '<li><details open><summary>' + label + '</summary><ul>' + kids.map(li).join('') + '</ul></details></li>'
+                : '<li>' + label + '</li>';
+        };
+        document.getElementById('tree').innerHTML =
+            '<ul><li><details open><summary><b>' + ROOT + '</b></summary><ul>' +
+            rows.filter(d => !d.parent).map(li).join('') + '</ul></details></li></ul>';
+    }
+
+})();
+</script>
+</body>
+</html>

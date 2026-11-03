@@ -33,6 +33,13 @@
                 '<rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/><rect x="16" y="16" width="4.5" height="4.5" rx="1"/>'
         },
         {
+            href: 'subsidiaries.html',
+            label: 'Subsidiaries',
+            // Hub with three spokes
+            icon: '<circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="5.5" r="1.8"/><circle cx="19" cy="5.5" r="1.8"/>' +
+                '<circle cx="12" cy="20" r="1.8"/><path d="M10.2 10.2L6.3 6.8M13.8 10.2l3.9-3.4M12 14.6v3.6"/>'
+        },
+        {
             href: 'performance.html',
             label: 'Account performance',
             // Rising line on axes
