@@ -6,7 +6,7 @@
 
 ## 11-02
 
-- Added Subsidiaries page and navigation with D3 ownership network and collapsible legal tree; assumed parent links are labeled unverified.
+- Added Subsidiaries page and navigation with D3 ownership network and collapsible legal tree
 
 ## 10-31
 
