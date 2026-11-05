@@ -43,6 +43,23 @@ function configurePatentViewer(config, data, details) {
     return `-${term.field === 'all' ? '' : term.field + ':'}${value}`;
   };
 
+  const connectedPaths = new Set();
+  for (const [source, targets] of Object.entries(data.resolvedLinks)) {
+    if (Object.keys(targets).length) connectedPaths.add(source);
+    for (const target of Object.keys(targets)) connectedPaths.add(target);
+  }
+  const hasOrphans = data.files.some(record => !connectedPaths.has(record.path));
+  const hasUnresolved = Object.values(data.unresolvedLinks).some(targets => Object.keys(targets).length > 0);
+  const buildFilters = ControlPanel.prototype.buildFilterSection;
+  /** Omit controls that cannot affect the full loaded dataset, regardless of current search. */
+  ControlPanel.prototype.buildFilterSection = function buildPatentFilters(body, callbacks) {
+    buildFilters.call(this, body, callbacks);
+    const row = this.orphanBtn.parentElement;
+    if (!hasOrphans) this.orphanBtn.remove();
+    if (!hasUnresolved) this.unresolvedBtn.remove();
+    if (!hasOrphans && !hasUnresolved) row.remove();
+  };
+
   const originalShow = SourcePanel.prototype.show;
   /** Keep only the patent title and close button in the inspector header. */
   SourcePanel.prototype.show = function showPatentInspector(node, callbacks) {
@@ -59,6 +76,54 @@ function configurePatentViewer(config, data, details) {
   uiText_default['brand.sub'] = config.subtitle;
   uiText_default['size.links'] = config.linkSizeLabel;
   inspector_default.tabs = inspector_default.tabs.filter(tab => config.inspectorTabs.includes(tab.id));
+
+  /** Use node identity, not repeated display text or centrality roots, for label eligibility. */
+  GraphController.prototype.applyLabelVisibility = function patentLabelVisibility() {
+    if (!this.overlay) return;
+    this.overlay.patentLabelMode = this.settings.labelField;
+    this.overlay.setLabelVisibility(this.settings.labelShowAll, {}, {l1:[], l2:[], l3:[]});
+  };
+
+  /** Family mode labels every family; other modes consider every nonempty node label. */
+  OverlayManager.prototype.labelIndices = function patentLabelIndices() {
+    if (!this.labelShowAll) return [];
+    return this.data.nodes.flatMap((node, index) => {
+      const eligible = this.patentLabelMode === 'filename' ? node.id.startsWith('families/') : Boolean(node.name);
+      return eligible && !node.unresolved ? [index] : [];
+    });
+  };
+
+  const rebuildLabels = OverlayManager.prototype.rebuildLabels;
+  /** Cache label measurements once per rebuild and expose their backing node for QA. */
+  OverlayManager.prototype.rebuildLabels = function rebuildPatentLabels() {
+    rebuildLabels.call(this);
+    for (const label of this.hubEls) {
+      label.el.dataset.nodeId = this.data.nodes[label.index].id;
+      label.width = label.el.offsetWidth;
+      label.height = label.el.offsetHeight;
+    }
+  };
+
+  const updateOverlay = OverlayManager.prototype.update;
+  /** Anchor labels to projected nodes; suppress overlapping Category/Title labels, never families. */
+  OverlayManager.prototype.update = function updatePatentLabels(width, height) {
+    updateOverlay.call(this, width, height);
+    const occupied = [];
+    for (const label of this.hubEls) {
+      const point = this.renderer.projectNode(label.index, width, height);
+      const x = point.x;
+      const y = point.y - config.labels.nodeGap;
+      const box = {left:x-label.width/2, right:x+label.width/2, top:y-label.height, bottom:y};
+      const inside = !point.behind && box.right >= 0 && box.left <= width && box.bottom >= 0 && box.top <= height;
+      const overlaps = this.patentLabelMode !== 'filename' && occupied.some(other =>
+        box.left < other.right && box.right > other.left && box.top < other.bottom && box.bottom > other.top);
+      const visible = inside && !overlaps;
+      this.paint(label, visible ? '1' : '0', `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`);
+      if (visible) occupied.push(box);
+    }
+    // Persistent labels already cover selected neighbors; avoid a second overlapping label layer.
+    for (const label of this.neighborEls) this.paint(label, '0', label.transform);
+  };
 
   const originalSizes = relativeNodeSizes;
   /** Double family radii before applying the existing link-count ranking. */

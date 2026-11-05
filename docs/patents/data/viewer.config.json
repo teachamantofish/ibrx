@@ -45,14 +45,14 @@
     "maxWidth": 340,
     "fontSize": 11,
     "hoverTitleFontSize": 13,
-    "familyText": "Family",
     "separator": ", ",
     "options": {
       "filename": "Family",
       "type": "Category",
       "title": "title",
       "name": "name"
-    }
+    },
+    "nodeGap": 6
   },
   "timelineLink": {
     "label": "Timeline",

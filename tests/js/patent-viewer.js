@@ -60,7 +60,7 @@ async (page) => {
   await page.waitForFunction(() => JSON.parse(localStorage.getItem('ibrx.patent-graph.settings.v3')).labelField === 'filename');
   await page.reload();
   await page.waitForFunction(() => document.getElementById('galaxy').galaxyController?.settings.labelField === 'filename');
-  check(await page.evaluate(() => document.getElementById('galaxy').galaxyController.store.data.nodes.every(node => node.name === 'Family')), 'Family labels incorrect');
+  check(await page.evaluate(() => document.getElementById('galaxy').galaxyController.store.data.nodes.every(node => node.name === (node.id.startsWith('families/') ? node.metadata.title : ''))), 'Family labels incorrect');
   await page.evaluate(() => document.getElementById('galaxy').galaxyController.selectNode(0, false));
   await page.getByRole('tabpanel', {name: 'Data'}).getByRole('cell', {name:'7074904', exact:true}).waitFor();
   check(await page.getByRole('tab', {name:'File',exact:true}).count() === 0, 'File tab still present');
