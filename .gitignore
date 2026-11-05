@@ -1,0 +1,23 @@
+# Personal notes
+z_todo.md
+
+# Tests
+tests/
+python/test_*.py
+
+# Agent / tool output
+.claude/
+docs/.claude/
+.playwright-mcp/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
