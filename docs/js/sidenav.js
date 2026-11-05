@@ -1,20 +1,13 @@
-// Left menu shared by the timeline pages: icons only, labels when the hamburger opens it.
+// Overview: Shared navigation ordered from trial research through patents and trading.
 // A page can put its own controls under its menu item with a [data-sidenav-panel] element;
 // the menu then starts open and docks beside the page instead of covering it.
 (function () {
     const PAGES = [
         {
             href: 'index.html',
-            label: 'Trial timeline',
+            label: 'Timeline',
             // Gantt bars
             icon: '<path d="M4 6h9M7 12h11M5 18h7"/><path d="M3 3v18" opacity=".45"/>'
-        },
-        {
-            href: 'cotreatment.html',
-            label: 'Drug combos/collab',
-            // Molecule: three bonded atoms
-            icon: '<circle cx="7" cy="7" r="2.6"/><circle cx="17" cy="9" r="2.6"/><circle cx="10" cy="17.5" r="2.6"/>' +
-                '<path d="M9.5 7.6l5 .9M8 9.4l1.3 5.6M15.2 11l-3.4 4.6"/>'
         },
         {
             href: 'trials.html',
@@ -23,21 +16,40 @@
             icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14.5h18M9 9v11"/>'
         },
         {
+            href: 'cotreatment.html',
+            label: 'Drugs',
+            // Molecule: three bonded atoms
+            icon: '<circle cx="7" cy="7" r="2.6"/><circle cx="17" cy="9" r="2.6"/><circle cx="10" cy="17.5" r="2.6"/>' +
+                '<path d="M9.5 7.6l5 .9M8 9.4l1.3 5.6M15.2 11l-3.4 4.6"/>'
+        },
+        {
+            href: 'subsidiaries.html',
+            label: 'Subsid.',
+            // Hub with three spokes
+            icon: '<circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="5.5" r="1.8"/><circle cx="19" cy="5.5" r="1.8"/>' +
+                '<circle cx="12" cy="20" r="1.8"/><path d="M10.2 10.2L6.3 6.8M13.8 10.2l3.9-3.4M12 14.6v3.6"/>'
+        },
+        {
+            href: 'patent-overview.html',
+            label: 'Patent Overview',
+            icon: '<path d="M4 3v17h17M8 16v-5m5 5V6m5 10V9"/>'
+        },
+        {
+            href: 'patents/',
+            label: 'Patent 3D graph',
+            // Patent certificate with text lines and an award seal.
+            icon: '<path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10l4 4v4M14 3v5h5M7 8h3M7 12h5M7 16h3"/>' +
+                '<circle cx="17" cy="16" r="3"/><path d="m15 18.3-1 4 3-1.5 3 1.5-1-4"/>'
+        },
+        {
             href: 'environment.html',
-            label: 'Trading Environment',
+            label: 'Trading env',
             // Heat map: a 3x3 block of cells
             icon: '<rect x="3.5" y="3.5" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="3.5" width="4.5" height="4.5" rx="1"/>' +
                 '<rect x="16" y="3.5" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
                 '<rect x="3.5" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="9.75" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
                 '<rect x="16" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="3.5" y="16" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
                 '<rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/><rect x="16" y="16" width="4.5" height="4.5" rx="1"/>'
-        },
-        {
-            href: 'subsidiaries.html',
-            label: 'Subsidiaries',
-            // Hub with three spokes
-            icon: '<circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="5.5" r="1.8"/><circle cx="19" cy="5.5" r="1.8"/>' +
-                '<circle cx="12" cy="20" r="1.8"/><path d="M10.2 10.2L6.3 6.8M13.8 10.2l3.9-3.4M12 14.6v3.6"/>'
         },
         {
             href: 'performance.html',
