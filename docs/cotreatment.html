@@ -159,7 +159,7 @@
 
   gtag('config', 'G-3WNQBNXD3S');
 </script>
-<body class="ibrx-csv-timeline">
+<body class="bio-csv-timeline">
 
 <header class="hero">
     <canvas aria-hidden="true"></canvas>
@@ -169,6 +169,7 @@
         <div class="hero-subtitle">Combination drugs and third-party partners across IBRX trials</div>
     </div>
 </header>
+<script src="js/site-config.js"></script>
 <script src="js/sidenav.js"></script>
 <script src="js/header-helix.js"></script>
 
@@ -419,7 +420,7 @@ function renderTable(rows) {
         tr.innerHTML =
             `<td>${esc(row['Indication'])}</td>` +
             `<td>${esc(row['Phase'])}</td>` +
-            `<td>${esc(row['IBRX drug'])}</td>` +
+            `<td>${esc(row[SITE.drugColumn])}</td>` +
             `<td>${esc(row['Co-treatments'])}</td>` +
             `<td>${esc(row['Co-treatment 3rd Parties'])}</td>` +
             `<td>${nctId ? `<a href="${esc(row['Link'])}" target="_blank" rel="noopener">${esc(nctId)}</a>` : ''}</td>`;

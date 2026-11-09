@@ -1,4 +1,10 @@
 // Trading Environment heat map settings. Edit categories and themes here; environment.html reads window.ENV_CONFIG.
+// The company's trial-name pattern (SITE.trialNamePattern, e.g. QUILT) joins these regexes.
+function trialNames(words, after) {
+    const extra = window.SITE && SITE.trialNamePattern;
+    return new RegExp(!extra ? words : after ? words + '|' + extra : extra + '|' + words, 'i');
+}
+
 window.ENV_CONFIG = {
     // Event categories, checked in order against "Event Details": the first entry whose match patterns
     // all hit sets the category, so put specific categories above general ones. An entry with no match
@@ -34,7 +40,7 @@ window.ENV_CONFIG = {
             weight: 0.6,
             fadeLeft: 3,
             fadeRight: 3,
-            match: [/CONFERENCE/, /present|data|poster|oral|abstract|fireside|chat|QUILT/i]
+            match: [/CONFERENCE/, trialNames('present|data|poster|oral|abstract|fireside|chat', true)]
         },
         {
             id: 'conferenceAttending',
@@ -59,7 +65,7 @@ window.ENV_CONFIG = {
             weight: 0.9,
             fadeLeft: 15,
             fadeRight: 30,
-            match: [/QUILT|topline|enrollment|trial|study|phase|readout|interim/i]
+            match: [trialNames('topline|enrollment|trial|study|phase|readout|interim', false)]
         },
         {
             // Rows from data/ibrx.csv: one per trial whose "Primary completion" date falls near the window.

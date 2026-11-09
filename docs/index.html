@@ -34,7 +34,7 @@
 
   gtag('config', 'G-3WNQBNXD3S');
 </script>
-<body class="ibrx-csv-timeline">
+<body class="bio-csv-timeline">
 <header class="hero">
     <canvas aria-hidden="true"></canvas>
     <div class="hero-text">
@@ -60,6 +60,7 @@
         <p style="text-align: right; margin: 0;"><strong>Note: Click on the chart and scroll for continuous zoom</strong></p>
     </div>
 
+    <script src="js/site-config.js"></script>
     <script src="js/sidenav.js"></script>
     <script src="js/header-helix.js"></script>
     <script src="js/jquery.min.js"></script>
@@ -89,14 +90,14 @@ let lastOverlayWindowStart = null;
 
 const FDA_OVERLAY = {
     id: 4, groupLabel: 'FDA', groupValue: 0,
-    groupTitle: 'Anktiva FDA designations and milestones',
+    groupTitle: SITE.fdaGroupTitle,
     className: 'FDA', csvPath: 'data/fdadesignations.csv', idPrefix: 'fda-',
     data: [], loaded: false
 };
 
 const EVENTS_OVERLAY = {
     id: 5, groupLabel: 'Events', groupValue: 2,
-    groupTitle: 'IBRX events and milestones',
+    groupTitle: SITE.ticker + ' events and milestones',
     className: 'Event', csvPath: 'data/events.csv', idPrefix: 'ev-',
     monthBars: true,
     data: [], loaded: false
@@ -417,7 +418,7 @@ function buildTooltipValues(record) {
     return {
         primaryCompletion: formatValue(record['primary completion']),
         phase: formatValue(record['phase']),
-        ibrxDrug: formatValue(record['ibrx drug']),
+        [SITE.drugKey]: formatValue(record[SITE.drugColumn.toLowerCase()]),
         sponsor: formatValue(record['sponsor'])
     };
 }
@@ -528,7 +529,7 @@ function buildTitle(item) {
         '<strong>' + indication + category + '</strong>',
         'Phase: ' + escapeHtml(cols.phase || 'None'),
         'Primary completion: ' + escapeHtml(cols.primaryCompletion || 'None'),
-        'IBRX drug: ' + escapeHtml(cols.ibrxDrug || 'None'),
+        SITE.ticker + ' drug: ' + escapeHtml(cols[SITE.drugKey] || 'None'),
         'Sponsor: ' + escapeHtml(cols.sponsor || 'None')
     ].join('<br>');
 }
@@ -540,13 +541,13 @@ function twColor(tokenName) {
 }
 
 const TW = {
-    anktiva:    twColor('--tw-amber-200'),
+    leadDrug:   twColor('--tw-amber-200'),
     p1:         twColor('--tw-emerald-100'),
     p2:         twColor('--tw-emerald-300'),
     p3:         twColor('--tw-emerald-400'),
-    ibrx:       twColor('--tw-blue-300'),
-    notibrx:    twColor('--tw-violet-300'),
-    notAnktiva: twColor('--tw-rose-200'),
+    company:    twColor('--tw-blue-300'),
+    notCompany: twColor('--tw-violet-300'),
+    otherDrug:  twColor('--tw-rose-200'),
     enddate:    twColor('--tw-zinc-300'),
 };
 
@@ -560,13 +561,13 @@ function badgeBgColor(tooltipKey, value) {
         if (v.includes('p2')) return TW.p2;
         if (v.includes('p1') || v.includes('early')) return TW.p1;
     }
-    if (tooltipKey === 'ibrxDrug') {
-        if (v.includes('anktiva')) return TW.anktiva;  // Anktiva: amber-200
-        return TW.notAnktiva;                               // other IBRX drugs: rose-300
+    if (tooltipKey === SITE.drugKey) {
+        if (SITE.leadDrug && v.includes(SITE.leadDrug.toLowerCase())) return TW.leadDrug;  // lead drug: amber-200
+        return TW.otherDrug;                                                              // other company drugs: rose-200
     }
     if (tooltipKey === 'sponsor') {
-        if (v.includes('immunitybio') || v.includes('ibrx')) return TW.ibrx;
-        return TW.notibrx;
+        if (SITE.sponsorMatch.some(function (n) { return v.includes(n); })) return TW.company;
+        return TW.notCompany;
     }
     return TW.enddate;
 }
@@ -822,7 +823,7 @@ function setRevenueAndLeapsWindow() {
     syncLineGraphVisibility();
 }
 
-const SETTINGS_KEY = 'ibrxTimeline.settings';
+const SETTINGS_KEY = SITE.storagePrefix + 'Timeline.settings';
 
 // Checkbox settings, kept in localStorage so they survive reloads in this browser.
 function loadSettings() {
@@ -967,8 +968,8 @@ document.addEventListener('DOMContentLoaded', loadTimelineFromCsv);
     </div>
     <h3 class="sidenav-panel-heading">Overlays</h3>
     <div class="control-group sidenav-panel-group">
-        <sl-checkbox id="showRevenueLineGraph">Show revenue</sl-checkbox>
-        <sl-checkbox id="showFdaDesignations">Anktiva FDA designations</sl-checkbox>
+        <sl-checkbox id="showRevenueLineGraph" data-requires="revenue">Show revenue</sl-checkbox>
+        <sl-checkbox id="showFdaDesignations" data-requires="fda">Anktiva FDA designations</sl-checkbox>
         <sl-checkbox id="showEvents">Events</sl-checkbox>
     </div>
     <p class="sidenav-panel-note">Saved in this browser.</p>

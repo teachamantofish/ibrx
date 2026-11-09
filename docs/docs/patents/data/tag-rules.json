@@ -1,0 +1,65 @@
+{
+  "basis": "Title-based topic classification; overlapping tags permitted. Families inherit the union of member application tags.",
+  "categories": [
+    {
+      "tag": "Immunotherapy",
+      "pattern": "immunotherap|immune (?:stimul|enhanc|response|checkpoint)|immunogenic|immunosuppress|interleukin|\\bil[- ]?(?:2|7|12|15|16|18|21)\\b|superkine|superagonist|anktiva|nogapendekin|\\b(?:alt-803|n-803|bcg)\\b|checkpoint|phagocytosis|t[ -]cell receptor|anti-(?:pd|cd|egfr|slamf)|antibod(?:y|ies)|lymphocyte rescue|mait cell activation|\\btcr\\b|t\\s*-\\s*cell receptor|myeloid-derived suppressor|\\bmhc complexes|neoepitope presentation|\\btim-3\\b|\\blair-2\\b",
+      "exclude": "assay|diagnos|detect|marker|validation"
+    },
+    {
+      "tag": "Cell therapy",
+      "pattern": "natural killer|\\bnk(?:[ -]?92|[ -]cells?|[ -]car)\\b|\\bnk92\\b|\\bank cells|\\bank and|hank|m-cenk|\\b(?:t|nkt|cik)[ -]cells?\\b|cellular immunotherap|adoptive cell|cell-mediated transient|cell therapeut|cell product|immune effector cells|mesenchymal stromal|dendritic cells|apheresis product|nk-92mi|fc-epsilon car",
+      "exclude": "t[ -]cell (?:assay|receptor)|rapid.*t[ -]cell|t[ -]cell activation.*systems"
+    },
+    {
+      "tag": "Vaccines",
+      "pattern": "vaccin|yeast.*(?:antigen|immun|therapeutic)|immun.*yeast|immune response.*yeast|immunity against sars|immunogens|antigenic proteins|multivalent antigens",
+      "exclude": ""
+    },
+    {
+      "tag": "Drug delivery & formulations",
+      "pattern": "nanoparticle|micell|emulsion|formulation|drug delivery|delivery (?:vehicle|adjuvant)|viral delivery|subcutaneous delivery|local delivery|intravenous|microcatheter|cell-mediated transient delivery",
+      "exclude": "biomarker detection"
+    },
+    {
+      "tag": "Genetic & protein engineering",
+      "pattern": "gene therapy|genetically modified|genetic modification|recombinant|fusion (?:protein|molecul)|fusions|chimeric|car constructs|\\bmrna\\b|messenger rna|transfection|transduced|transgenes|knock-out|polynucleotide|vectors?\\b|polypeptide|proteinaceous|antigenic proteins|superkine|il-15 variants|interleukin 15.*variants|interface modifications|gene expression",
+      "exclude": ""
+    },
+    {
+      "tag": "Diagnostics & assays",
+      "pattern": "diagnos|assay|biomarker|genotyp|liquid biopsy|clinical samples|mass-spectral|predictive marker|circulating rna|cfrna|bam signatures|maximum achievable response|rapid test|cytotoxicity.*validation",
+      "exclude": ""
+    },
+    {
+      "tag": "Biomanufacturing & automation",
+      "pattern": "cultur|bioreactor|bioprocess|harvest|cryopreservation|cell growth|cell bed|storage and transport|preparing and storing|production yields|producing|production of|chromatography|electroporation|cell clones|confluency|disposable assemblies|ex vivo generation|generating.*cells|generation of.*(?:cell|product)|basal media|wash.*media|virus particle production",
+      "exclude": "immune response generating|production and delivery tracking|viral protein expression"
+    },
+    {
+      "tag": "AI & computer vision",
+      "pattern": "artificial intelligence|machine learning|deep learning|natural language processing|segmentation|image-based.*recognition|fiducial localization",
+      "exclude": ""
+    },
+    {
+      "tag": "Computational biology",
+      "pattern": "computing affinity|prediction of proteasomal|hla clusters|analyzing microbiomes|t-cell receptor.*assay design",
+      "exclude": ""
+    },
+    {
+      "tag": "Cloud & data infrastructure",
+      "pattern": "cloud computing|object storage|database element processing",
+      "exclude": ""
+    },
+    {
+      "tag": "Tracking & authentication",
+      "pattern": "tracking|authentication|digital tokens|distributed ledger|sample destruction validation|sample verification",
+      "exclude": ""
+    }
+  ],
+  "unmatched": {
+    "cancerPattern": "cancer|tumou?r|neoplas|carcinoma|leukemia|lymphoma|myeloma|malignan|chordoma|oncolog",
+    "cancerTag": "Cancer therapeutics",
+    "otherTag": "Other therapeutics"
+  }
+}

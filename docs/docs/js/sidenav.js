@@ -1,0 +1,145 @@
+// Overview: Shared navigation ordered from trial research through patents and trading.
+// A page can put its own controls under its menu item with a [data-sidenav-panel] element;
+// the menu then starts open and docks beside the page instead of covering it.
+(function () {
+    const PAGES = [
+        {
+            id: 'timeline',
+            href: 'index.html',
+            label: 'Timeline',
+            // Gantt bars
+            icon: '<path d="M4 6h9M7 12h11M5 18h7"/><path d="M3 3v18" opacity=".45"/>'
+        },
+        {
+            id: 'trials',
+            href: 'trials.html',
+            label: 'Trial data',
+            // Table grid
+            icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14.5h18M9 9v11"/>'
+        },
+        {
+            id: 'drugs',
+            href: 'cotreatment.html',
+            label: 'Drugs',
+            // Molecule: three bonded atoms
+            icon: '<circle cx="7" cy="7" r="2.6"/><circle cx="17" cy="9" r="2.6"/><circle cx="10" cy="17.5" r="2.6"/>' +
+                '<path d="M9.5 7.6l5 .9M8 9.4l1.3 5.6M15.2 11l-3.4 4.6"/>'
+        },
+        {
+            id: 'subsidiaries',
+            href: 'subsidiaries.html',
+            label: 'Subsid.',
+            // Hub with three spokes
+            icon: '<circle cx="12" cy="12" r="2.6"/><circle cx="5" cy="5.5" r="1.8"/><circle cx="19" cy="5.5" r="1.8"/>' +
+                '<circle cx="12" cy="20" r="1.8"/><path d="M10.2 10.2L6.3 6.8M13.8 10.2l3.9-3.4M12 14.6v3.6"/>'
+        },
+        {
+            id: 'patent-overview',
+            href: 'patent-overview.html',
+            label: 'Patent Overview',
+            icon: '<path d="M4 3v17h17M8 16v-5m5 5V6m5 10V9"/>'
+        },
+        {
+            id: 'patents',
+            href: 'patents/',
+            label: 'Patent 3D graph',
+            // Patent certificate with text lines and an award seal.
+            icon: '<path d="M13 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10l4 4v4M14 3v5h5M7 8h3M7 12h5M7 16h3"/>' +
+                '<circle cx="17" cy="16" r="3"/><path d="m15 18.3-1 4 3-1.5 3 1.5-1-4"/>'
+        },
+        {
+            id: 'environment',
+            href: 'environment.html',
+            label: 'Trading env',
+            // Heat map: a 3x3 block of cells
+            icon: '<rect x="3.5" y="3.5" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="3.5" width="4.5" height="4.5" rx="1"/>' +
+                '<rect x="16" y="3.5" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
+                '<rect x="3.5" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="9.75" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
+                '<rect x="16" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="3.5" y="16" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
+                '<rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/><rect x="16" y="16" width="4.5" height="4.5" rx="1"/>'
+        },
+        {
+            id: 'performance',
+            href: 'performance.html',
+            label: 'Account performance',
+            // Rising line on axes
+            icon: '<path d="M4 4v16h16" opacity=".45"/><path d="M7 15l4-4 3 3 6-7"/>'
+        }
+    ];
+
+    // Pages this site built (js/site-config.js); the menu lists only those.
+    const ENABLED = window.SITE && SITE.pages;
+    const SHOWN = ENABLED ? PAGES.filter(function (p) { return ENABLED.indexOf(p.id) !== -1; }) : PAGES;
+
+    function svg(body) {
+        return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" ' +
+            'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + body + '</svg>';
+    }
+
+    function build() {
+        const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+        const nav = document.createElement('nav');
+        nav.id = 'sidenav';
+        nav.setAttribute('aria-label', 'Pages');
+        nav.innerHTML =
+            '<button type="button" class="sidenav-toggle" aria-expanded="false" aria-label="Open menu" title="Menu">' +
+            svg('<path d="M4 7h16M4 12h16M4 17h16"/>') + '</button>' +
+            '<ul>' + SHOWN.map(function (page) {
+                const active = page.href === current ? ' class="active" aria-current="page"' : '';
+                return '<li><a href="' + page.href + '"' + active + ' title="' + page.label + '">' +
+                    svg(page.icon) + '<span>' + page.label + '</span></a></li>';
+            }).join('') + '</ul>';
+
+        const backdrop = document.createElement('div');
+        backdrop.className = 'sidenav-backdrop';
+
+        document.body.prepend(backdrop);
+        document.body.prepend(nav);
+        document.body.classList.add('has-sidenav');
+
+        const panel = document.querySelector('[data-sidenav-panel]');
+        const activeItem = nav.querySelector('a.active');
+        const docked = !!(panel && activeItem);
+        if (docked) {
+            activeItem.parentNode.appendChild(panel);
+            panel.hidden = false;
+            document.body.classList.add('sidenav-docked');
+        }
+
+        const toggle = nav.querySelector('.sidenav-toggle');
+        function setOpen(open) {
+            nav.classList.toggle('open', open);
+            backdrop.classList.toggle('open', open);
+            document.body.classList.toggle('sidenav-open', open);
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+
+        // Docked: the page narrows as the menu opens, so tell it to re-measure once the slide ends.
+        nav.addEventListener('transitionend', function (event) {
+            if (docked && event.target === nav && event.propertyName === 'width') {
+                window.dispatchEvent(new Event('resize'));
+            }
+        });
+
+        if (docked && window.matchMedia('(min-width: 900px)').matches) {
+            setOpen(true);
+        }
+
+        toggle.addEventListener('click', function () {
+            setOpen(!nav.classList.contains('open'));
+        });
+        backdrop.addEventListener('click', function () {
+            setOpen(false);
+        });
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !docked) setOpen(false);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', build);
+    } else {
+        build();
+    }
+})();

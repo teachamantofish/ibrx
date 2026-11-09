@@ -1,0 +1,63 @@
+{
+  "dataset": "patents/data/patents.json",
+  "tags": "patents/data/tag-rules.json",
+  "familyLimit": 10,
+  "statusMap": {
+    "Abandoned  --  After Examiner's Answer or Board of Appeals Decision": "Abandoned",
+    "Abandoned  --  Failure to Pay Issue Fee": "Abandoned",
+    "Abandoned  --  Failure to Respond to an Office Action": "Abandoned",
+    "Abandoned  --  Incomplete Application (Pre-examination)": "Abandoned",
+    "Abandonment for Failure to Correct Drawings/Oath/NonPub Request": "Abandoned",
+    "Application Undergoing Preexam Processing": "Pending / examination",
+    "Docketed New Case - Ready for Examination": "Pending / examination",
+    "Expressly Abandoned  --  During Examination": "Abandoned",
+    "Final Rejection Mailed": "Pending / examination",
+    "Non Final Action Mailed": "Pending / examination",
+    "Notice of Allowance Mailed -- Application Received in Office of Publications": "Pending / examination",
+    "On Appeal -- Awaiting Decision by the Board of Appeals": "Pending / examination",
+    "PCT - IPER (International Preliminary Examination Report) 409-416 Mailed": "International processing",
+    "PCT - International Search Report Mailed to IB": "International processing",
+    "Patent Expired Due to NonPayment of Maintenance Fees Under 37 CFR 1.362": "Patent expired",
+    "Patented Case": "Patented case",
+    "Provisional Application Expired": "Provisional expired",
+    "Publications -- Issue Fee Payment Verified": "Pending / examination",
+    "RO PROCESSING COMPLETED-PLACED IN STORAGE": "International processing",
+    "Response after Final Action Forwarded to Examiner": "Pending / examination",
+    "Response to Non-Final Office Action Entered and Forwarded to Examiner": "Pending / examination"
+  },
+  "statusColors": {
+    "Patented case": "#38bdf8",
+    "Pending / examination": "#a78bfa",
+    "Abandoned": "#fb7185",
+    "Patent expired": "#fbbf24",
+    "Provisional expired": "#fb923c",
+    "International processing": "#5eead4"
+  },
+  "charts": [
+    {
+      "id": "categories",
+      "title": "Applications by category",
+      "note": "Overlapping tags; one application may appear in several bars. Click a category to isolate it."
+    },
+    {
+      "id": "years",
+      "title": "Filings by year",
+      "note": "Stacked by recorded status. Each dated application is counted once."
+    },
+    {
+      "id": "statuses",
+      "title": "Application status",
+      "note": "Grouped from CSV status text; not a live legal-status check. International and provisional records remain separate."
+    },
+    {
+      "id": "families",
+      "title": "Largest patent families",
+      "note": "Top 10 family IDs by application records in the filtered selection."
+    },
+    {
+      "id": "overlap",
+      "title": "Category overlap",
+      "note": "Shared application counts. Diagonal = category total. Dark cells = zero; brighter cells = greater overlap."
+    }
+  ]
+}

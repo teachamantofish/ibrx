@@ -4,18 +4,21 @@
 (function () {
     const PAGES = [
         {
+            id: 'timeline',
             href: 'index.html',
             label: 'Timeline',
             // Gantt bars
             icon: '<path d="M4 6h9M7 12h11M5 18h7"/><path d="M3 3v18" opacity=".45"/>'
         },
         {
+            id: 'trials',
             href: 'trials.html',
             label: 'Trial data',
             // Table grid
             icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14.5h18M9 9v11"/>'
         },
         {
+            id: 'drugs',
             href: 'cotreatment.html',
             label: 'Drugs',
             // Molecule: three bonded atoms
@@ -23,6 +26,7 @@
                 '<path d="M9.5 7.6l5 .9M8 9.4l1.3 5.6M15.2 11l-3.4 4.6"/>'
         },
         {
+            id: 'subsidiaries',
             href: 'subsidiaries.html',
             label: 'Subsid.',
             // Hub with three spokes
@@ -30,11 +34,13 @@
                 '<circle cx="12" cy="20" r="1.8"/><path d="M10.2 10.2L6.3 6.8M13.8 10.2l3.9-3.4M12 14.6v3.6"/>'
         },
         {
+            id: 'patent-overview',
             href: 'patent-overview.html',
             label: 'Patent Overview',
             icon: '<path d="M4 3v17h17M8 16v-5m5 5V6m5 10V9"/>'
         },
         {
+            id: 'patents',
             href: 'patents/',
             label: 'Patent 3D graph',
             // Patent certificate with text lines and an award seal.
@@ -42,6 +48,7 @@
                 '<circle cx="17" cy="16" r="3"/><path d="m15 18.3-1 4 3-1.5 3 1.5-1-4"/>'
         },
         {
+            id: 'environment',
             href: 'environment.html',
             label: 'Trading env',
             // Heat map: a 3x3 block of cells
@@ -52,12 +59,17 @@
                 '<rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/><rect x="16" y="16" width="4.5" height="4.5" rx="1"/>'
         },
         {
+            id: 'performance',
             href: 'performance.html',
             label: 'Account performance',
             // Rising line on axes
             icon: '<path d="M4 4v16h16" opacity=".45"/><path d="M7 15l4-4 3 3 6-7"/>'
         }
     ];
+
+    // Pages this site built (js/site-config.js); the menu lists only those.
+    const ENABLED = window.SITE && SITE.pages;
+    const SHOWN = ENABLED ? PAGES.filter(function (p) { return ENABLED.indexOf(p.id) !== -1; }) : PAGES;
 
     function svg(body) {
         return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" ' +
@@ -72,7 +84,7 @@
         nav.innerHTML =
             '<button type="button" class="sidenav-toggle" aria-expanded="false" aria-label="Open menu" title="Menu">' +
             svg('<path d="M4 7h16M4 12h16M4 17h16"/>') + '</button>' +
-            '<ul>' + PAGES.map(function (page) {
+            '<ul>' + SHOWN.map(function (page) {
                 const active = page.href === current ? ' class="active" aria-current="page"' : '';
                 return '<li><a href="' + page.href + '"' + active + ' title="' + page.label + '">' +
                     svg(page.icon) + '<span>' + page.label + '</span></a></li>';

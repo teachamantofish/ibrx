@@ -9,6 +9,7 @@
     <link href="css/sidenav.css" rel="stylesheet" type="text/css">
     <link href="css/bencustom.css" rel="stylesheet" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="js/site-config.js"></script>
     <script src="js/environment-config.js"></script>
     <style>
         /* Left-aligned, ~1em in from the menu. Whole pixels throughout (the site's 1em is 13.33px)
@@ -528,7 +529,7 @@
 
   gtag('config', 'G-3WNQBNXD3S');
 </script>
-<body class="ibrx-csv-timeline">
+<body class="bio-csv-timeline">
 
 <header class="hero">
     <canvas aria-hidden="true"></canvas>
@@ -597,8 +598,8 @@ const PAST_DAYS = 14; // two weeks before today
 const DAYS = PAST_DAYS + 61; // ... then today plus 60 days out
 const DAY_MS = 86400000;
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-const THEME_KEY = 'ibrxEnvTheme';
-const SETTINGS_KEY = 'ibrxEnvSettings';
+const THEME_KEY = SITE.storagePrefix + 'EnvTheme';
+const SETTINGS_KEY = SITE.storagePrefix + 'EnvSettings';
 let ramp = [];
 
 // ─── Saved settings ───────────────────────────────────────────────────────────
@@ -773,7 +774,7 @@ function eventsFromCsv(rows) {
     });
 }
 
-// ibrx.csv rows -> one row per trial, dated by its primary completion.
+// trials.csv rows -> one row per trial, dated by its primary completion.
 function trialsFromCsv(rows) {
     const category = CONFIG.categories.find(cat => cat.source === 'trials');
     if (!category) return [];
@@ -783,7 +784,7 @@ function trialsFromCsv(rows) {
         return {
             dateText: (r['Primary completion'] || '').trim(),
             name: `${indication} trial (${(r['Phase'] || '').trim()})`,
-            details: [nct, r['IBRX drug'], r['Sponsor']].map(x => (x || '').trim()).filter(Boolean).join(' · '),
+            details: [nct, r[SITE.drugColumn], r['Sponsor']].map(x => (x || '').trim()).filter(Boolean).join(' · '),
             text: '',
             category
         };

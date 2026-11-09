@@ -66,7 +66,7 @@
 
   gtag('config', 'G-3WNQBNXD3S');
 </script>
-<body class="ibrx-csv-timeline">
+<body class="bio-csv-timeline">
 
 <header class="hero">
     <canvas aria-hidden="true"></canvas>
@@ -141,24 +141,28 @@
 </section>
 <div class="tip" id="tip"></div>
 
+<script src="js/site-config.js"></script>
 <script src="js/sidenav.js"></script>
 <script src="js/header-helix.js"></script>
 <script>
 (function () {
-    const ROOT = 'ImmunityBio, Inc.';
-    const COLORS = { Delaware: '#2563eb', Korea: '#dc2626', Ireland: '#16a34a', Italy: '#d97706' };
-    // [lon, lat]; Delaware is plotted at the US centre
-    const COORDS = { Delaware: [-98, 39], Korea: [127.8, 36.5], Ireland: [-8, 53.2], Italy: [12.5, 42.8] };
+    const ROOT = SITE.legalName;
+    // Colour per jurisdiction, assigned in order of first appearance.
+    const PALETTE = ['#2563eb', '#dc2626', '#16a34a', '#d97706', '#7c3aed', '#0891b2', '#db2777', '#65a30d', '#475569'];
+    const COLORS = {};
     const tip = d3.select('#tip');
     const showTip = (e, html) => tip.style('display', 'block').html(html)
         .style('left', (e.clientX + 12) + 'px').style('top', (e.clientY + 12) + 'px');
     const hideTip = () => tip.style('display', 'none');
-    const tipHtml = d => '<b>' + d.name + '</b><br>' + d.jurisdiction + ' · ' + d.owned + '% owned';
+    const tipHtml = d => '<b>' + d.name + '</b><br>' + d.jurisdiction + ' · ' + d.owned + '% owned' + (d.assumed ? ' (assumed: Exhibit 21 gives no %)' : '');
 
     Papa.parse('data/subsidiaries.csv', {
         download: true, header: true, skipEmptyLines: true,
         complete: r => {
-            const rows = r.data.map(d => ({ name: d.name, jurisdiction: d.jurisdiction, owned: +d.owned, parent: d.parent || '' }));
+            const rows = r.data.map(d => ({ name: d.name, jurisdiction: d.jurisdiction, owned: +d.owned || 100, parent: d.parent || '',
+                assumed: d.owned_source === 'assumed', source: d.source || '' }));
+            rows.forEach(d => { if (!(d.jurisdiction in COLORS)) COLORS[d.jurisdiction] = PALETTE[Object.keys(COLORS).length % PALETTE.length]; });
+            if (!rows.length) { document.querySelector('.row').innerHTML = '<p class="hint">No subsidiaries recorded.</p>'; return; }
             legend(rows); graph(rows); tree(rows);
         }
     });
@@ -211,7 +215,7 @@
         node.filter(d => !d.root).append('path')
             .attr('d', d => d3.arc()({ innerRadius: radius(d) + 3, outerRadius: radius(d) + 6, startAngle: 0, endAngle: Math.min(d.owned, 99.999) / 100 * 2 * Math.PI }))
             .attr('fill', '#000');
-        node.append('text').text(d => d.root ? 'IBRX' : d.owned + '%')
+        node.append('text').text(d => d.root ? SITE.ticker : d.owned + '%')
             .attr('text-anchor', 'middle').attr('dy', '0.35em').attr('fill', '#fff').attr('font-weight', 700)
             .attr('font-size', d => d.root ? 14 : 11);
         node.filter(d => !d.root).append('text').attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', '#1e293b')

@@ -13,7 +13,7 @@
     const FOCAL = 1100;
     const TEAL = [94, 234, 212];
     const VIOLET = [167, 139, 250];
-    const BASES = 'IBRX';
+    const BASES = (window.SITE && SITE.ticker) || 'ATGC';
 
     let width = 0;
     let height = 0;

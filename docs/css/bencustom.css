@@ -224,30 +224,30 @@ a:active {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-/* ibrx/ibrxcsvtimeline.html controls and dialog styling */
-.ibrx-csv-timeline .timeline-logo {
+/* index.html controls and dialog styling */
+.bio-csv-timeline .timeline-logo {
     position: absolute;
     left: 0;
     top: 0;
 }
 
-.ibrx-csv-timeline .timeline-tools {
+.bio-csv-timeline .timeline-tools {
     display: flex;
     align-items: center;
     margin-left: auto;
 }
 
-.ibrx-csv-timeline .timeline-tools sl-icon-button {
+.bio-csv-timeline .timeline-tools sl-icon-button {
     font-size: 20px;
     color: #103884;
 }
 
-.ibrx-csv-timeline .timeline-tools sl-icon-button::part(base):hover,
-.ibrx-csv-timeline .timeline-tools sl-icon-button::part(base):focus-visible {
+.bio-csv-timeline .timeline-tools sl-icon-button::part(base):hover,
+.bio-csv-timeline .timeline-tools sl-icon-button::part(base):focus-visible {
     color: #1d4ed8;
 }
 
-.ibrx-csv-timeline .timeline-actions {
+.bio-csv-timeline .timeline-actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -256,7 +256,7 @@ a:active {
 }
 
 /* One look for every timeline button: white pill, navy text, fills navy on hover. */
-.ibrx-csv-timeline .timeline-actions sl-button::part(base) {
+.bio-csv-timeline .timeline-actions sl-button::part(base) {
     height: 32px;
     padding: 0 14px;
     border: 1px solid #cbd5e1;
@@ -270,40 +270,40 @@ a:active {
     transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 
-.ibrx-csv-timeline .timeline-actions sl-button::part(label) {
+.bio-csv-timeline .timeline-actions sl-button::part(label) {
     padding: 0;
     line-height: 30px;
 }
 
-.ibrx-csv-timeline .timeline-actions sl-button::part(base):hover {
+.bio-csv-timeline .timeline-actions sl-button::part(base):hover {
     background: #103884;
     border-color: #103884;
     color: #ffffff;
     box-shadow: 0 2px 6px rgba(16, 56, 132, 0.25);
 }
 
-.ibrx-csv-timeline .timeline-actions sl-button::part(base):active {
+.bio-csv-timeline .timeline-actions sl-button::part(base):active {
     background: #0b2a66;
 }
 
-.ibrx-csv-timeline .timeline-actions sl-button::part(base):focus-visible {
+.bio-csv-timeline .timeline-actions sl-button::part(base):focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.55);
 }
 
-.ibrx-csv-timeline .control-group {
+.bio-csv-timeline .control-group {
     display: flex;
     flex-wrap: wrap;
     gap: 8px 14px;
     margin: 8px 0;
 }
 
-.ibrx-csv-timeline .control-group sl-checkbox {
+.bio-csv-timeline .control-group sl-checkbox {
     --size: 16px;
 }
 
 /* Group names in the left column read bottom-to-top. */
-.ibrx-csv-timeline .vis-labelset .vis-label .vis-inner {
+.bio-csv-timeline .vis-labelset .vis-label .vis-inner {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     padding: 8px 6px;
@@ -311,14 +311,14 @@ a:active {
 
 /* One line per day, drawn by index.html once 3 months or less are on screen.
    Above the items, so the days still show across the trial bars. */
-.ibrx-csv-timeline .day-grid {
+.bio-csv-timeline .day-grid {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
 }
 
-.ibrx-csv-timeline .day-grid div {
+.bio-csv-timeline .day-grid div {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -327,7 +327,7 @@ a:active {
 }
 
 /* Day numbers on the time axis: centred in each day, small enough that "28" fits at 3 months. */
-.ibrx-csv-timeline #visualization.day-axis .vis-time-axis .vis-text.vis-minor {
+.bio-csv-timeline #visualization.day-axis .vis-time-axis .vis-text.vis-minor {
     padding-left: 0;
     padding-right: 0;
     font-size: 9px;
@@ -335,13 +335,13 @@ a:active {
     overflow: visible;
 }
 
-.ibrx-csv-timeline .timeline-note-img {
+.bio-csv-timeline .timeline-note-img {
     width: 100%;
     max-width: 900px;
     height: auto;
 }
 
-.ibrx-csv-timeline #timelineNotesDialog {
+.bio-csv-timeline #timelineNotesDialog {
     --width: min(96vw, 64rem);
 }
 

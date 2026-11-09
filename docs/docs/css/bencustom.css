@@ -1,0 +1,347 @@
+:root {
+    /* Tailwind palette tokens: 50-400 */
+    --tw-zinc-50: #fafafa;
+    --tw-zinc-100: #f4f4f5;
+    --tw-zinc-200: #e4e4e7;
+    --tw-zinc-300: #d4d4d8;
+    --tw-zinc-400: #a1a1aa;
+
+    --tw-slate-50: #f8fafc;
+    --tw-slate-100: #f1f5f9;
+    --tw-slate-200: #e2e8f0;
+    --tw-slate-300: #cbd5e1;
+    --tw-slate-400: #94a3b8;
+
+    --tw-blue-50: #eff6ff;
+    --tw-blue-100: #dbeafe;
+    --tw-blue-200: #bfdbfe;
+    --tw-blue-300: #93c5fd;
+    --tw-blue-400: #60a5fa;
+
+    --tw-amber-50: #fffbeb;
+    --tw-amber-100: #fef3c7;
+    --tw-amber-200: #fde68a;
+    --tw-amber-300: #fcd34d;
+    --tw-amber-400: #fbbf24;
+
+    --tw-orange-50: #fff7ed;
+    --tw-orange-100: #ffedd5;
+    --tw-orange-200: #fed7aa;
+    --tw-orange-300: #fdba74;
+    --tw-orange-400: #fb923c;
+
+    --tw-red-50: #fef2f2;
+    --tw-red-100: #fee2e2;
+    --tw-red-200: #fecaca;
+    --tw-red-300: #fca5a5;
+    --tw-red-400: #f87171;
+
+    --tw-violet-50: #f5f3ff;
+    --tw-violet-100: #ede9fe;
+    --tw-violet-200: #ddd6fe;
+    --tw-violet-300: #c4b5fd;
+    --tw-violet-400: #a78bfa;
+
+    --tw-rose-50: #fff1f2;
+    --tw-rose-100: #ffe4e6;
+    --tw-rose-200: #fecdd3;
+    --tw-rose-300: #fda4af;
+    --tw-rose-400: #fb7185;
+
+    --tw-emerald-50: #ecfdf5;
+    --tw-emerald-100: #d1fae5;
+    --tw-emerald-200: #a7f3d0;
+    --tw-emerald-300: #6ee7b7;
+    --tw-emerald-400: #34d399;
+
+    --tw-yellow-50: #fefce8;
+    --tw-yellow-100: #fef9c3;
+    --tw-yellow-200: #fef08a;
+    --tw-yellow-300: #fde047;
+    --tw-yellow-400: #facc15;
+
+    --tw-neutral-50: #fafafa;
+    --tw-neutral-100: #f5f5f5;
+    --tw-neutral-200: #e5e5e5;
+    --tw-neutral-300: #d4d4d4;
+    --tw-neutral-400: #a3a3a3;
+
+    /* Non-tailwind helper for current text contrast */
+    --tw-zinc-900: #18181b;
+
+    /* App semantic vars: active preset (MEDIUM) */
+    --timeline-text: var(--tw-zinc-900);
+    --timeline-link: var(--tw-zinc-900);
+    --timeline-trial-bg: var(--tw-blue-100);
+    --timeline-trial-readout: #395a85;
+    --timeline-event-bg: var(--tw-violet-300);
+    --timeline-event-month-bg: var(--tw-violet-200);
+    --timeline-fda-bg: var(--tw-rose-100);
+    --timeline-funding-bg: var(--tw-emerald-100);
+    --tooltip-bg: var(--tw-yellow-200);
+    --tooltip-border: var(--tw-neutral-400);
+
+    /* Preset reference: SOFT
+    --timeline-trial-bg: var(--tw-slate-100);
+    --timeline-event-bg: var(--tw-blue-50);
+    --timeline-fda-bg: var(--tw-rose-50);
+    --timeline-funding-bg: var(--tw-emerald-50);
+    --tooltip-bg: var(--tw-yellow-100);
+    --tooltip-border: var(--tw-neutral-300);
+    */
+
+    /* Preset reference: BOLD
+    --timeline-trial-bg: var(--tw-slate-300);
+    --timeline-event-bg: var(--tw-blue-200);
+    --timeline-fda-bg: var(--tw-rose-200);
+    --timeline-funding-bg: var(--tw-emerald-200);
+    --tooltip-bg: var(--tw-yellow-300);
+    --tooltip-border: var(--tw-neutral-400);
+    */
+}
+
+body {
+    margin: 0;
+    padding:0;
+}
+
+
+section {
+    margin: 2em;
+}
+
+body,
+html,
+input {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: var(--timeline-text);
+}
+
+#visualization {
+    position: relative;
+}
+
+/* User controls */
+.menu {
+    left: 0;
+    margin-bottom: 1em;
+}
+
+/* End user controls */
+
+.vis-item .vis-item-content {
+    margin: 0 !important;
+    padding: 1px 0 0 5px !important;
+    box-sizing: border-box;
+    padding: 0px;
+    white-space: nowrap;
+    font-size: 9pt;
+    font-weight: normal;
+    color: var(--timeline-text);
+    border: none;
+    height: 10px !important;
+}
+
+.vis-item.vis-readonly .vis-item-content {
+    height: 15px !important;
+}
+
+.vis-item-overflow {
+    overflow: visible !important;
+}
+
+.vis-item.Trials {
+    background: var(--timeline-trial-bg);
+    border: none !important;
+
+}
+
+/* Possible early data release: darkens over the 60 days before primary completion. */
+.vis-item.Trials.readout {
+    background: linear-gradient(to right, var(--timeline-trial-bg) var(--readout-start), var(--timeline-trial-readout));
+}
+
+.vis-item.Event {
+    background-color: var(--timeline-event-bg);
+    border: none !important;
+    padding-bottom: 5px;
+}
+
+/* Event dots are filled circles, not vis's border-drawn dot. */
+.vis-item.vis-dot.Event {
+    width: 16px;
+    height: 16px;
+    border-radius: 50% !important;
+}
+
+.vis-item.vis-point.Event {
+    background-color: transparent;
+}
+
+.vis-item.FDA {
+    background-color: var(--timeline-fda-bg);
+
+}
+
+.vis-item.vis-dot.FDA {
+    border-width: 8px !important;
+    border-radius: 8px !important;
+}
+
+/* Events dated only to a month: a bar across the month, lighter than the event dots. */
+.vis-item.vis-range.Event.month {
+    background-color: var(--timeline-event-month-bg);
+    padding-bottom: 0;
+}
+
+.vis-item.vis-point.FDA .vis-item-content,
+.vis-item.vis-point.Event .vis-item-content {
+    margin-left: 12px !important;
+}
+
+.vis-item.Funding {
+    background-color: var(--timeline-funding-bg);
+
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    color: var(--timeline-link);
+    text-decoration: none;
+}
+.custom-tooltip {
+    position: absolute;
+    background-color: var(--tooltip-bg);
+    border: 1px solid var(--tooltip-border);
+    padding: 2px 2px 0px 2px;
+    z-index: 1000;
+    display: none;
+    pointer-events: none;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* index.html controls and dialog styling */
+.bio-csv-timeline .timeline-logo {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.bio-csv-timeline .timeline-tools {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.bio-csv-timeline .timeline-tools sl-icon-button {
+    font-size: 20px;
+    color: #103884;
+}
+
+.bio-csv-timeline .timeline-tools sl-icon-button::part(base):hover,
+.bio-csv-timeline .timeline-tools sl-icon-button::part(base):focus-visible {
+    color: #1d4ed8;
+}
+
+.bio-csv-timeline .timeline-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* One look for every timeline button: white pill, navy text, fills navy on hover. */
+.bio-csv-timeline .timeline-actions sl-button::part(base) {
+    height: 32px;
+    padding: 0 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #103884;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.bio-csv-timeline .timeline-actions sl-button::part(label) {
+    padding: 0;
+    line-height: 30px;
+}
+
+.bio-csv-timeline .timeline-actions sl-button::part(base):hover {
+    background: #103884;
+    border-color: #103884;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(16, 56, 132, 0.25);
+}
+
+.bio-csv-timeline .timeline-actions sl-button::part(base):active {
+    background: #0b2a66;
+}
+
+.bio-csv-timeline .timeline-actions sl-button::part(base):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.55);
+}
+
+.bio-csv-timeline .control-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin: 8px 0;
+}
+
+.bio-csv-timeline .control-group sl-checkbox {
+    --size: 16px;
+}
+
+/* Group names in the left column read bottom-to-top. */
+.bio-csv-timeline .vis-labelset .vis-label .vis-inner {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    padding: 8px 6px;
+}
+
+/* One line per day, drawn by index.html once 3 months or less are on screen.
+   Above the items, so the days still show across the trial bars. */
+.bio-csv-timeline .day-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.bio-csv-timeline .day-grid div {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 1px solid rgba(100, 116, 139, 0.18);
+}
+
+/* Day numbers on the time axis: centred in each day, small enough that "28" fits at 3 months. */
+.bio-csv-timeline #visualization.day-axis .vis-time-axis .vis-text.vis-minor {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 9px;
+    text-align: center;
+    overflow: visible;
+}
+
+.bio-csv-timeline .timeline-note-img {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+}
+
+.bio-csv-timeline #timelineNotesDialog {
+    --width: min(96vw, 64rem);
+}
+

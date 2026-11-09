@@ -1,22 +1,13 @@
 (function () {
     'use strict';
 
-    var REVENUE_POINTS = [
-        { x: '2024-03-31', y: 0.04 },
-        { x: '2024-06-30', y: 1.0 },
-        { x: '2024-09-30', y: 2.5 },
-        { x: '2024-12-31', y: 7.6 },
-        { x: '2025-03-31', y: 16.5 },
-        { x: '2025-06-30', y: 26.4 },
-        { x: '2025-09-30', y: 32.1 },
-        { x: '2025-12-31', y: 38.3 },
-        { x: '2026-03-31', y: 44.21 },
-        { x: '2026-06-30', y: 51.24 },
-        { x: '2026-11-05', y: 60 }
-    ];
+    // Quarterly revenue in $M, from SEC XBRL (data/revenue.csv), embedded in js/site-config.js.
+    var REVENUE_POINTS = ((window.SITE && window.SITE.revenue) || []).map(function (r) {
+        return { x: r.date, y: Number(r.revenue_musd) };
+    });
 
     var Y_MIN = 0;
-    var Y_MAX = 100;
+    var Y_MAX = (window.SITE && SITE.revenueAxisMax) || Math.max(1, Math.max.apply(null, REVENUE_POINTS.map(function (p) { return p.y; }).concat([0])) * 1.25);
 
     function getNormalizedPoints() {
         return REVENUE_POINTS.map(function (point) {

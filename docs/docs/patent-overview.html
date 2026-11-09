@@ -1,0 +1,22 @@
+<!doctype html>
+<!-- Overview: Patent portfolio charts with a shared category filter. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ImmunityBio Patent Portfolio Overview</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/sidenav.css">
+  <link rel="stylesheet" href="css/patent-overview.css">
+  <script src="js/site-config.js"></script>
+  <script src="js/sidenav.js" defer></script>
+  <script src="js/patents/overview.js" type="module"></script>
+</head>
+<body>
+  <header><div><p class="eyebrow">IMMUNITYBIO · PATENT PORTFOLIO</p><h1>Patent portfolio overview</h1><p>Explore the applications behind the galaxy.</p></div></header>
+  <div class="workspace">
+    <aside aria-label="Category filters"><h2>Categories</h2><p>Include applications matching <strong>any</strong> checked tag.</p><div class="filter-actions"><button id="all" type="button">Select all</button><button id="none" type="button">Clear all</button></div><div id="tags"></div><p class="note">Numbers beside tags show the full dataset. Selecting none shows no data.</p></aside>
+    <main><div id="message" role="status" aria-live="polite">Loading portfolio…</div><div class="metric-row"><section id="metrics" aria-label="Portfolio totals"></section><a class="galaxy-link" href="patents/">Open 3D Patent Knowledge Graph</a></div><p class="method">Counts represent application records, not unique inventions or currently active patents. Category counts overlap. All charts follow the filters.</p><div id="charts"></div></main>
+  </div>
+</body>
+</html>
