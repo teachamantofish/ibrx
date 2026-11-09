@@ -77,8 +77,8 @@ window.SITE = {
       "revenue_musd": "51.24"
     },
     {
-      "date": "2026-11-05",
-      "revenue_musd": "60"
+      "date": "2026-11-09",
+      "revenue_musd": "48.1"
     }
   ],
   "revenueAxisMax": 100,
