@@ -77,13 +77,13 @@ window.SITE = {
       "revenue_musd": "51.24"
     },
     {
-      "date": "2026-11-09",
-      "revenue_musd": "48.1"
+      "date": "2026-11-05",
+      "revenue_musd": "60"
     }
   ],
   "revenueAxisMax": 100,
   "drugColumn": "IBRX drug",
-  "built": "2026-11-08T20:59:19"
+  "built": "2026-11-09T12:00:05"
 };
 // Hide controls whose data this site doesn't have (data-requires="revenue", "fda", ...).
 document.addEventListener('DOMContentLoaded', function () {
