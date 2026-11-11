@@ -39296,9 +39296,7 @@ async function bootPatents() {
   await controller.start();
   const rail = mount.querySelector('.gx-rail');
   if (!rail) throw new Error('Missing galaxy menu rail');
-  const timeline = rail.createEl('a', {cls:'gx-rail-item', attr:{href:config.timelineLink.href, 'aria-label':config.timelineLink.label, title:config.timelineLink.label}});
-  timeline.createSpan({cls:'gx-rail-glyph'}).appendChild(svgIcon(config.timelineLink.icon));
-  timeline.createSpan({cls:'gx-rail-label', text:config.timelineLink.label});
+  addSitePages(rail, controller.panel.dataRailBtn);
   if (config.openDataPanel) controller.panel.toggleDataDrawer();
   controller.panel.setToolbarVisible(true);
   const frame = controller.computeFraming();
@@ -39315,6 +39313,31 @@ async function bootPatents() {
   const host = controller.getDatasetPanelHost();
   if (!host) throw new Error('Missing dataset controls');
   await mountDatasetPicker(host, false);
+}
+
+/** Put the site's shared page links (js/sidenav.js) at the top of the rail, above Data and Themes. */
+function addSitePages(rail, firstTool) {
+  if (!window.SIDENAV) throw new Error('Missing js/sidenav.js page list');
+  for (const page of window.SIDENAV.pages) {
+    const link = document.createElement('a');
+    link.className = 'gx-rail-item' + (page.id === 'patents' ? ' gx-rail-current' : '');
+    link.href = '../' + page.href;
+    link.title = page.label;
+    link.setAttribute('aria-label', page.label);
+    if (page.id === 'patents') link.setAttribute('aria-current', 'page');
+    const glyph = document.createElement('span');
+    glyph.className = 'gx-rail-glyph';
+    glyph.innerHTML = window.SIDENAV.svg(page.icon);
+    glyph.firstChild.classList.add('gx-rail-icon');
+    const label = document.createElement('span');
+    label.className = 'gx-rail-label';
+    label.textContent = page.label;
+    link.append(glyph, label);
+    rail.insertBefore(link, firstTool);
+  }
+  const divider = document.createElement('div');
+  divider.className = 'gx-rail-sep';
+  rail.insertBefore(divider, firstTool);
 }
 
 /** Show startup failures without inserting error strings as HTML. */

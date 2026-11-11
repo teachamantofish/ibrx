@@ -1,7 +1,10 @@
 // Overview: Shared navigation ordered from trial research through patents and trading.
 // A page can put its own controls under its menu item with a [data-sidenav-panel] element;
 // the menu then starts open and docks beside the page instead of covering it.
+// Loaded with data-links-only (the patent galaxy), it builds nothing and only publishes the
+// page list as window.SIDENAV = {pages, svg} for that page's own rail.
 (function () {
+    const linksOnly = document.currentScript && document.currentScript.hasAttribute('data-links-only');
     const PAGES = [
         {
             id: 'timeline',
@@ -57,13 +60,6 @@
                 '<rect x="3.5" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="9.75" y="9.75" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
                 '<rect x="16" y="9.75" width="4.5" height="4.5" rx="1"/><rect x="3.5" y="16" width="4.5" height="4.5" rx="1" fill="currentColor"/>' +
                 '<rect x="9.75" y="16" width="4.5" height="4.5" rx="1"/><rect x="16" y="16" width="4.5" height="4.5" rx="1"/>'
-        },
-        {
-            id: 'performance',
-            href: 'performance.html',
-            label: 'Account performance',
-            // Rising line on axes
-            icon: '<path d="M4 4v16h16" opacity=".45"/><path d="M7 15l4-4 3 3 6-7"/>'
         }
     ];
 
@@ -136,6 +132,9 @@
             if (event.key === 'Escape' && !docked) setOpen(false);
         });
     }
+
+    window.SIDENAV = { pages: SHOWN, svg: svg };
+    if (linksOnly) return;
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', build);

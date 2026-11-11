@@ -1,4 +1,5 @@
-/* Left menu (js/sidenav.js) and the animated page header (js/header-helix.js). */
+/* Left menu (js/sidenav.js) and the animated page header (js/header-helix.js).
+   The patent galaxy's rail (.gx-rail) shares these menu rules, so every page's menu looks the same. */
 
 :root {
     --sidenav-collapsed: 56px;
@@ -25,13 +26,26 @@ body.has-sidenav {
     transition: width 0.22s ease, box-shadow 0.22s ease;
 }
 
+.gx-rail {
+    width: var(--sidenav-collapsed);
+    padding: 0;
+    background: var(--sidenav-bg);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    transition: width 0.22s ease;
+}
+
+.gx-rail.is-expanded {
+    width: var(--sidenav-expanded);
+}
+
 #sidenav.open {
     width: var(--sidenav-expanded);
     box-shadow: 8px 0 32px rgba(2, 8, 23, 0.35);
 }
 
 #sidenav .sidenav-toggle,
-#sidenav a {
+#sidenav a,
+.gx-rail .gx-rail-item {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -40,7 +54,23 @@ body.has-sidenav {
     padding: 0 17px;
     box-sizing: border-box;
     color: var(--sidenav-fg);
+    font-family: Arial, Helvetica, sans-serif;
     white-space: nowrap;
+}
+
+.gx-rail .gx-rail-item {
+    flex: none;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.gx-rail .gx-rail-glyph {
+    display: flex;
+    flex: none;
 }
 
 #sidenav .sidenav-toggle {
@@ -56,36 +86,47 @@ body.has-sidenav {
     list-style: none;
 }
 
-#sidenav svg {
+#sidenav svg,
+.gx-rail .gx-rail-icon {
     flex: none;
+    width: 22px;
+    height: 22px;
 }
 
-#sidenav span {
+#sidenav span,
+.gx-rail .gx-rail-label {
     font-size: 14px;
     opacity: 0;
     transition: opacity 0.15s ease;
 }
 
-#sidenav.open span {
+#sidenav.open span,
+.gx-rail.is-expanded .gx-rail-label {
     opacity: 1;
     transition-delay: 0.06s;
 }
 
 #sidenav a:link,
-#sidenav a:visited {
+#sidenav a:visited,
+.gx-rail a.gx-rail-item:link,
+.gx-rail a.gx-rail-item:visited {
     color: var(--sidenav-fg);
 }
 
 #sidenav .sidenav-toggle:hover,
 #sidenav a:hover,
 #sidenav .sidenav-toggle:focus-visible,
-#sidenav a:focus-visible {
+#sidenav a:focus-visible,
+.gx-rail .gx-rail-item:hover,
+.gx-rail .gx-rail-item:focus-visible {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.07);
     outline: none;
 }
 
-#sidenav a.active {
+#sidenav a.active,
+.gx-rail a.gx-rail-item.gx-rail-current,
+.gx-rail .gx-rail-item.is-active {
     color: var(--sidenav-accent);
     box-shadow: inset 3px 0 0 var(--sidenav-accent);
 }
