@@ -83,7 +83,7 @@ window.SITE = {
   ],
   "revenueAxisMax": 100,
   "drugColumn": "IBRX drug",
-  "built": "2026-11-19T19:30:01"
+  "built": "2026-11-20T19:30:02"
 };
 // Hide controls whose data this site doesn't have (data-requires="revenue", "fda", ...).
 document.addEventListener('DOMContentLoaded', function () {
