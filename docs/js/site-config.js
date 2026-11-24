@@ -23,7 +23,8 @@ window.SITE = {
     "patent-overview",
     "patents",
     "environment",
-    "performance"
+    "performance",
+    "ai"
   ],
   "features": {
     "fda": true,
@@ -83,7 +84,7 @@ window.SITE = {
   ],
   "revenueAxisMax": 100,
   "drugColumn": "IBRX drug",
-  "built": "2026-11-20T19:30:02"
+  "built": "2026-11-23T19:30:02"
 };
 // Hide controls whose data this site doesn't have (data-requires="revenue", "fda", ...).
 document.addEventListener('DOMContentLoaded', function () {

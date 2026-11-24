@@ -39338,6 +39338,38 @@ function addSitePages(rail, firstTool) {
   const divider = document.createElement('div');
   divider.className = 'gx-rail-sep';
   rail.insertBefore(divider, firstTool);
+  addRailFooter(rail);
+}
+
+/** Pin the "Use with AI" button and the build date (js/sidenav.js) to the bottom of the rail. */
+function addRailFooter(rail) {
+  const { ai, updated, svg } = window.SIDENAV;
+  if (!ai && !updated) return;
+  const foot = document.createElement('div');
+  foot.className = 'gx-rail-foot';
+  if (ai) {
+    const link = document.createElement('a');
+    link.className = 'gx-rail-item gx-rail-ai';
+    link.href = '../' + ai.href;
+    link.title = ai.label;
+    link.setAttribute('aria-label', ai.label);
+    const glyph = document.createElement('span');
+    glyph.className = 'gx-rail-glyph';
+    glyph.innerHTML = svg(ai.icon);
+    glyph.firstChild.classList.add('gx-rail-icon');
+    const label = document.createElement('span');
+    label.className = 'gx-rail-label';
+    label.textContent = ai.label;
+    link.append(glyph, label);
+    foot.append(link);
+  }
+  if (updated) {
+    const date = document.createElement('span');
+    date.className = 'gx-rail-label gx-rail-updated';
+    date.textContent = updated;
+    foot.append(date);
+  }
+  rail.append(foot);
 }
 
 /** Show startup failures without inserting error strings as HTML. */

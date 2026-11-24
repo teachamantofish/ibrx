@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- Overview: How to connect an AI assistant to this company's research data (the MCP server).
+     The build keeps the MCP-marked blocks when company.json mcp.url is set, else the NOMCP ones. -->
+<html lang="en">
+<head>
+    <title>IBRX Research with AI</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connect an AI assistant to ImmunityBio (IBRX) trial, catalyst, patent and market data.">
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link href="css/sidenav.css" rel="stylesheet" type="text/css">
+    <link href="css/bencustom.css" rel="stylesheet" type="text/css">
+    <link href="css/ai.css" rel="stylesheet" type="text/css">
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3WNQBNXD3S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3WNQBNXD3S');
+</script>
+<body class="bio-csv-timeline">
+
+<header class="hero">
+    <canvas aria-hidden="true"></canvas>
+    <div class="hero-text">
+        <div class="hero-kicker">ImmunityBio · IBRX</div>
+        <h1 class="hero-title">Use with AI</h1>
+        <div class="hero-subtitle">Ask an AI assistant about ImmunityBio's trials, catalysts, patents and market data</div>
+    </div>
+</header>
+<script src="js/site-config.js"></script>
+<script src="js/sidenav.js"></script>
+<script src="js/header-helix.js"></script>
+
+<main class="ai-page">
+    
+    <div class="ai-card ai-soon">
+        <h2>Coming soon</h2>
+        <p>The IBRX AI connection isn't live yet. When it is, this page will have a link you can add to Claude, ChatGPT and other AI apps. Your assistant can then answer questions from the same data as this site.</p>
+    </div>
+    
+
+    <div class="ai-card">
+        <h2>What you can ask</h2>
+        <ul>
+            <li>Which IBRX trials reach primary completion in the next 90 days?</li>
+            <li>What are the upcoming catalysts for Anktiva?</li>
+            <li>Which ImmunityBio patents expire before 2030, by category?</li>
+            <li>How have short interest and days to cover changed over the last month?</li>
+        </ul>
+        <p class="ai-note">The data is read-only and refreshed on weekday evenings. It isn't investment advice.</p>
+    </div>
+</main>
+</body>
+</html>

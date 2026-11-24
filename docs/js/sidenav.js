@@ -1,8 +1,10 @@
 // Overview: Shared navigation ordered from trial research through patents and trading.
 // A page can put its own controls under its menu item with a [data-sidenav-panel] element;
 // the menu then starts open and docks beside the page instead of covering it.
+// The bottom of the menu has a "Use with AI" button (ai.html) and the build date
+// ("Last updated: MM-DD-YY", from SITE.built).
 // Loaded with data-links-only (the patent galaxy), it builds nothing and only publishes the
-// page list as window.SIDENAV = {pages, svg} for that page's own rail.
+// page list as window.SIDENAV = {pages, svg, ai, updated} for that page's own rail.
 (function () {
     const linksOnly = document.currentScript && document.currentScript.hasAttribute('data-links-only');
     const PAGES = [
@@ -67,9 +69,34 @@
     const ENABLED = window.SITE && SITE.pages;
     const SHOWN = ENABLED ? PAGES.filter(function (p) { return ENABLED.indexOf(p.id) !== -1; }) : PAGES;
 
+    // Pinned to the bottom of the menu, apart from the page list.
+    const AI_PAGE = {
+        id: 'ai',
+        href: 'ai.html',
+        label: 'Use with AI',
+        // Sparkles
+        icon: '<path d="M10 3l1.9 5.1L17 10l-5.1 1.9L10 17l-1.9-5.1L3 10l5.1-1.9z"/>' +
+            '<path d="M18 14l.9 2.1L21 17l-2.1.9L18 20l-.9-2.1L15 17l2.1-.9z"/>'
+    };
+    const AI = !ENABLED || ENABLED.indexOf('ai') !== -1 ? AI_PAGE : null;
+
+    // "Last updated: MM-DD-YY" from the build time; empty without one.
+    const builtMatch = /^(\d{4})-(\d{2})-(\d{2})/.exec((window.SITE && SITE.built) || '');
+    const UPDATED = builtMatch ? 'Last updated: ' + builtMatch[2] + '-' + builtMatch[3] + '-' + builtMatch[1].slice(2) : '';
+
     function svg(body) {
         return '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" ' +
             'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + body + '</svg>';
+    }
+
+    function footer(current) {
+        if (!AI && !UPDATED) return '';
+        const active = AI && AI.href === current ? ' active" aria-current="page' : '';
+        return '<div class="sidenav-foot">' +
+            (AI ? '<a href="' + AI.href + '" class="sidenav-ai' + active + '" title="' + AI.label + '">' +
+                svg(AI.icon) + '<span>' + AI.label + '</span></a>' : '') +
+            (UPDATED ? '<span class="sidenav-updated">' + UPDATED + '</span>' : '') +
+            '</div>';
     }
 
     function build() {
@@ -84,7 +111,7 @@
                 const active = page.href === current ? ' class="active" aria-current="page"' : '';
                 return '<li><a href="' + page.href + '"' + active + ' title="' + page.label + '">' +
                     svg(page.icon) + '<span>' + page.label + '</span></a></li>';
-            }).join('') + '</ul>';
+            }).join('') + '</ul>' + footer(current);
 
         const backdrop = document.createElement('div');
         backdrop.className = 'sidenav-backdrop';
@@ -133,7 +160,7 @@
         });
     }
 
-    window.SIDENAV = { pages: SHOWN, svg: svg };
+    window.SIDENAV = { pages: SHOWN, svg: svg, ai: AI, updated: UPDATED };
     if (linksOnly) return;
 
     if (document.readyState === 'loading') {

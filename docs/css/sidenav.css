@@ -170,6 +170,66 @@ body.has-sidenav {
     overflow-y: auto;
 }
 
+/* Bottom of the menu: the "Use with AI" button and the build date. The column layout pins
+   them to the bottom; when the open menu is taller than the window, they scroll with it. */
+#sidenav {
+    display: flex;
+    flex-direction: column;
+}
+
+#sidenav > * {
+    flex-shrink: 0;
+}
+
+#sidenav .sidenav-foot,
+.gx-rail .gx-rail-foot {
+    flex: none;
+    margin-top: auto;
+    padding: 12px 0 10px;
+}
+
+#sidenav a.sidenav-ai,
+.gx-rail a.gx-rail-item.gx-rail-ai {
+    width: calc(100% - 16px);
+    height: 40px;
+    margin: 0 8px;
+    padding: 0 8px;
+    border: 1px solid rgba(94, 234, 212, 0.45);
+    border-radius: 8px;
+}
+
+#sidenav a.sidenav-ai:link,
+#sidenav a.sidenav-ai:visited,
+.gx-rail a.gx-rail-item.gx-rail-ai:link,
+.gx-rail a.gx-rail-item.gx-rail-ai:visited {
+    color: var(--sidenav-accent);
+}
+
+#sidenav a.sidenav-ai:hover,
+#sidenav a.sidenav-ai:focus-visible,
+.gx-rail a.gx-rail-item.gx-rail-ai:hover,
+.gx-rail a.gx-rail-item.gx-rail-ai:focus-visible {
+    color: #ffffff;
+    border-color: var(--sidenav-accent);
+    background: rgba(94, 234, 212, 0.12);
+}
+
+#sidenav a.sidenav-ai.active,
+.gx-rail a.gx-rail-item.gx-rail-ai.gx-rail-current {
+    box-shadow: none;
+    background: rgba(94, 234, 212, 0.16);
+}
+
+#sidenav .sidenav-updated,
+.gx-rail .gx-rail-updated {
+    display: block;
+    padding: 10px 17px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #7f93b5;
+    white-space: nowrap;
+}
+
 /* Page controls under the active menu item, shown only while the menu is open. */
 #sidenav .sidenav-panel {
     width: var(--sidenav-expanded);
