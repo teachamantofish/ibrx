@@ -1,0 +1,5 @@
+# Serve the static website from docs when the repository is deployed under /ibrx/.
+Options -Indexes
+RewriteEngine On
+RewriteRule ^docs(?:/|$) - [L]
+RewriteRule ^(.*)$ docs/$1 [L]
